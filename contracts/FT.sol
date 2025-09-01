@@ -4,6 +4,8 @@ pragma solidity ^0.8.22;
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { OFT } from "@layerzerolabs/oft-evm/contracts/OFT.sol";
 
+
+// TODO add burn
 contract FT is OFT {
     constructor(
         string memory _name,
