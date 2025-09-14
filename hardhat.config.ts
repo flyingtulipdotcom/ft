@@ -5,20 +5,18 @@
 // - Fill in the environment variables
 import 'dotenv/config'
 
-import "hardhat-deploy";
-import "hardhat-contract-sizer";
-import '@nomiclabs/hardhat-ethers'
-import "hardhat-gas-reporter";
-import "hardhat-abi-exporter";
-import '@layerzerolabs/toolbox-hardhat';
-import "@typechain/hardhat";
-import "@nomicfoundation/hardhat-chai-matchers";
-import "solidity-coverage";
+import 'hardhat-deploy'
+import 'hardhat-contract-sizer'
+import 'hardhat-gas-reporter'
+import 'hardhat-storage-layout'
+import 'hardhat-abi-exporter'
+import '@nomicfoundation/hardhat-ethers'
+import '@typechain/hardhat'
+import '@nomicfoundation/hardhat-chai-matchers'
+import '@nomicfoundation/hardhat-toolbox'
+import 'solidity-coverage'
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
-
 import { EndpointId } from '@layerzerolabs/lz-definitions'
-
-import './tasks/index'
 
 // Set your preferred authentication method
 //
@@ -58,6 +56,18 @@ const config: HardhatUserConfig = {
             },
         ],
     },
+    external: {
+        contracts: [
+            {
+                // Specify the exact path
+                artifacts: 'node_modules/@layerzerolabs/test-devtools-evm-hardhat/artifacts',
+                deploy: 'node_modules/@layerzerolabs/test-devtools-evm-hardhat/deploy',
+            },
+        ],
+        deployments: {
+            hardhat: ['node_modules/@layerzerolabs/test-devtools-evm-hardhat/deployments/hardhat'],
+        },
+    },
     networks: {
         'sonic-mainnet': {
             eid: EndpointId.SONIC_V2_MAINNET,
@@ -93,18 +103,27 @@ const config: HardhatUserConfig = {
         alphaSort: true,
         runOnCompile: true,
         disambiguatePaths: false,
-        except: ["test", "@openzeppelin", "@layerzerolabs"]
+        except: ['test', '@openzeppelin', '@layerzerolabs'],
     },
     gasReporter: {
         enabled: false,
-        showMethodSig: true
+        showMethodSig: true,
+    },
+    abiExporter: {
+        path: './data/abi',
+        runOnCompile: false,
+        clear: true,
+        flat: true,
+        spacing: 2,
+        format: 'json',
+        except: ['/interfaces', '/test', '@layerzerolabs', '@openzeppelin'],
     },
     typechain: {
-        target: "ethers-v5", // Target ethers v5
+        target: 'ethers-v6', // Target ethers v6
         alwaysGenerateOverloads: false,
         discriminateTypes: false,
-        dontOverrideCompile: false
-    }
+        dontOverrideCompile: false,
+    },
 }
 
 export default config
