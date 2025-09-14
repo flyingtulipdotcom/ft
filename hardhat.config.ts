@@ -5,10 +5,15 @@
 // - Fill in the environment variables
 import 'dotenv/config'
 
-import 'hardhat-deploy'
-import 'hardhat-contract-sizer'
+import "hardhat-deploy";
+import "hardhat-contract-sizer";
 import '@nomiclabs/hardhat-ethers'
-import '@layerzerolabs/toolbox-hardhat'
+import "hardhat-gas-reporter";
+import "hardhat-abi-exporter";
+import '@layerzerolabs/toolbox-hardhat';
+import "@typechain/hardhat";
+import "@nomicfoundation/hardhat-chai-matchers";
+import "solidity-coverage";
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
 
 import { EndpointId } from '@layerzerolabs/lz-definitions'
@@ -84,6 +89,22 @@ const config: HardhatUserConfig = {
             default: 0, // wallet address of index[0], of the mnemonic in .env
         },
     },
+    contractSizer: {
+        alphaSort: true,
+        runOnCompile: true,
+        disambiguatePaths: false,
+        except: ["test", "@openzeppelin", "@layerzerolabs"]
+    },
+    gasReporter: {
+        enabled: false,
+        showMethodSig: true
+    },
+    typechain: {
+        target: "ethers-v5", // Target ethers v5
+        alwaysGenerateOverloads: false,
+        discriminateTypes: false,
+        dontOverrideCompile: false
+    }
 }
 
 export default config
