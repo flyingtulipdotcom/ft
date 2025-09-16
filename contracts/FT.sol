@@ -116,7 +116,7 @@ contract FT is IFT, OFT, Pausable {
      * @dev Burns tokens from the sender's balance
      * @param amount Amount of tokens to burn
      */
-    function burn(uint amount) external override {
+    function burn(uint256 amount) external override {
         _burn(_msgSender(), amount);
     }
 
@@ -131,7 +131,7 @@ contract FT is IFT, OFT, Pausable {
     }
 
     /**
-     * @notice Pauses or unpauses the contract, only owner can call
+     * @notice Pauses or unpauses the contract, only owner or configurator can call
      * @param isPaused true to pause, false to unpause
      */
     function setPaused(bool isPaused) external onlyOwnerOrConfigurator {
@@ -147,12 +147,22 @@ contract FT is IFT, OFT, Pausable {
         _transferConfigurator(newConfigurator);
     }
 
+    function _transferConfigurator(address newConfigurator) private {
+        _configurator = newConfigurator;
+        emit ConfiguratorChanged(newConfigurator);
+    }
+
     /**
      * @notice Sets a new name for the token, only owner can call
      * @param newName New name for the token
      */
     function setName(string memory newName) external onlyOwner {
         _setName(newName);
+    }
+
+    function _setName(string memory newName) private {
+        _name = newName;
+        emit NameChanged(newName);
     }
 
     /**
@@ -163,19 +173,9 @@ contract FT is IFT, OFT, Pausable {
         _setSymbol(newSymbol);
     }
 
-    function _setName(string memory newName) private {
-        _name = newName;
-        emit NameChanged(newName);
-    }
-
     function _setSymbol(string memory newSymbol) private {
         _symbol = newSymbol;
         emit SymbolChanged(newSymbol);
-    }
-
-    function _transferConfigurator(address newConfigurator) private {
-        _configurator = newConfigurator;
-        emit ConfiguratorChanged(newConfigurator);
     }
 
     /**
