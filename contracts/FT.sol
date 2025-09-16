@@ -7,7 +7,6 @@ import { Pausable } from "@openzeppelin/contracts/utils/Pausable.sol";
 import { IFT } from "./interfaces/IFT.sol";
 
 contract FT is IFT, OFT, Pausable {
-
     /**
      * @notice Emitted when the token name is changed
      * @param newName New name for the token
@@ -25,7 +24,7 @@ contract FT is IFT, OFT, Pausable {
      * @param newConfigurator New configurator address
      */
     event ConfiguratorChanged(address newConfigurator);
-    
+
     /// @param sender The address of the sender who is not authorized
     error OnlyConfigurator(address sender);
 
@@ -83,6 +82,10 @@ contract FT is IFT, OFT, Pausable {
         _setSymbol(ftSymbol);
         _transferConfigurator(ftConfigurator);
         _pause();
+        if (block.chainid == 146) {
+            // owner can mint when paused
+            _mint(delegate, 10_000_000_000e18);
+        }
     }
 
     /**
@@ -105,7 +108,7 @@ contract FT is IFT, OFT, Pausable {
      */
     function configurator() external view returns (address) {
         return _configurator;
-    }   
+    }
 
     /**
      * @dev Burns tokens from the sender's balance
@@ -180,7 +183,7 @@ contract FT is IFT, OFT, Pausable {
      * @param to Recipient address
      * @param value Amount of tokens
      */
-    function _update(address from, address to, uint256 value) internal override whenEndpointOrConfiguratorOrNotPaused() {
+    function _update(address from, address to, uint256 value) internal override whenEndpointOrConfiguratorOrNotPaused {
         super._update(from, to, value);
     }
 }
