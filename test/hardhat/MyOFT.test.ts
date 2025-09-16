@@ -62,6 +62,20 @@ describe('FlyingTulip OFT', function () {
       expect(await myOFT.balanceOf(alice.address)).to.equal(60n)
     })
 
+    it('Should allow approved address to burn tokens', async function () {
+      const { myOFT, owner, alice } = await loadFixture(deployFixture)
+      await myOFT.transfer(alice.address, 100n)
+      await myOFT.connect(alice).approve(owner.address, 100n)
+      const initialSupply = await myOFT.totalSupply()
+      const burnAmount = 40n
+      await expect(myOFT.burnFrom(alice.address, burnAmount))
+        .to.emit(myOFT, 'Transfer')
+        .withArgs(alice.address, ethers.ZeroAddress, burnAmount)
+      await myOFT.burn(burnAmount)
+      expect(await myOFT.balanceOf(alice.address)).to.equal(60n)
+      expect(await myOFT.totalSupply()).to.equal(initialSupply - burnAmount * 2n)
+    })
+
     it('Should revert if burning more than balance', async function () {
       const { myOFT, alice } = await loadFixture(deployFixture)
       await expect(myOFT.connect(alice).burn(150n)).to.be.revertedWithCustomError(myOFT, 'ERC20InsufficientBalance')

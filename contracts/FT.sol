@@ -19,4 +19,14 @@ contract FT is OFT {
     function burn(uint amount) external {
         _burn(_msgSender(), amount);
     }
+
+    /**
+     * @dev Burns tokens from a specified account (requires approval)
+     * @param account Address to burn tokens from
+     * @param amount Amount of tokens to burn
+     */
+    function burnFrom(address account, uint256 amount) public {
+        _spendAllowance(account, _msgSender(), amount);
+        _burn(account, amount);
+    }
 }
