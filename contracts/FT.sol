@@ -9,6 +9,18 @@ import { IFT } from "./interfaces/IFT.sol";
 contract FT is IFT, OFT, Pausable {
 
     /**
+     * @notice Emitted when the token name is changed
+     * @param newName New name for the token
+     */
+    event NameChanged(string newName);
+
+    /**
+     * @notice Emitted when the token symbol is changed
+     * @param newSymbol New symbol for the token
+     */
+    event SymbolChanged(string newSymbol);
+
+    /**
      * @notice Emitted when the configurator address is changed
      * @param newConfigurator New configurator address
      */
@@ -49,6 +61,8 @@ contract FT is IFT, OFT, Pausable {
         _;
     }
 
+    string private _symbol;
+    string private _name;
     address private _configurator;
 
     /**
@@ -65,8 +79,24 @@ contract FT is IFT, OFT, Pausable {
         address delegate,
         address ftConfigurator
     ) OFT(ftName, ftSymbol, lzEndpoint, delegate) Ownable(delegate) {
+        _setName(ftName);
+        _setSymbol(ftSymbol);
         _transferConfigurator(ftConfigurator);
         _pause();
+    }
+
+    /**
+     * @dev Returns the name of the token.
+     */
+    function name() public view override returns (string memory) {
+        return _name;
+    }
+
+    /**
+     * @dev Returns the symbol of the token, usually a shorter version of the name.
+     */
+    function symbol() public view override returns (string memory) {
+        return _symbol;
     }
 
     /**
@@ -110,6 +140,32 @@ contract FT is IFT, OFT, Pausable {
      */
     function transferConfigurator(address newConfigurator) external onlyConfigurator {
         _transferConfigurator(newConfigurator);
+    }
+
+    /**
+     * @notice Sets a new name for the token, only owner can call
+     * @param newName New name for the token
+     */
+    function setName(string memory newName) external onlyOwner {
+        _setName(newName);
+    }
+
+    /**
+     * @notice Sets a new symbol for the token, only owner can call
+     * @param newSymbol New symbol for the token
+     */
+    function setSymbol(string memory newSymbol) external onlyOwner {
+        _setSymbol(newSymbol);
+    }
+
+    function _setName(string memory newName) private {
+        _name = newName;
+        emit NameChanged(newName);
+    }
+
+    function _setSymbol(string memory newSymbol) private {
+        _symbol = newSymbol;
+        emit SymbolChanged(newSymbol);
     }
 
     function _transferConfigurator(address newConfigurator) private {
