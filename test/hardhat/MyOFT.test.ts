@@ -32,11 +32,7 @@ describe("FlyingTulip OFT", function () {
       configurator.address
     ])) as unknown as MyOFTMock;
 
-    // Mint some tokens to owner for testing
-    const mintAmount = ethers.parseEther("1000000");
-    await myOFT.mint(owner.address, mintAmount);
-
-    return { ftOFT, myOFT, owner, configurator, alice, bob, mintAmount };
+    return { ftOFT, myOFT, owner, configurator, alice, bob };
   }
 
   describe("Deployment", function () {
@@ -55,26 +51,33 @@ describe("FlyingTulip OFT", function () {
       expect(await ftOFT.SONIC_CHAIN_ID()).to.equal(146); // as per FT contract
       expect(await myOFT.SONIC_CHAIN_ID()).to.equal(31337); // as per MyOFTMock contract override
     });
+
+    it("should mint the correct supplies", async function () {
+      const { ftOFT, myOFT } = await loadFixture(deployFixture);
+      // it should not mint because we are in hardhat chain id
+      expect(await ftOFT.totalSupply()).to.equal(0);
+      // expect 10 billion tokens minted to configurator 
+      expect(await myOFT.totalSupply()).to.equal(ethers.parseEther("10000000000"));
+    });
   });
 
-  describe("Transfer from", function () {
+  describe("Transfers", function () {
     it("should transfer from self", async function () {
-      const { myOFT, owner, alice } = await loadFixture(deployFixture);
-      await myOFT.approve(owner.address, 100n);
-      await myOFT.transferFrom(owner.address, alice.address, 100n);
+      const { myOFT, configurator, alice } = await loadFixture(deployFixture);
+      await myOFT.connect(configurator).transfer(alice.address, 100n);
       expect(await myOFT.balanceOf(alice.address)).to.equal(100n);
     });
 
     it("should transfer from another", async function () {
-      const { myOFT, owner, alice } = await loadFixture(deployFixture);
-      await myOFT.approve(alice.address, 100n);
-      await myOFT.connect(alice).transferFrom(owner.address, alice.address, 100n);
+      const { myOFT, configurator, alice } = await loadFixture(deployFixture);
+      await myOFT.connect(configurator).approve(alice.address, 100n);
+      await myOFT.connect(alice).transferFrom(configurator.address, alice.address, 100n);
       expect(await myOFT.balanceOf(alice.address)).to.equal(100n);
     });
 
     it("should revert if non-approved address tries to transfer", async function () {
-      const { myOFT, owner, alice } = await loadFixture(deployFixture);
-      await expect(myOFT.connect(alice).transferFrom(owner.address, alice.address, 100n)).to.be.revertedWithCustomError(
+      const { myOFT, configurator, alice } = await loadFixture(deployFixture);
+      await expect(myOFT.connect(alice).transferFrom(configurator.address, alice.address, 100n)).to.be.revertedWithCustomError(
         myOFT,
         "ERC20InsufficientAllowance"
       );
@@ -85,8 +88,9 @@ describe("FlyingTulip OFT", function () {
     it("should allow owner/configurator to pause and unpause the contract", async function () {
       const { myOFT, owner, configurator, alice } = await loadFixture(deployFixture);
 
-      // fund configurator
-      await myOFT.transfer(configurator.address, 1000n);
+      // fund owner
+      await myOFT.connect(configurator).transfer(owner.address, 1000n);
+
       // pause contract
       await myOFT.connect(owner).setPaused(true);
       // alice cannot transfer while paused
@@ -221,30 +225,30 @@ describe("FlyingTulip OFT", function () {
 
   describe("Burning", function () {
     it("should allow token holder to burn their tokens", async function () {
-      const { myOFT, alice } = await loadFixture(deployFixture);
-      await myOFT.transfer(alice.address, 100n);
+      const { myOFT, configurator, alice } = await loadFixture(deployFixture);
+      await myOFT.connect(configurator).transfer(alice.address, 100n);
       await myOFT.connect(alice).burn(40n);
       expect(await myOFT.balanceOf(alice.address)).to.equal(60n);
     });
 
     it("should allow approved address to burn tokens", async function () {
-      const { myOFT, owner, alice } = await loadFixture(deployFixture);
-      await myOFT.transfer(alice.address, 100n);
+      const { myOFT, owner, configurator, alice } = await loadFixture(deployFixture);
+      await myOFT.connect(configurator).transfer(alice.address, 100n);
       await myOFT.connect(alice).approve(owner.address, 100n);
       const initialSupply = await myOFT.totalSupply();
       const burnAmount = 40n;
       await expect(myOFT.burnFrom(alice.address, burnAmount))
         .to.emit(myOFT, "Transfer")
         .withArgs(alice.address, ethers.ZeroAddress, burnAmount);
-      await myOFT.burn(burnAmount);
+      await myOFT.connect(configurator).burn(burnAmount);
       expect(await myOFT.balanceOf(alice.address)).to.equal(60n);
       expect(await myOFT.totalSupply()).to.equal(initialSupply - burnAmount * 2n);
     });
 
     it("should revert if non-approved address tries to burn", async function () {
-      const { myOFT, alice } = await loadFixture(deployFixture);
-      await myOFT.transfer(alice, 100);
-      await expect(myOFT.burnFrom(alice, 40)).to.be.revertedWithCustomError(myOFT, "ERC20InsufficientAllowance");
+      const { myOFT, configurator, alice } = await loadFixture(deployFixture);
+      await myOFT.connect(configurator).transfer(alice.address, 100n);
+      await expect(myOFT.burnFrom(alice.address, 40n)).to.be.revertedWithCustomError(myOFT, "ERC20InsufficientAllowance");
     });
 
     it("should revert if burning more than balance", async function () {
