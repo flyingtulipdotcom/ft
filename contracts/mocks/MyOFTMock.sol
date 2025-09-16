@@ -9,8 +9,12 @@ contract MyOFTMock is FT {
         string memory _name,
         string memory _symbol,
         address _lzEndpoint,
-        address _delegate
-    ) FT(_name, _symbol, _lzEndpoint, _delegate) {}
+        address _delegate,
+        address _pauser
+    ) FT(_name, _symbol, _lzEndpoint, _delegate, _pauser) {
+        // pauses in the parent so we can unpause here
+        _unpause();
+    }
 
     function mint(address _to, uint256 _amount) public {
         _mint(_to, _amount);
