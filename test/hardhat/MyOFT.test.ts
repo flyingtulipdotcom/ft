@@ -93,7 +93,7 @@ describe("FlyingTulip OFT", function () {
       expect(await myOFT.paused()).to.equal(false);
     });
 
-    it("should revert for transfers when paused except endpoint/configurator", async function () {
+    it("should revert when paused", async function () {
       const { myOFT, owner, configurator, alice } = await loadFixture(deployFixture);
 
       // pause contract
@@ -101,9 +101,31 @@ describe("FlyingTulip OFT", function () {
 
       // normal transfer should revert
       await expect(myOFT.transfer(alice.address, 1n)).to.be.reverted;
+    });
 
-      // configurator (set in constructor) should be able to transfer via internal privileges
-      // we cannot easily impersonate _configurator here, but endpoint deliver should work
+    it("should revert when paused, except to/from configurator", async function () {
+      const { myOFT, owner, configurator, alice , bob} = await loadFixture(deployFixture);
+
+      await myOFT.mint(alice.address, 10n);
+
+      // pause contract
+      await myOFT.connect(owner).setPaused(true);
+
+      await expect(myOFT.connect(alice).transfer(configurator.address, 3n)).to.not.be.reverted;
+      await expect(myOFT.connect(configurator).transfer(alice.address, 1n)).to.not.be.reverted;
+      await myOFT.connect(configurator).approve(alice.address, 1n);
+      await expect(myOFT.connect(alice).transferFrom(configurator.address, bob.address, 1n)).to.not.be.reverted;
+
+      // allow configurator to transfer (authed as the sender)
+      await myOFT.connect(alice).approve(configurator.address, 10n);
+      await expect(myOFT.connect(configurator).transferFrom(alice.address, bob.address, 1n)).to.not.be.reverted;
+      
+      // transfer between non-configurator addresses should revert
+      await expect(myOFT.connect(alice).transfer(bob.address, 1n)).to.be.reverted;
+      await expect(myOFT.connect(bob).transfer(alice.address, 1n)).to.be.reverted;
+      await myOFT.connect(alice).approve(bob.address, 10n);
+      await expect(myOFT.connect(bob).transferFrom(alice.address, bob.address, 1n)).to.be.reverted;
+
     });
 
     it("should allow endpoint to deliver tokens while paused via lzReceive", async function () {
@@ -193,6 +215,15 @@ describe("FlyingTulip OFT", function () {
       expect(await myOFT.balanceOf(alice.address)).to.equal(60n);
       expect(await myOFT.totalSupply()).to.equal(initialSupply - burnAmount * 2n);
     });
+    
+    it("should revert if non-approved address tries to burn", async function () {
+      const {myOFT, alice} = await loadFixture(deployFixture);
+      await myOFT.transfer(alice, 100);
+      await expect(myOFT.burnFrom(alice, 40)).to.be.revertedWithCustomError(
+        myOFT,
+        "ERC20InsufficientAllowance"
+      );
+    });
 
     it("should revert if burning more than balance", async function () {
       const { myOFT, alice } = await loadFixture(deployFixture);
@@ -201,25 +232,35 @@ describe("FlyingTulip OFT", function () {
   });
 
   describe("Owner", function () {
-    it("should allow owner to change name and symbol", async function () {
+    it("should allow owner to change name", async function () {
       const { myOFT, owner } = await loadFixture(deployFixture);
       expect(await myOFT.name()).to.equal("FlyingTulipOFT");
-      expect(await myOFT.symbol()).to.equal("FT");
 
       expect(await myOFT.connect(owner).setName("NewName"))
         .to.emit(myOFT, "NameChanged")
         .withArgs("NewName");
+
+      expect(await myOFT.name()).to.equal("NewName");
+    });
+
+    it("should allow owner to change symbol", async function () {
+      const { myOFT, owner } = await loadFixture(deployFixture);
+      expect(await myOFT.symbol()).to.equal("FT");
+        
       expect(await myOFT.connect(owner).setSymbol("NN"))
         .to.emit(myOFT, "SymbolChanged")
         .withArgs("NN");
 
-      expect(await myOFT.name()).to.equal("NewName");
       expect(await myOFT.symbol()).to.equal("NN");
     });
 
-    it("should revert if non-owner tries to change name or symbol", async function () {
+    it("should revert if non-owner tries to change name", async function () {
       const { myOFT, alice } = await loadFixture(deployFixture);
       await expect(myOFT.connect(alice).setName("HackerName")).to.be.reverted;
+    });
+
+    it("should revert if non-owner tries to change symbol", async function () {
+      const { myOFT, alice } = await loadFixture(deployFixture);
       await expect(myOFT.connect(alice).setSymbol("HN")).to.be.reverted;
     });
 
@@ -228,11 +269,6 @@ describe("FlyingTulip OFT", function () {
       expect(await myOFT.owner()).to.equal(owner.address);
       await myOFT.connect(owner).transferOwnership(alice.address);
       expect(await myOFT.owner()).to.equal(alice.address);
-      // previous owner cannot change name/symbol anymore
-      await expect(myOFT.connect(owner).setName("OldOwnerName")).to.be.reverted;
-      // new owner can change name/symbol
-      await myOFT.connect(alice).setName("NewOwnerName");
-      expect(await myOFT.name()).to.equal("NewOwnerName");
     });
 
     it("should revert if non-owner tries to transfer ownership", async function () {

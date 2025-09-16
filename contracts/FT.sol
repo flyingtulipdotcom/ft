@@ -33,10 +33,13 @@ contract FT is IFT, OFT, Pausable {
 
     /**
      * @dev Modifier to make a function callable only by the endpoint or the configurator or when not paused.
+     * @param from Sender address
+     * @param to Recipient address
      */
-    modifier whenEndpointOrConfiguratorOrNotPaused() {
+    modifier whenEndpointOrConfiguratorOrNotPaused(address from, address to) {
         address sender = _msgSender();
-        if (address(endpoint) != sender && _configurator != sender) {
+        address ftConfigurator = _configurator;
+        if (sender != address(endpoint) && sender != ftConfigurator && from != ftConfigurator && to != ftConfigurator) {
             _requireNotPaused();
         }
         _;
@@ -185,7 +188,11 @@ contract FT is IFT, OFT, Pausable {
      * @param to Recipient address
      * @param value Amount of tokens
      */
-    function _update(address from, address to, uint256 value) internal override whenEndpointOrConfiguratorOrNotPaused {
+    function _update(
+        address from,
+        address to,
+        uint256 value
+    ) internal override whenEndpointOrConfiguratorOrNotPaused(from, to) {
         super._update(from, to, value);
     }
 }
