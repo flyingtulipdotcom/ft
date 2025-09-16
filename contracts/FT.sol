@@ -3,10 +3,10 @@ pragma solidity ^0.8.30;
 
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { OFT } from "@layerzerolabs/oft-evm/contracts/OFT.sol";
+import { IFT } from "./interfaces/IFT.sol";
 
+contract FT is IFT, OFT {
 
-// TODO add burn
-contract FT is OFT {
     constructor(
         string memory _name,
         string memory _symbol,
@@ -16,7 +16,11 @@ contract FT is OFT {
         _mint(_delegate, 10000000000e18);
     }
 
-    function burn(uint amount) external {
+    /**
+     * @dev Burns tokens from the sender's balance
+     * @param amount Amount of tokens to burn
+     */
+    function burn(uint amount) external override {
         _burn(_msgSender(), amount);
     }
 
@@ -25,7 +29,7 @@ contract FT is OFT {
      * @param account Address to burn tokens from
      * @param amount Amount of tokens to burn
      */
-    function burnFrom(address account, uint256 amount) public {
+    function burnFrom(address account, uint256 amount) external override {
         _spendAllowance(account, _msgSender(), amount);
         _burn(account, amount);
     }
