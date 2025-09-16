@@ -87,8 +87,8 @@ contract FT is IFT, OFT, Pausable {
         _setSymbol(ftSymbol);
         _transferConfigurator(ftConfigurator);
         if (block.chainid == SONIC_CHAIN_ID) {
-            _mint(delegate, 10_000_000_000e18);
             // mint before pausing
+            _mint(ftConfigurator, 10_000_000_000e18);
         }
         _pause();
     }
