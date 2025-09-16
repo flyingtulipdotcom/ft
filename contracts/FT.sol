@@ -60,6 +60,8 @@ contract FT is IFT, OFT, Pausable {
         _;
     }
 
+    uint8 private constant SONIC_CHAIN_ID = 146; // Sonic mainnet chain id
+
     string private _symbol;
     string private _name;
     address private _configurator;
@@ -82,7 +84,7 @@ contract FT is IFT, OFT, Pausable {
         _setSymbol(ftSymbol);
         _transferConfigurator(ftConfigurator);
         _pause();
-        if (block.chainid == 146) {
+        if (block.chainid == SONIC_CHAIN_ID) {
             // owner can mint when paused
             _mint(delegate, 10_000_000_000e18);
         }
