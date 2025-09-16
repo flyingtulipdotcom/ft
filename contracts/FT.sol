@@ -63,7 +63,7 @@ contract FT is IFT, OFT, Pausable {
         _;
     }
 
-    uint8 private constant SONIC_CHAIN_ID = 146; // Sonic mainnet chain id
+    uint16 public immutable SONIC_CHAIN_ID; // Sonic mainnet chain id
 
     string private _symbol;
     string private _name;
@@ -86,11 +86,20 @@ contract FT is IFT, OFT, Pausable {
         _setName(ftName);
         _setSymbol(ftSymbol);
         _transferConfigurator(ftConfigurator);
+
+        SONIC_CHAIN_ID = _getSonicChainId();
         if (block.chainid == SONIC_CHAIN_ID) {
             // mint before pausing
             _mint(ftConfigurator, 10_000_000_000e18);
         }
         _pause();
+    }
+
+    /**
+     * @dev Returns the Sonic chain ID
+     */
+    function _getSonicChainId() internal pure virtual returns (uint16) {
+        return 146;
     }
 
     /**

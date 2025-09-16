@@ -15,6 +15,14 @@ describe("FlyingTulip OFT", function () {
     const endpointId = 30112; // arbitrary test id
     const endpoint = (await EndpointV2Mock.deploy(endpointId)) as unknown as ILayerZeroEndpointV2;
 
+    const ftOFT = (await ethers.deployContract("FT", [
+      "FlyingTulipOFT",
+      "FT",
+      await endpoint.getAddress(),
+      owner.address,
+      configurator.address
+    ])) as unknown as MyOFTMock;
+
     // Deploy MyOFTMock using the endpoint address (constructor: name, symbol, endpoint, owner)
     const myOFT = (await ethers.deployContract("MyOFTMock", [
       "FlyingTulipOFT",
@@ -28,8 +36,26 @@ describe("FlyingTulip OFT", function () {
     const mintAmount = ethers.parseEther("1000000");
     await myOFT.mint(owner.address, mintAmount);
 
-    return { myOFT, owner, configurator, alice, bob, mintAmount };
+    return { ftOFT, myOFT, owner, configurator, alice, bob, mintAmount };
   }
+
+  describe("Deployment", function () {
+    it("should set the right owner", async function () {
+      const { myOFT, owner } = await loadFixture(deployFixture);
+      expect(await myOFT.owner()).to.equal(owner.address);
+    });
+
+    it("should set the right configurator", async function () {
+      const { myOFT, configurator } = await loadFixture(deployFixture);
+      expect(await myOFT.configurator()).to.equal(configurator.address);
+    });
+
+    it("should use the correct sonic chain id for the base token", async function () {
+      const { ftOFT, myOFT } = await loadFixture(deployFixture);
+      expect(await ftOFT.SONIC_CHAIN_ID()).to.equal(146); // as per FT contract
+      expect(await myOFT.SONIC_CHAIN_ID()).to.equal(31337); // as per MyOFTMock contract override
+    });
+  });
 
   describe("Transfer from", function () {
     it("should transfer from self", async function () {
@@ -104,7 +130,7 @@ describe("FlyingTulip OFT", function () {
     });
 
     it("should revert when paused, except to/from configurator", async function () {
-      const { myOFT, owner, configurator, alice , bob} = await loadFixture(deployFixture);
+      const { myOFT, owner, configurator, alice, bob } = await loadFixture(deployFixture);
 
       await myOFT.mint(alice.address, 10n);
 
@@ -119,13 +145,12 @@ describe("FlyingTulip OFT", function () {
       // allow configurator to transfer (authed as the sender)
       await myOFT.connect(alice).approve(configurator.address, 10n);
       await expect(myOFT.connect(configurator).transferFrom(alice.address, bob.address, 1n)).to.not.be.reverted;
-      
+
       // transfer between non-configurator addresses should revert
       await expect(myOFT.connect(alice).transfer(bob.address, 1n)).to.be.reverted;
       await expect(myOFT.connect(bob).transfer(alice.address, 1n)).to.be.reverted;
       await myOFT.connect(alice).approve(bob.address, 10n);
       await expect(myOFT.connect(bob).transferFrom(alice.address, bob.address, 1n)).to.be.reverted;
-
     });
 
     it("should allow endpoint to deliver tokens while paused via lzReceive", async function () {
@@ -215,14 +240,11 @@ describe("FlyingTulip OFT", function () {
       expect(await myOFT.balanceOf(alice.address)).to.equal(60n);
       expect(await myOFT.totalSupply()).to.equal(initialSupply - burnAmount * 2n);
     });
-    
+
     it("should revert if non-approved address tries to burn", async function () {
-      const {myOFT, alice} = await loadFixture(deployFixture);
+      const { myOFT, alice } = await loadFixture(deployFixture);
       await myOFT.transfer(alice, 100);
-      await expect(myOFT.burnFrom(alice, 40)).to.be.revertedWithCustomError(
-        myOFT,
-        "ERC20InsufficientAllowance"
-      );
+      await expect(myOFT.burnFrom(alice, 40)).to.be.revertedWithCustomError(myOFT, "ERC20InsufficientAllowance");
     });
 
     it("should revert if burning more than balance", async function () {
@@ -246,7 +268,7 @@ describe("FlyingTulip OFT", function () {
     it("should allow owner to change symbol", async function () {
       const { myOFT, owner } = await loadFixture(deployFixture);
       expect(await myOFT.symbol()).to.equal("FT");
-        
+
       expect(await myOFT.connect(owner).setSymbol("NN"))
         .to.emit(myOFT, "SymbolChanged")
         .withArgs("NN");
