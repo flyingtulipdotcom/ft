@@ -11,10 +11,11 @@ import 'hardhat-gas-reporter'
 import 'hardhat-storage-layout'
 import 'hardhat-abi-exporter'
 import '@nomicfoundation/hardhat-ethers'
-import '@typechain/hardhat'
 import '@nomicfoundation/hardhat-chai-matchers'
 import '@nomicfoundation/hardhat-toolbox'
 import 'solidity-coverage'
+import '@typechain/hardhat'
+import "./tasks"
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
 import { EndpointId } from '@layerzerolabs/lz-definitions'
 
@@ -71,29 +72,29 @@ const config: HardhatUserConfig = {
         },
     },
     networks: {
+        hardhat: {
+            // Need this for testing because some exceed the compiled contract size limit
+            allowUnlimitedContractSize: true,
+        },
         'sonic-mainnet': {
-            eid: EndpointId.SONIC_V2_MAINNET,
+            // eid: EndpointId.SONIC_V2_MAINNET,
             url: process.env.RPC_URL_SONIC || 'https://rpc.soniclabs.com',
             accounts,
         },
         'bsc-mainnet': {
-            eid: EndpointId.BSC_V2_MAINNET,
+            // eid: EndpointId.BSC_V2_MAINNET,
             url: process.env.RPC_URL_BSC || 'https://bsc.drpc.org',
             accounts,
         },
         'ethereum-mainnet': {
-            eid: EndpointId.ETHEREUM_V2_MAINNET,
+            // eid: EndpointId.ETHEREUM_V2_MAINNET,
             url: process.env.RPC_URL_ETHEREUM || 'https://INSERT-RPC',
             accounts,
         },
         'avalanche-mainnet': {
-            eid: EndpointId.AVALANCHE_V2_MAINNET,
+            // eid: EndpointId.AVALANCHE_V2_MAINNET,
             url: process.env.RPC_URL_AVALANCHE || 'https://api.avax.network/ext/bc/C/rpc',
             accounts,
-        },
-        hardhat: {
-            // Need this for testing because TestHelperOz5.sol is exceeding the compiled contract size limit
-            allowUnlimitedContractSize: true,
         },
     },
     namedAccounts: {
