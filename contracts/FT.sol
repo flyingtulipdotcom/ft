@@ -39,8 +39,14 @@ contract FT is IFT, OFT, Pausable {
     modifier whenEndpointOrConfiguratorOrNotPaused(address from, address to) {
         address sender = _msgSender();
         address ftConfigurator = _configurator;
-        if (sender != address(endpoint) && sender != ftConfigurator && from != ftConfigurator && to != ftConfigurator) {
-            _requireNotPaused();
+        if (
+            paused() &&
+            sender != address(endpoint) &&
+            sender != ftConfigurator &&
+            from != ftConfigurator &&
+            to != ftConfigurator
+        ) {
+            revert EnforcedPause();
         }
         _;
     }
