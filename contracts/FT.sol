@@ -73,7 +73,7 @@ contract FT is IFT, OFT, Pausable {
      * @param ftName Name of the token
      * @param ftSymbol Symbol of the token
      * @param lzEndpoint LayerZero endpoint address
-     * @param delegate Delegate address
+     * @param delegate LayerZero delegate address
      * @param ftConfigurator Configurator address
      */
     constructor(
@@ -90,7 +90,7 @@ contract FT is IFT, OFT, Pausable {
         SONIC_CHAIN_ID = _getSonicChainId();
         if (block.chainid == SONIC_CHAIN_ID) {
             // mint before pausing
-            _mint(ftConfigurator, 10_000_000_000e18);
+            _mint(ftConfigurator, 10_000_000_000 * 1 ether);
         }
         _pause();
     }
