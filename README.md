@@ -21,6 +21,12 @@
 
 ## Build
 
+### Installing deps
+
+```bash
+pnpm install
+```
+
 ### Compiling your contracts
 
 ```bash

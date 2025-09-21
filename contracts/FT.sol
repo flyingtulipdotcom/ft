@@ -37,18 +37,27 @@ contract FT is IFT, OFT, Pausable {
      * @param to Recipient address
      */
     modifier whenEndpointOrConfiguratorOrNotPaused(address from, address to) {
-        address sender = _msgSender();
-        address ftConfigurator = _configurator;
-        if (
-            paused() &&
-            sender != address(endpoint) &&
-            sender != ftConfigurator &&
-            from != ftConfigurator &&
-            to != ftConfigurator
-        ) {
-            revert EnforcedPause();
+        // Early exit for the common case: not paused
+        if (!paused()) {
+            _;
+            return;
         }
-        _;
+
+        // Check if any privileged address is involved
+        address ftConfigurator = _configurator;
+        if (from == ftConfigurator || to == ftConfigurator) {
+            _;
+            return;
+        }
+
+        // Check if sender is endpoint or configurator
+        address sender = _msgSender();
+        if (sender == address(endpoint) || sender == ftConfigurator) {
+            _;
+            return;
+        }
+
+        revert EnforcedPause();
     }
 
     /**
@@ -162,6 +171,7 @@ contract FT is IFT, OFT, Pausable {
      * @param newConfigurator New configurator address
      */
     function transferConfigurator(address newConfigurator) external onlyConfigurator {
+        // REVIEW: No Check for zero address. Would we ever need to brick the configurator?
         _transferConfigurator(newConfigurator);
     }
 
@@ -170,6 +180,8 @@ contract FT is IFT, OFT, Pausable {
         emit ConfiguratorChanged(newConfigurator);
     }
 
+
+    // REVIEW: Why do we care about having setName and setSymbol?
     /**
      * @notice Sets a new name for the token, only owner can call
      * @param newName New name for the token
