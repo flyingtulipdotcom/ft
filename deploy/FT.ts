@@ -1,9 +1,7 @@
 import assert from 'assert'
 
 import { type DeployFunction } from 'hardhat-deploy/types'
-import { ENDPOINT_V2_ADDRESSES, FT_CONFIGURATOR_ADDRESSES } from '../utils/constants';
-
-const contractName = 'FT'
+import { ENDPOINT_V2_ADDRESSES, FT_CONFIGURATOR_ADDRESSES, TOKEN_CONTRACT_NAME } from '../utils/constants';
 
 const deploy: DeployFunction = async (hre) => {
 
@@ -22,24 +20,22 @@ const deploy: DeployFunction = async (hre) => {
     const ftConfigurator = FT_CONFIGURATOR_ADDRESSES[chainId];
     const endpointV2Address = ENDPOINT_V2_ADDRESSES[chainId]
 
-    const { address } = await deploy(contractName, {
+    const { address } = await deploy(TOKEN_CONTRACT_NAME, {
         from: deployer,
         args: [
             'Flying Tulip', // name
             'FT', // symbol
             endpointV2Address,
-            deployer, // delegate, use deployer for now and update it later
+            deployer, // use deployer for the delegate for now and update it later in setDelegate task
             ftConfigurator,
         ],
         log: true,
         skipIfAlreadyDeployed: false,
     })
 
-    console.log(`Deployed contract: ${contractName}, network: ${hre.network.name}, address: ${address}`)
-
-    // TODO: Update delegate and configurator after later
+    console.log(`Deployed contract: ${TOKEN_CONTRACT_NAME}, network: ${hre.network.name}, address: ${address}`)
 }
 
-deploy.tags = [contractName]
+deploy.tags = [TOKEN_CONTRACT_NAME]
 
 export default deploy

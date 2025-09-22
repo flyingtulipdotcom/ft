@@ -49,8 +49,14 @@ task("lz:ft:wire", "Set allowed peers for cross‐chain communication from EVM c
     const receiveLibAddress = RECIEVE_LIBRARY_ADDRESSES[chainId];
     const dvns = DVN_ADDRESSES[chainId];
 
-    const ftAddress = (await hre.deployments.get("FT")).address;
-    console.log(`FT address: ${ftAddress}`);
+    const ft = await hre.ethers.getContractAt("FT", (await hre.deployments.get("FT")).address);
+    console.log(`FT address: ${await ft.getAddress()}`);
+
+    const dstTokenAddress = FT_TOKEN_ADDRESSES[dstEid];
+    console.log(`Destination FT address: ${dstTokenAddress}`);
+    if (!dstTokenAddress) {
+      throw new Error(`No FT token address configured for endpoint ID ${dstEid}`);
+    }
 
     const sendConfig = [
       {
@@ -87,7 +93,7 @@ task("lz:ft:wire", "Set allowed peers for cross‐chain communication from EVM c
       }
     ];
 
-    let tx = await endpointContract.setConfig(ftAddress, sendLibAddress, sendConfig);
+    let tx = await endpointContract.setConfig(ft, sendLibAddress, sendConfig);
     await tx.wait();
     console.log("Set send config");
 
@@ -113,21 +119,17 @@ task("lz:ft:wire", "Set allowed peers for cross‐chain communication from EVM c
       }
     ];
 
-    tx = await endpointContract.setConfig(ftAddress, receiveLibAddress, receiveConfig);
+    tx = await endpointContract.setConfig(ft, receiveLibAddress, receiveConfig);
     await tx.wait();
     console.log("Set receive config");
 
     console.log(
-      `Setting token peer using ${owner.address} on chain: ${await hre.getChainId()} to dstEid: ${args.dstEid} `
+      `Setting token peer to dstEid: ${args.dstEid} `
     );
-
-    const ft = await hre.ethers.getContractAt("FT", ftAddress);
-
-    const dstTokenAddress = FT_TOKEN_ADDRESSES[dstEid];
 
     tx = await ft.setPeer(dstEid, hre.ethers.zeroPadValue(dstTokenAddress, 32));
     await tx.wait();
-    console.log("Set peer");
+    console.log("Set peer destination");
 
     const options = Options.newOptions().addExecutorLzReceiveOption(300_000, 0).toHex().toString();
     const enforcedOptions = [

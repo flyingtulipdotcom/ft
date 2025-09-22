@@ -19,6 +19,12 @@ import "./tasks"
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
 import { EndpointId } from '@layerzerolabs/lz-definitions'
 
+declare module 'hardhat/types/config' {
+  interface HttpNetworkUserConfig {
+    eid?: EndpointId;
+  }
+}
+
 // Set your preferred authentication method
 //
 // If you prefer using a mnemonic, set a MNEMONIC environment variable
@@ -77,22 +83,22 @@ const config: HardhatUserConfig = {
             allowUnlimitedContractSize: true,
         },
         'sonic-mainnet': {
-            // eid: EndpointId.SONIC_V2_MAINNET,
+            eid: EndpointId.SONIC_V2_MAINNET,
             url: process.env.RPC_URL_SONIC || 'https://rpc.soniclabs.com',
             accounts,
         },
         'bsc-mainnet': {
-            // eid: EndpointId.BSC_V2_MAINNET,
+            eid: EndpointId.BSC_V2_MAINNET,
             url: process.env.RPC_URL_BSC || 'https://bsc.drpc.org',
             accounts,
         },
         'ethereum-mainnet': {
-            // eid: EndpointId.ETHEREUM_V2_MAINNET,
+            eid: EndpointId.ETHEREUM_V2_MAINNET,
             url: process.env.RPC_URL_ETHEREUM || 'https://INSERT-RPC',
             accounts,
         },
         'avalanche-mainnet': {
-            // eid: EndpointId.AVALANCHE_V2_MAINNET,
+            eid: EndpointId.AVALANCHE_V2_MAINNET,
             url: process.env.RPC_URL_AVALANCHE || 'https://api.avax.network/ext/bc/C/rpc',
             accounts,
         },
