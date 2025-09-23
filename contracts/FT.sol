@@ -31,34 +31,7 @@ contract FT is IFT, OFT, Pausable {
     /// @param sender The address of the sender who is not authorized
     error OnlyOwnerOrConfigurator(address sender);
 
-    /**
-     * @dev Modifier to make a function callable only by the endpoint or the configurator or when not paused.
-     * @param from Sender address
-     * @param to Recipient address
-     */
-    modifier whenEndpointOrConfiguratorOrNotPaused(address from, address to) {
-        // Early exit for the common case: not paused
-        if (!paused()) {
-            _;
-            return;
-        }
-
-        // Check if any privileged address is involved
-        address ftConfigurator = _configurator;
-        if (from == ftConfigurator || to == ftConfigurator) {
-            _;
-            return;
-        }
-
-        // Check if sender is endpoint or configurator
-        address sender = _msgSender();
-        if (sender == address(endpoint) || sender == ftConfigurator) {
-            _;
-            return;
-        }
-
-        revert EnforcedPause();
-    }
+    error ZeroAddress();
 
     /**
      * @dev Modifier to make a function callable only by the configurator.
@@ -171,17 +144,16 @@ contract FT is IFT, OFT, Pausable {
      * @param newConfigurator New configurator address
      */
     function transferConfigurator(address newConfigurator) external onlyConfigurator {
-        // REVIEW: No Check for zero address. Would we ever need to brick the configurator?
         _transferConfigurator(newConfigurator);
     }
 
     function _transferConfigurator(address newConfigurator) private {
+        require(newConfigurator != address(0x0), ZeroAddress());
+
         _configurator = newConfigurator;
         emit ConfiguratorChanged(newConfigurator);
     }
 
-
-    // REVIEW: Why do we care about having setName and setSymbol?
     /**
      * @notice Sets a new name for the token, only owner can call
      * @param newName New name for the token
@@ -219,7 +191,24 @@ contract FT is IFT, OFT, Pausable {
         address from,
         address to,
         uint256 value
-    ) internal override whenEndpointOrConfiguratorOrNotPaused(from, to) {
-        super._update(from, to, value);
+    ) internal override {
+        if (!paused()) {
+            super._update(from, to, value);
+            return;
+        }
+
+        address ftConfigurator = _configurator;
+        if (from == ftConfigurator || to == ftConfigurator) {
+            super._update(from, to, value);
+            return;
+        }
+
+        address sender = _msgSender();
+        if (sender == address(endpoint) || sender == ftConfigurator) {
+            super._update(from, to, value);
+            return;
+        }
+
+        revert EnforcedPause();
     }
 }
