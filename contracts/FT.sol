@@ -31,25 +31,7 @@ contract FT is IFT, OFT, Pausable {
     /// @param sender The address of the sender who is not authorized
     error OnlyOwnerOrConfigurator(address sender);
 
-    /**
-     * @dev Modifier to make a function callable only by the endpoint or the configurator or when not paused.
-     * @param from Sender address
-     * @param to Recipient address
-     */
-    modifier whenEndpointOrConfiguratorOrNotPaused(address from, address to) {
-        address sender = _msgSender();
-        address ftConfigurator = _configurator;
-        if (
-            paused() &&
-            sender != address(endpoint) &&
-            sender != ftConfigurator &&
-            from != ftConfigurator &&
-            to != ftConfigurator
-        ) {
-            revert EnforcedPause();
-        }
-        _;
-    }
+    error ZeroAddress();
 
     /**
      * @dev Modifier to make a function callable only by the configurator.
@@ -166,6 +148,8 @@ contract FT is IFT, OFT, Pausable {
     }
 
     function _transferConfigurator(address newConfigurator) private {
+        require(newConfigurator != address(0x0), ZeroAddress());
+
         _configurator = newConfigurator;
         emit ConfiguratorChanged(newConfigurator);
     }
@@ -207,7 +191,24 @@ contract FT is IFT, OFT, Pausable {
         address from,
         address to,
         uint256 value
-    ) internal override whenEndpointOrConfiguratorOrNotPaused(from, to) {
-        super._update(from, to, value);
+    ) internal override {
+        if (!paused()) {
+            super._update(from, to, value);
+            return;
+        }
+
+        address ftConfigurator = _configurator;
+        if (from == ftConfigurator || to == ftConfigurator) {
+            super._update(from, to, value);
+            return;
+        }
+
+        address sender = _msgSender();
+        if (sender == address(endpoint) || sender == ftConfigurator) {
+            super._update(from, to, value);
+            return;
+        }
+
+        revert EnforcedPause();
     }
 }
