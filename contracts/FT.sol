@@ -5,8 +5,9 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { OFT } from "@layerzerolabs/oft-evm/contracts/OFT.sol";
 import { Pausable } from "@openzeppelin/contracts/utils/Pausable.sol";
 import { IFT } from "./interfaces/IFT.sol";
+import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 
-contract FT is IFT, OFT, Pausable {
+contract FT is IFT, OFT, ERC20Permit, Pausable {
     /**
      * @notice Emitted when the token name is changed
      * @param newName New name for the token
@@ -88,7 +89,7 @@ contract FT is IFT, OFT, Pausable {
         address lzEndpoint,
         address delegate,
         address ftConfigurator
-    ) OFT(ftName, ftSymbol, lzEndpoint, delegate) Ownable(delegate) {
+    ) OFT(ftName, ftSymbol, lzEndpoint, delegate) ERC20Permit(ftName) Ownable(delegate) {
         _setName(ftName);
         _setSymbol(ftSymbol);
         _transferConfigurator(ftConfigurator);

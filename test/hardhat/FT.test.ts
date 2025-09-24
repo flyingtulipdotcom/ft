@@ -1,9 +1,10 @@
 import { expect } from "chai";
 import { deployments, ethers } from "hardhat";
-import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-import { ContractFactory } from "ethers";
+import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
+import { ContractFactory, BigNumberish } from "ethers";
 
 import type { ILayerZeroEndpointV2, MyOFTMock } from "../../typechain-types";
+import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
 describe("FlyingTulip OFT", function () {
   async function deployFixture() {
@@ -56,7 +57,7 @@ describe("FlyingTulip OFT", function () {
       const { ftOFT, myOFT } = await loadFixture(deployFixture);
       // it should not mint because we are in hardhat chain id
       expect(await ftOFT.totalSupply()).to.equal(0);
-      // expect 10 billion tokens minted to configurator 
+      // expect 10 billion tokens minted to configurator
       expect(await myOFT.totalSupply()).to.equal(ethers.parseEther("10000000000"));
     });
   });
@@ -77,10 +78,9 @@ describe("FlyingTulip OFT", function () {
 
     it("should revert if non-approved address tries to transfer", async function () {
       const { myOFT, configurator, alice } = await loadFixture(deployFixture);
-      await expect(myOFT.connect(alice).transferFrom(configurator.address, alice.address, 100n)).to.be.revertedWithCustomError(
-        myOFT,
-        "ERC20InsufficientAllowance"
-      );
+      await expect(
+        myOFT.connect(alice).transferFrom(configurator.address, alice.address, 100n)
+      ).to.be.revertedWithCustomError(myOFT, "ERC20InsufficientAllowance");
     });
   });
 
@@ -174,8 +174,6 @@ describe("FlyingTulip OFT", function () {
       const nonce = 1;
       const srcEid = 100;
       const dstEid = 200;
-      const sender = ethers.ZeroAddress;
-      const receiver = ethers.ZeroAddress;
       const guid = ethers.keccak256(ethers.toUtf8Bytes("guid"));
 
       // message: encode address (to) and amount in SD (shared decimals). Use helper from OFT encoding if available.
@@ -248,7 +246,10 @@ describe("FlyingTulip OFT", function () {
     it("should revert if non-approved address tries to burn", async function () {
       const { myOFT, configurator, alice } = await loadFixture(deployFixture);
       await myOFT.connect(configurator).transfer(alice.address, 100n);
-      await expect(myOFT.burnFrom(alice.address, 40n)).to.be.revertedWithCustomError(myOFT, "ERC20InsufficientAllowance");
+      await expect(myOFT.burnFrom(alice.address, 40n)).to.be.revertedWithCustomError(
+        myOFT,
+        "ERC20InsufficientAllowance"
+      );
     });
 
     it("should revert if burning more than balance", async function () {
@@ -300,6 +301,183 @@ describe("FlyingTulip OFT", function () {
     it("should revert if non-owner tries to transfer ownership", async function () {
       const { myOFT, alice } = await loadFixture(deployFixture);
       await expect(myOFT.connect(alice).transferOwnership(alice.address)).to.be.reverted;
+    });
+  });
+
+  describe("ERC20Permit", function () {
+    async function getPermitSignature(
+      owner: HardhatEthersSigner,
+      spender: HardhatEthersSigner,
+      value: BigNumberish,
+      nonce: BigNumberish,
+      deadline: number,
+      token: MyOFTMock
+    ) {
+      const domain = {
+        name: await token.name(),
+        version: "1",
+        chainId: (await ethers.provider.getNetwork()).chainId,
+        verifyingContract: await token.getAddress()
+      };
+
+      const types = {
+        Permit: [
+          { name: "owner", type: "address" },
+          { name: "spender", type: "address" },
+          { name: "value", type: "uint256" },
+          { name: "nonce", type: "uint256" },
+          { name: "deadline", type: "uint256" }
+        ]
+      };
+
+      const message = {
+        owner: owner.address,
+        spender: spender.address,
+        value: value,
+        nonce: nonce,
+        deadline: deadline
+      };
+
+      const signature = await owner.signTypedData(domain, types, message);
+      return ethers.Signature.from(signature);
+    }
+
+    it("should have correct initial values", async function () {
+      const { myOFT, alice } = await loadFixture(deployFixture);
+
+      expect(await myOFT.nonces(alice.address)).to.equal(0n);
+      expect(await myOFT.DOMAIN_SEPARATOR()).to.equal(
+        "0x23c6900826e0b7fb84b07f6e1f95076c5d8c5e216e28d3771dea75cdbf698a2e"
+      );
+    });
+
+    it("should allow permit with valid signature", async function () {
+      const { myOFT, configurator, alice, bob } = await loadFixture(deployFixture);
+
+      // Setup: transfer some tokens to alice first
+      await myOFT.connect(configurator).transfer(alice.address, ethers.parseEther("100"));
+
+      const value = ethers.parseEther("50");
+      const nonce = await myOFT.nonces(alice.address);
+      const deadline = (await time.latest()) + 3600; // 1 hour from now
+
+      const signature = await getPermitSignature(alice, bob, value, nonce, deadline, myOFT);
+
+      // Verify no allowance initially
+      expect(await myOFT.allowance(alice.address, bob.address)).to.equal(0n);
+
+      // Call permit
+      await expect(myOFT.permit(alice.address, bob.address, value, deadline, signature.v, signature.r, signature.s))
+        .to.emit(myOFT, "Approval")
+        .withArgs(alice.address, bob.address, value);
+
+      // Verify allowance was set
+      expect(await myOFT.allowance(alice.address, bob.address)).to.equal(value);
+
+      // Verify nonce was incremented
+      expect(await myOFT.nonces(alice.address)).to.equal(nonce + 1n);
+    });
+
+    it("should allow transferFrom after permit", async function () {
+      const { myOFT, configurator, alice, bob } = await loadFixture(deployFixture);
+
+      // Setup: transfer some tokens to alice first
+      await myOFT.connect(configurator).transfer(alice.address, ethers.parseEther("100"));
+
+      const value = ethers.parseEther("50");
+      const nonce = await myOFT.nonces(alice.address);
+      const deadline = (await time.latest()) + 3600;
+
+      const signature = await getPermitSignature(alice, bob, value, nonce, deadline, myOFT);
+
+      // Call permit
+      await myOFT.permit(alice.address, bob.address, value, deadline, signature.v, signature.r, signature.s);
+
+      // Bob should be able to transfer tokens from Alice
+      const transferAmount = ethers.parseEther("30");
+      await expect(myOFT.connect(bob).transferFrom(alice.address, bob.address, transferAmount))
+        .to.emit(myOFT, "Transfer")
+        .withArgs(alice.address, bob.address, transferAmount);
+
+      expect(await myOFT.balanceOf(bob.address)).to.equal(transferAmount);
+      expect(await myOFT.allowance(alice.address, bob.address)).to.equal(value - transferAmount);
+    });
+
+    it("should reject permit with invalid signature", async function () {
+      const { myOFT, configurator, alice, bob } = await loadFixture(deployFixture);
+
+      await myOFT.connect(configurator).transfer(alice.address, ethers.parseEther("100"));
+
+      const value = ethers.parseEther("50");
+      const nonce = await myOFT.nonces(alice.address);
+      const deadline = (await time.latest()) + 3600;
+
+      // Get signature but change the value to make it invalid
+      const signature = await getPermitSignature(alice, bob, ethers.parseEther("25"), nonce, deadline, myOFT);
+
+      await expect(
+        myOFT.permit(
+          alice.address,
+          bob.address,
+          value, // Different value than what was signed
+          deadline,
+          signature.v,
+          signature.r,
+          signature.s
+        )
+      ).to.be.revertedWithCustomError(myOFT, "ERC2612InvalidSigner");
+    });
+
+    it("should work with permit and transferFrom while paused (configurator exception)", async function () {
+      const { myOFT, configurator, alice, bob, owner } = await loadFixture(deployFixture);
+
+      await myOFT.connect(configurator).transfer(alice.address, ethers.parseEther("100"));
+      await myOFT.connect(configurator).transfer(bob.address, ethers.parseEther("50")); // Give bob some tokens too
+
+      const value = ethers.parseEther("50");
+      const deadline = (await time.latest()) + 3600;
+
+      // Create permit for configurator first
+      const configNonce = await myOFT.nonces(alice.address);
+      const configSignature = await getPermitSignature(alice, configurator, value, configNonce, deadline, myOFT);
+
+      // Pause the contract
+      await myOFT.connect(owner).setPaused(true);
+
+      // First permit should work even when paused (no transfer involved)
+      await expect(
+        myOFT.permit(
+          alice.address,
+          configurator.address,
+          value,
+          deadline,
+          configSignature.v,
+          configSignature.r,
+          configSignature.s
+        )
+      )
+        .to.emit(myOFT, "Approval")
+        .withArgs(alice.address, configurator.address, value);
+
+      // Now create permit for bob AFTER the first permit is executed (so nonce is correct)
+      const bobNonce = await myOFT.nonces(alice.address); // This is now configNonce + 1
+      const bobSignature = await getPermitSignature(alice, bob, value, bobNonce, deadline, myOFT);
+
+      // Second permit for bob should also work
+      await expect(
+        myOFT.permit(alice.address, bob.address, value, deadline, bobSignature.v, bobSignature.r, bobSignature.s)
+      )
+        .to.emit(myOFT, "Approval")
+        .withArgs(alice.address, bob.address, value);
+
+      // Configurator should be able to transferFrom even when paused
+      await expect(myOFT.connect(configurator).transferFrom(alice.address, bob.address, ethers.parseEther("30"))).to.not
+        .be.reverted;
+
+      // But bob should NOT be able to transferFrom when paused (non-configurator)
+      await expect(
+        myOFT.connect(bob).transferFrom(alice.address, owner.address, ethers.parseEther("20"))
+      ).to.be.revertedWithCustomError(myOFT, "EnforcedPause");
     });
   });
 });
