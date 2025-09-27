@@ -1,51 +1,113 @@
-// LayerZero EndpointV2 addresses by chain ID. TODO: Get this from the .json file?
-export const ENDPOINT_V2_ADDRESSES: Record<string, string> = {
-  // Mainnets
-  "1": "0x1a44076050125825900e736c501f859c50fE728c", // Ethereum
-  "137": "0x1a44076050125825900e736c501f859c50fE728c", // Polygon
-  "42161": "0x1a44076050125825900e736c501f859c50fE728c", // Arbitrum
-  "56": "0x1a44076050125825900e736c501f859c50fE728c", // BSC
-  "43114": "0x1a44076050125825900e736c501f859c50fE728c", // Avalanche
-  "146": "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B", // Sonic
-
-  // Testnets
-  "11155111": "0x6EDCE65403992e310A62460808c4b910D972f10f", // Sepolia
-  "421614": "0x6EDCE65403992e310A62460808c4b910D972f10f", // Arbitrum Sepolia
-  "80002": "0x6EDCE65403992e310A62460808c4b910D972f10f" // Polygon Amoy
+type ChainConfig = {
+  id: string;
+  name: string;
+  endpointV2: string;
+  confirmations: number;
+  delegate: string;
+  configurator: string;
+  ftTokenAddress?: string;
 };
 
-export const FT_TOKEN_ADDRESSES: Record<string, string> = {
-  // Mainnets
-  "146": require(`../deployments/sonic-mainnet/FT.json`).address,
-  "43114": require(`../deployments/avalanche-mainnet/FT.json`).address
-  // Testnets
-};
+const STANDARD_FT_DELEGATE = "0x3419E83fe5583028e056b1aa5E62601D80799572";
+const STANDARD_FT_CONFIGURATOR = "0x3419E83fe5583028e056b1aa5E62601D80799572";
 
-export const RECEIVE_CONFIRMATIONS: Record<string, number> = {
-  // Mainnets
-  "1": 12, // Ethereum
-  "137": 20, // Polygon
-  "42161": 20, // Arbitrum
-  "56": 10, // BSC
-  "43114": 1, // Avalanche
-  "146": 1, // Sonic
-
-  // Testnets
-  "11155111": 1, // Sepolia
-  "421614": 1, // Arbitrum Sepolia
-  "80002": 1 // Polygon Amoy
+function safeRequire(path: string): string | undefined {
+  try {
+    return require(path).address;
+  } catch {
+    return undefined;
+  }
 }
 
-export const FT_DELEGATE_ADDRESSES: Record<string, string> = {
-  // Mainnets
-  "146": "0x3419E83fe5583028e056b1aa5E62601D80799572",
-  "43114": "0x3419E83fe5583028e056b1aa5E62601D80799572"
-};
+const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
+  {
+    id: "1",
+    name: "ethereum-mainnet",
+    endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
+    confirmations: 12,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR
+  },
+  {
+    id: "56",
+    name: "bsc-mainnet",
+    endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
+    confirmations: 10,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR
+  },
+  {
+    id: "43114",
+    name: "avalanche-mainnet",
+    endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
+    confirmations: 1,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR
+  },
+  {
+    id: "146",
+    name: "sonic-mainnet",
+    endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
+    confirmations: 3,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR
+  },
+  {
+    id: "8453",
+    name: "base-mainnet",
+    endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
+    confirmations: 12,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR
+  },
 
-export const FT_CONFIGURATOR_ADDRESSES: Record<string, string> = {
-  // Mainnets
-  "146": "0x3419E83fe5583028e056b1aa5E62601D80799572",
-  "43114": "0x3419E83fe5583028e056b1aa5E62601D80799572"
-};
+  {
+    id: "11155111",
+    name: "sepolia",
+    endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
+    confirmations: 1,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR
+  },
+  {
+    id: "97",
+    name: "bsc-testnet",
+    endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
+    confirmations: 2,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR
+  },
+  {
+    id: "43113",
+    name: "fuji",
+    endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
+    confirmations: 3,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR
+  },
+  {
+    id: "84532",
+    name: "base-sepolia",
+    endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
+    confirmations: 4,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR
+  }
+];
 
-export const TOKEN_CONTRACT_NAME = 'FT'
+function buildChainConfig(c: (typeof CHAINS)[number]): ChainConfig {
+  const path = `../deployments/${c.name.toLowerCase().replace(/\s+/g, "-")}/FT.json`;
+  const ftTokenAddress = safeRequire(path);
+  return {
+    ...c,
+    ftTokenAddress
+  };
+}
+
+const chainRegistry: Record<string, ChainConfig> = Object.fromEntries(CHAINS.map((c) => [c.id, buildChainConfig(c)]));
+
+export function getChainConfig(chainId: string | number): ChainConfig | undefined {
+  return chainRegistry[chainId.toString()];
+}
+
+export const TOKEN_CONTRACT_NAME = "FT";

@@ -94,12 +94,17 @@ const config: HardhatUserConfig = {
         },
         'ethereum-mainnet': {
             eid: EndpointId.ETHEREUM_V2_MAINNET,
-            url: process.env.RPC_URL_ETHEREUM || 'https://INSERT-RPC',
+            url: process.env.RPC_URL_ETHEREUM || 'https://1rpc.io/eth',
             accounts,
         },
         'avalanche-mainnet': {
             eid: EndpointId.AVALANCHE_V2_MAINNET,
             url: process.env.RPC_URL_AVALANCHE || 'https://api.avax.network/ext/bc/C/rpc',
+            accounts,
+        },
+        'base-mainnet': {
+            eid: EndpointId.BASE_V2_MAINNET,
+            url: process.env.RPC_URL_BASE || 'https://base-rpc.publicnode.com',
             accounts,
         },
     },

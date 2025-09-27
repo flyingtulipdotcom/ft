@@ -1,7 +1,7 @@
 import assert from 'assert'
 
 import { type DeployFunction } from 'hardhat-deploy/types'
-import { ENDPOINT_V2_ADDRESSES, FT_CONFIGURATOR_ADDRESSES, TOKEN_CONTRACT_NAME } from '../utils/constants';
+import { getChainConfig, TOKEN_CONTRACT_NAME } from '../utils/constants';
 
 const deploy: DeployFunction = async (hre) => {
 
@@ -17,8 +17,9 @@ const deploy: DeployFunction = async (hre) => {
 
     const chainId = await hre.getChainId()
 
-    const ftConfigurator = FT_CONFIGURATOR_ADDRESSES[chainId];
-    const endpointV2Address = ENDPOINT_V2_ADDRESSES[chainId]
+    const chainConfig = getChainConfig(chainId);
+    const ftConfigurator = chainConfig?.configurator;
+    const endpointV2Address = chainConfig?.endpointV2;
 
     const { address } = await deploy(TOKEN_CONTRACT_NAME, {
         from: deployer,

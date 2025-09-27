@@ -38,12 +38,18 @@ pnpm compile
 If you're adding another EVM chain, first, add it to the `hardhat.config.ts`. Adding non-EVM chains do not require modifying the `hardhat.config.ts`.  
 To deploy the OFT contracts to your desired blockchains, run the following command:  
 
+Supported mainnet chains include:  
+Ethereum, BSC, Avalanche, Sonic, Base  
+
+Support testnet chains include:  
+Sepolia, BSC testnet, Fuji, Base Sepolia  
+
 ```bash
 npx hardhat deploy --tags FT --network sonic-mainnet
 ```
 Wire up all the chains you want cross-chain communication for
 ```bash
-npx hardhat lz:ft:wire --dst-eid 30106 --send-confirmations 1 --receive-confirmations 1 --network sonic-mainnet
+npx hardhat lz:ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic-mainnet
 ```
 Send 1 OFT from **Sonic** to **Avalanche**:
 ```bash
@@ -54,6 +60,11 @@ Update delegate after setting up the appropriate peer connections
 npx hardhat lz:ft:set-delegate --account 0xa801864d0D24686B15682261aa05D4e1e6e5BD94 --network sonic-mainnet
 ```
 > You can get the address of your OFT on Sonic  from the file at `./deployments/sonic-mainnet/FT.json`
+
+# For a new chain
+1 - Add details to the CHAINS variable in utils/constants.ts
+2 - Update support chains above in README.md
+3 - Wire them up to all needed chains
 
 # Appendix
 
