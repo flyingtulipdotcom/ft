@@ -4,6 +4,9 @@ import { task, types } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { getChainConfig } from "../utils/constants";
 
+const requiredDVN = "LayerZero Labs"; // Required for both mainnet and testnet
+const requiredDVNMainnet = "Stargate" // Only required on mainnet
+
 // Types for chain metadata structure based on your JSON (V2 only)
 interface ChainMetadata {
   chainDetails: {
@@ -73,22 +76,15 @@ class LayerZeroMultiChainWire {
   private buildChainConfig(chainKey: string, metadata: ChainMetadata): void {
     // Find the mainnet v2 deployment
     const v2Deployment = metadata.deployments.find(
-      (deployment) => deployment.version === 2 && deployment.stage === "mainnet"
+      (deployment) => deployment.version === 2
     );
 
     if (!v2Deployment) {
       return;
-      // throw new Error(`No mainnet v2 deployment found for chain ${chainKey}`);
     }
 
-    console.log(v2Deployment);
-
-    if (!v2Deployment.endpointV2?.address) {
-      throw new Error(`No endpointV2 address found for chain ${chainKey}`);
-    }
-
-    if (!v2Deployment.executor?.address) {
-      throw new Error(`No executor address found for chain ${chainKey}`);
+    if (!v2Deployment.endpointV2?.address || !v2Deployment.executor?.address) {
+      return;
     }
 
     // Get send and receive library addresses (V2 only)
@@ -99,6 +95,8 @@ class LayerZeroMultiChainWire {
       throw new Error(`Missing ULN addresses for chain ${chainKey}`);
     }
 
+    const isMainnet = v2Deployment.stage == "mainnet";
+
     // Filter active DVNs (non-deprecated, version 2)
     const dvnAddresses = Object.entries(metadata.dvns)
       .filter(
@@ -106,7 +104,7 @@ class LayerZeroMultiChainWire {
           dvn.version === 2 &&
           !dvn.deprecated &&
           !dvn.lzReadCompatible &&
-          (dvn.canonicalName == "LayerZero Labs" || dvn.canonicalName == "Stargate")
+          (dvn.canonicalName == requiredDVN || (isMainnet && dvn.canonicalName == requiredDVNMainnet))
       )
       .map(([address, _]) => address)
       .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
@@ -115,7 +113,9 @@ class LayerZeroMultiChainWire {
       throw new Error(`No active DVNs found for chain ${chainKey}`);
     }
 
-    if (dvnAddresses.length !== 2) {
+    // 2 for mainnet and 1 for the testnet
+    if (dvnAddresses.length != (isMainnet ? 2 : 1)) {
+      console.log(metadata.dvns, isMainnet, dvnAddresses)
       throw new Error(`Did not find the corresponding dvns`);
     }
 
@@ -392,8 +392,10 @@ task("lz:ft:wire", "Wire multiple chains together using LayerZero")
 
       const wireManager = new LayerZeroMultiChainWire(hre);
 
+      const lzMetadataPath = "../utils/lzMetadata.json";
+
       // Load chain configurations
-      const metadata = (require("../utils/lzMetadata.json") as Record<string, ChainMetadata>);
+      const metadata = (require(lzMetadataPath) as Record<string, ChainMetadata>);
       wireManager.buildChainConfigs(metadata);
 
       // Show configuration summary
