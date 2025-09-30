@@ -17,6 +17,8 @@
     PRIVATE_KEY="0xabc...def"
     ```
 
+- Optionally add ETHERSCAN_API_KEY using a V2 key to verify the contracts
+
 - Fund this deployer address/account with the native tokens of the chains you want to deploy to
 
 ## Build

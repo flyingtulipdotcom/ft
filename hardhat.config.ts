@@ -59,7 +59,7 @@ const config: HardhatUserConfig = {
                     evmVersion: 'cancun',
                     optimizer: {
                         enabled: true,
-                        runs: 200,
+                        runs: 9999999,
                     },
                     viaIR: true,
                 },
@@ -137,6 +137,19 @@ const config: HardhatUserConfig = {
             isTestnet: true,
             accounts,
         },
+    },
+    etherscan: {
+        apiKey: process.env.ETHERSCAN_API_KEY,
+        customChains: [
+        {
+            network: "sonic",
+            chainId: 146,
+            urls: {
+                apiURL: "https://api.etherscan.io/v2/api",
+                browserURL: "https://sonicscan.org"
+            }
+        },
+        ],
     },
     namedAccounts: {
         deployer: {
