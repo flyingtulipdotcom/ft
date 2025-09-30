@@ -22,7 +22,7 @@ function safeRequire(path: string): string | undefined {
 const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
   {
     id: "1",
-    name: "ethereum-mainnet",
+    name: "ethereum",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
     confirmations: 12,
     delegate: STANDARD_FT_DELEGATE,
@@ -30,7 +30,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
   },
   {
     id: "56",
-    name: "bsc-mainnet",
+    name: "bsc",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
     confirmations: 10,
     delegate: STANDARD_FT_DELEGATE,
@@ -38,7 +38,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
   },
   {
     id: "43114",
-    name: "avalanche-mainnet",
+    name: "avalanche",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
     confirmations: 1,
     delegate: STANDARD_FT_DELEGATE,
@@ -46,7 +46,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
   },
   {
     id: "146",
-    name: "sonic-mainnet",
+    name: "sonic",
     endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
     confirmations: 3,
     delegate: STANDARD_FT_DELEGATE,
@@ -54,13 +54,12 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
   },
   {
     id: "8453",
-    name: "base-mainnet",
+    name: "base",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
     confirmations: 12,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR
   },
-
   {
     id: "11155111",
     name: "sepolia",

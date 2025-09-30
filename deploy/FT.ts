@@ -21,14 +21,18 @@ const deploy: DeployFunction = async (hre) => {
     const ftConfigurator = chainConfig?.configurator;
     const endpointV2Address = chainConfig?.endpointV2;
 
+    const isTestnet = (hre.network.config as any).isTestnet ?? false;
+    const mintChainId = isTestnet ? 11155111 : 146; // Sepolia : Sonic
+
     const { address } = await deploy(TOKEN_CONTRACT_NAME, {
         from: deployer,
         args: [
-            'Flying Tulip', // name
-            'FT', // symbol
+            'Test name', // name
+            'Test symbol', // symbol
             endpointV2Address,
             deployer, // use deployer for the delegate for now and update it later in setDelegate task
             ftConfigurator,
+            mintChainId
         ],
         log: true,
         skipIfAlreadyDeployed: false,

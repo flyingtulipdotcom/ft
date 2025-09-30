@@ -7,6 +7,9 @@ import { getChainConfig } from "../utils/constants";
 const requiredDVN = "LayerZero Labs"; // Required for both mainnet and testnet
 const requiredDVNMainnet = "Stargate" // Only required on mainnet
 
+// Number of blocks to wait for tx finality due to load balanced RPCs not always being up to date, could be adjusted per chain to be more efficient.
+const NUM_BLOCKS_TO_WAIT = 2;
+
 // Types for chain metadata structure based on your JSON (V2 only)
 interface ChainMetadata {
   chainDetails: {
@@ -158,9 +161,9 @@ class LayerZeroMultiChainWire {
     );
 
     // Check if we're on the source chain
-    const currentChainId = await this.hre.getChainId();
-    if (parseInt(currentChainId) !== sourceConfig.nativeChainId) {
-      throw new Error(`Current chain (${currentChainId}) doesn't match source chain (${sourceConfig.nativeChainId})`);
+    const sourceChainId = await this.hre.getChainId();
+    if (parseInt(sourceChainId) !== sourceConfig.nativeChainId) {
+      throw new Error(`Current chain (${sourceChainId}) doesn't match source chain (${sourceConfig.nativeChainId})`);
     }
 
     const endpointContract = (await this.hre.ethers.getContractAt(
@@ -231,7 +234,7 @@ class LayerZeroMultiChainWire {
     ];
 
     const tx = await endpointContract.setConfig(ft, sourceConfig.sendLibAddress, sendConfig);
-    await tx.wait();
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
     console.log(`Send config set`);
   }
 
@@ -267,7 +270,7 @@ class LayerZeroMultiChainWire {
     ];
 
     const tx = await endpointContract.setConfig(ft, sourceConfig.receiveLibAddress, receiveConfig);
-    await tx.wait();
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
     console.log(`Receive config set`);
   }
 
@@ -276,7 +279,7 @@ class LayerZeroMultiChainWire {
    */
   private async setPeer(ft: any, destConfig: ChainConfig, destTokenAddress: string): Promise<void> {
     const tx = await ft.setPeer(destConfig.eid, this.hre.ethers.zeroPadValue(destTokenAddress, 32));
-    await tx.wait();
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
     console.log(`Peer set`);
   }
 
@@ -298,7 +301,7 @@ class LayerZeroMultiChainWire {
     ];
 
     const tx = await ft.setEnforcedOptions(enforcedOptions);
-    await tx.wait();
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
     console.log(`Enforced options set`);
   }
 
@@ -318,32 +321,32 @@ class LayerZeroMultiChainWire {
     }
 
     // Get current chain to determine which wiring to perform
-    const currentChainId = await this.hre.getChainId();
-    const currentChain = chainKeys.find((chainKey) => {
+    const sourceChainId = await this.hre.getChainId();
+    const sourceChain = chainKeys.find((chainKey) => {
       const config = this.getChainConfig(chainKey);
-      return config.nativeChainId === parseInt(currentChainId);
+      return config.nativeChainId === parseInt(sourceChainId);
     });
 
-    if (!currentChain) {
-      throw new Error(`Current chain ${currentChainId} is not in the list of chains to wire`);
+    if (!sourceChain) {
+      throw new Error(`Current chain ${sourceChainId} is not in the list of chains to wire`);
     }
 
-    console.log(`Currently on chain: ${currentChain}`);
+    console.log(`Source chain: ${sourceChain}`);
 
     // Wire current chain to all other chains
-    const targetChains = chainKeys.filter((chain) => chain !== currentChain);
+    const targetChains = chainKeys.filter((chain) => chain !== sourceChain);
     console.log(targetChains);
 
     for (const targetChain of targetChains) {
       try {
-        await this.wireChains(currentChain, targetChain);
+        await this.wireChains(sourceChain, targetChain);
       } catch (error) {
-        console.error(`❌ Failed to wire ${currentChain} => ${targetChain}:`, error);
+        console.error(`❌ Failed to wire ${sourceChain} => ${targetChain}:`, error);
         throw error;
       }
     }
 
-    console.log(`\nSuccessfully wired ${currentChain} to ${targetChains.length} other chains!`);
+    console.log(`\nSuccessfully wired ${sourceChain} to ${targetChains.length} other chains!`);
   }
 
   /**

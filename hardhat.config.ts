@@ -22,6 +22,7 @@ import { EndpointId } from '@layerzerolabs/lz-definitions'
 declare module 'hardhat/types/config' {
   interface HttpNetworkUserConfig {
     eid?: EndpointId;
+    isTestnet?: boolean,
   }
 }
 
@@ -82,29 +83,58 @@ const config: HardhatUserConfig = {
             // Need this for testing because some exceed the compiled contract size limit
             allowUnlimitedContractSize: true,
         },
-        'sonic-mainnet': {
+        'sonic': {
             eid: EndpointId.SONIC_V2_MAINNET,
             url: process.env.RPC_URL_SONIC || 'https://rpc.soniclabs.com',
+            isTestnet: false,
             accounts,
         },
-        'bsc-mainnet': {
+        'bsc': {
             eid: EndpointId.BSC_V2_MAINNET,
             url: process.env.RPC_URL_BSC || 'https://bsc.drpc.org',
+            isTestnet: false,
             accounts,
         },
-        'ethereum-mainnet': {
+        'ethereum': {
             eid: EndpointId.ETHEREUM_V2_MAINNET,
-            url: process.env.RPC_URL_ETHEREUM || 'https://1rpc.io/eth',
+            url: process.env.RPC_URL_ETHEREUM || 'https://ethereum-rpc.publicnode.com',
+            isTestnet: false,
             accounts,
         },
-        'avalanche-mainnet': {
+        'avalanche': {
             eid: EndpointId.AVALANCHE_V2_MAINNET,
             url: process.env.RPC_URL_AVALANCHE || 'https://api.avax.network/ext/bc/C/rpc',
+            isTestnet: false,
             accounts,
         },
-        'base-mainnet': {
+        'base': {
             eid: EndpointId.BASE_V2_MAINNET,
             url: process.env.RPC_URL_BASE || 'https://base-rpc.publicnode.com',
+            isTestnet: false,
+            accounts,
+        },
+        'bsc-testnet': {
+            eid: EndpointId.BSC_V2_TESTNET,
+            url: process.env.RPC_URL_BSC_TESTNET || 'https://bsc-testnet.drpc.org',
+            isTestnet: true,
+            accounts,
+        },
+        'sepolia': {
+            eid: EndpointId.ETHEREUM_V2_TESTNET,
+            url: process.env.RPC_URL_ETHEREUM_TESTNET || 'https://sepolia.gateway.tenderly.co',
+            isTestnet: true,
+            accounts,
+        },
+        'fuji': {
+            eid: EndpointId.AVALANCHE_V2_TESTNET,
+            url: process.env.RPC_URL_AVALANCHE_TESTNET || 'https://avalanche-fuji-c-chain-rpc.publicnode.com',
+            isTestnet: true,
+            accounts,
+        },
+        'base-sepolia': {
+            eid: EndpointId.BASE_V2_TESTNET,
+            url: process.env.RPC_URL_BASE_TESTNET || 'https://sepolia.base.org',
+            isTestnet: true,
             accounts,
         },
     },
