@@ -35,15 +35,26 @@ pnpm compile
 
 ## Deploy
 
-If you're adding another EVM chain, first, add it to the `hardhat.config.ts`. Adding non-EVM chains do not require modifying the `hardhat.config.ts`.  
+If you're adding another EVM chain, first, add it to the `hardhat.config.ts`. Adding non-EVM chains do not require modifying this file.  
+
+Supported mainnet chains:  
+| Network          | Name          |
+|------------------|---------------|
+| Sonic            | ethereum      |
+| Base             | bsc           |
+| Avalanche        | avalanche     |
+| BSC              | sonic         |
+| Ethereum         | base          |
+
+Supported testnet chains:  
+| Network          | Name          |
+|------------------|---------------|
+| BSC              | bsc-testnet   |
+| Avalanche        | fuji          |
+| Base             | base-sepolia  |
+| Ethereum         | sepolia       |
+
 To deploy the OFT contracts to your desired blockchains, run the following command:  
-
-Supported mainnet chains include:  
-Ethereum (ethereum), BSC (bsc), Avalanche (avalanche), Sonic (sonic) and Base (base)  
-
-Support testnet chains include:  
-Ethereum Sepolia (sepolia), BSC testnet (bsc-testnet), Avalanche (fuji) and Base Sepolia (base-sepolia)  
-
 ```bash
 npx hardhat deploy --tags FT --network sonic
 ```
