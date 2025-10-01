@@ -1,9 +1,7 @@
 import assert from 'assert'
 
 import { type DeployFunction } from 'hardhat-deploy/types'
-import { ENDPOINT_V2_ADDRESSES, FT_CONFIGURATOR_ADDRESSES } from '../utils/constants';
-
-const contractName = 'FT'
+import { getChainConfig, TOKEN_CONTRACT_NAME } from '../utils/constants';
 
 const deploy: DeployFunction = async (hre) => {
 
@@ -19,27 +17,48 @@ const deploy: DeployFunction = async (hre) => {
 
     const chainId = await hre.getChainId()
 
-    const ftConfigurator = FT_CONFIGURATOR_ADDRESSES[chainId];
-    const endpointV2Address = ENDPOINT_V2_ADDRESSES[chainId]
+    const chainConfig = getChainConfig(chainId);
+    const ftConfigurator = chainConfig?.configurator;
+    const endpointV2Address = chainConfig?.endpointV2;
 
-    const { address } = await deploy(contractName, {
+    const isTestnet = (hre.network.config as any).isTestnet ?? false;
+    const mintChainId = isTestnet ? 11155111 : 146; // Sepolia : Sonic
+
+    const name = "Flying Tulip";
+    const symbol = "FT";
+    const delegate = deployer;
+
+    const { address } = await deploy(TOKEN_CONTRACT_NAME, {
         from: deployer,
         args: [
-            'Flying Tulip', // name
-            'FT', // symbol
+            name,
+            symbol,
             endpointV2Address,
-            deployer, // delegate, use deployer for now and update it later
+            delegate, // update it later in setDelegate task
             ftConfigurator,
+            mintChainId
         ],
         log: true,
         skipIfAlreadyDeployed: false,
     })
 
-    console.log(`Deployed contract: ${contractName}, network: ${hre.network.name}, address: ${address}`)
+    console.log(`Deployed contract: ${TOKEN_CONTRACT_NAME}, network: ${hre.network.name}, address: ${address}`)
 
-    // TODO: Update delegate and configurator after later
+    // Sleep for 5 seconds to allow Etherscan to sync
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
+  // Verify it
+  try {
+    await run("verify:verify", {
+      address,
+      constructorArguments: [name, symbol, endpointV2Address, delegate, ftConfigurator, mintChainId]
+    });
+    console.log("Verification successful");
+  } catch (error) {
+    console.error("Verification failed:", error);
+  }
 }
 
-deploy.tags = [contractName]
+deploy.tags = [TOKEN_CONTRACT_NAME]
 
 export default deploy

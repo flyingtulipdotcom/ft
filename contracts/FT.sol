@@ -52,8 +52,6 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
         _;
     }
 
-    uint16 public immutable SONIC_CHAIN_ID; // Sonic mainnet chain id
-
     string private _symbol;
     string private _name;
     address private _configurator;
@@ -64,31 +62,27 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
      * @param lzEndpoint LayerZero endpoint address
      * @param delegate LayerZero delegate address
      * @param ftConfigurator Configurator address
+     * @param mintChainId Chain ID where initial supply is minted (Sonic mainnet or Sepolia)
      */
     constructor(
         string memory ftName,
         string memory ftSymbol,
         address lzEndpoint,
         address delegate,
-        address ftConfigurator
+        address ftConfigurator,
+        uint256 mintChainId
     ) OFT(ftName, ftSymbol, lzEndpoint, delegate) ERC20Permit(ftName) Ownable(delegate) {
         _setName(ftName);
         _setSymbol(ftSymbol);
         _transferConfigurator(ftConfigurator);
 
-        SONIC_CHAIN_ID = _getSonicChainId();
-        if (block.chainid == SONIC_CHAIN_ID) {
+        // ensure the mint chain is only Sonic for mainnets, Sepolia for testnets or local dev
+        assert(mintChainId == 146 || mintChainId == 11155111 || mintChainId == 31337);
+        if (block.chainid == mintChainId) {
             // mint before pausing
             _mint(ftConfigurator, 10_000_000_000e18);
         }
         _pause();
-    }
-
-    /**
-     * @dev Returns the Sonic chain ID
-     */
-    function _getSonicChainId() internal pure virtual returns (uint16) {
-        return 146;
     }
 
     /**

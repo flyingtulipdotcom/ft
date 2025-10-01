@@ -1,3 +1,3 @@
 import "./wire";
-import "./setLZDelegate";
+import "./setDelegate";
 import "./sendFT";

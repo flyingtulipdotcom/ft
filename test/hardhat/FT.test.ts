@@ -21,16 +21,18 @@ describe("FlyingTulip OFT", function () {
       "FT",
       await endpoint.getAddress(),
       owner.address,
-      configurator.address
+      configurator.address,
+      146
     ])) as unknown as MyOFTMock;
 
-    // Deploy MyOFTMock using the endpoint address (constructor: name, symbol, endpoint, owner)
+    // Deploy MyOFTMock using the endpoint address (constructor: name, symbol, endpoint, owner, mint chain id)
     const myOFT = (await ethers.deployContract("MyOFTMock", [
       "FlyingTulipOFT",
       "FT",
       await endpoint.getAddress(),
       owner.address,
-      configurator.address
+      configurator.address,
+      (await ethers.provider.getNetwork()).chainId
     ])) as unknown as MyOFTMock;
 
     return { ftOFT, myOFT, owner, configurator, alice, bob };
@@ -45,12 +47,6 @@ describe("FlyingTulip OFT", function () {
     it("should set the right configurator", async function () {
       const { myOFT, configurator } = await loadFixture(deployFixture);
       expect(await myOFT.configurator()).to.equal(configurator.address);
-    });
-
-    it("should use the correct sonic chain id for the base token", async function () {
-      const { ftOFT, myOFT } = await loadFixture(deployFixture);
-      expect(await ftOFT.SONIC_CHAIN_ID()).to.equal(146); // as per FT contract
-      expect(await myOFT.SONIC_CHAIN_ID()).to.equal(31337); // as per MyOFTMock contract override
     });
 
     it("should mint the correct supplies", async function () {

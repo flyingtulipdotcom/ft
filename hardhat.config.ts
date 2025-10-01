@@ -19,6 +19,13 @@ import "./tasks"
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
 import { EndpointId } from '@layerzerolabs/lz-definitions'
 
+declare module 'hardhat/types/config' {
+  interface HttpNetworkUserConfig {
+    eid?: EndpointId;
+    isTestnet?: boolean,
+  }
+}
+
 // Set your preferred authentication method
 //
 // If you prefer using a mnemonic, set a MNEMONIC environment variable
@@ -52,7 +59,7 @@ const config: HardhatUserConfig = {
                     evmVersion: 'cancun',
                     optimizer: {
                         enabled: true,
-                        runs: 200,
+                        runs: 9999999,
                     },
                     viaIR: true,
                 },
@@ -76,26 +83,73 @@ const config: HardhatUserConfig = {
             // Need this for testing because some exceed the compiled contract size limit
             allowUnlimitedContractSize: true,
         },
-        'sonic-mainnet': {
-            // eid: EndpointId.SONIC_V2_MAINNET,
+        'sonic': {
+            eid: EndpointId.SONIC_V2_MAINNET,
             url: process.env.RPC_URL_SONIC || 'https://rpc.soniclabs.com',
+            isTestnet: false,
             accounts,
         },
-        'bsc-mainnet': {
-            // eid: EndpointId.BSC_V2_MAINNET,
+        'bsc': {
+            eid: EndpointId.BSC_V2_MAINNET,
             url: process.env.RPC_URL_BSC || 'https://bsc.drpc.org',
+            isTestnet: false,
             accounts,
         },
-        'ethereum-mainnet': {
-            // eid: EndpointId.ETHEREUM_V2_MAINNET,
-            url: process.env.RPC_URL_ETHEREUM || 'https://INSERT-RPC',
+        'ethereum': {
+            eid: EndpointId.ETHEREUM_V2_MAINNET,
+            url: process.env.RPC_URL_ETHEREUM || 'https://ethereum-rpc.publicnode.com',
+            isTestnet: false,
             accounts,
         },
-        'avalanche-mainnet': {
-            // eid: EndpointId.AVALANCHE_V2_MAINNET,
+        'avalanche': {
+            eid: EndpointId.AVALANCHE_V2_MAINNET,
             url: process.env.RPC_URL_AVALANCHE || 'https://api.avax.network/ext/bc/C/rpc',
+            isTestnet: false,
             accounts,
         },
+        'base': {
+            eid: EndpointId.BASE_V2_MAINNET,
+            url: process.env.RPC_URL_BASE || 'https://base-rpc.publicnode.com',
+            isTestnet: false,
+            accounts,
+        },
+        'bsc-testnet': {
+            eid: EndpointId.BSC_V2_TESTNET,
+            url: process.env.RPC_URL_BSC_TESTNET || 'https://bsc-testnet.drpc.org',
+            isTestnet: true,
+            accounts,
+        },
+        'sepolia': {
+            eid: EndpointId.ETHEREUM_V2_TESTNET,
+            url: process.env.RPC_URL_ETHEREUM_TESTNET || 'https://sepolia.gateway.tenderly.co',
+            isTestnet: true,
+            accounts,
+        },
+        'fuji': {
+            eid: EndpointId.AVALANCHE_V2_TESTNET,
+            url: process.env.RPC_URL_AVALANCHE_TESTNET || 'https://avalanche-fuji-c-chain-rpc.publicnode.com',
+            isTestnet: true,
+            accounts,
+        },
+        'base-sepolia': {
+            eid: EndpointId.BASE_V2_TESTNET,
+            url: process.env.RPC_URL_BASE_TESTNET || 'https://sepolia.base.org',
+            isTestnet: true,
+            accounts,
+        },
+    },
+    etherscan: {
+        apiKey: process.env.ETHERSCAN_API_KEY,
+        customChains: [
+        {
+            network: "sonic",
+            chainId: 146,
+            urls: {
+                apiURL: "https://api.etherscan.io/v2/api",
+                browserURL: "https://sonicscan.org"
+            }
+        },
+        ],
     },
     namedAccounts: {
         deployer: {

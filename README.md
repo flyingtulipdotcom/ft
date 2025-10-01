@@ -17,6 +17,8 @@
     PRIVATE_KEY="0xabc...def"
     ```
 
+- Optionally add ETHERSCAN_API_KEY using a V2 key to verify the contracts
+
 - Fund this deployer address/account with the native tokens of the chains you want to deploy to
 
 ## Build
@@ -35,27 +37,67 @@ pnpm compile
 
 ## Deploy
 
-If you're adding another EVM chain, first, add it to the `hardhat.config.ts`. Adding non-EVM chains do not require modifying the `hardhat.config.ts`.  
-To deploy the OFT contracts to your desired blockchains, run the following command:  
+If you're adding another EVM chain, first, add it to the `hardhat.config.ts`. Adding non-EVM chains do not require modifying this file.  
 
+Supported mainnet chains:  
+| Network          | Name          |
+|------------------|---------------|
+| Sonic            | ethereum      |
+| Base             | bsc           |
+| Avalanche        | avalanche     |
+| BSC              | sonic         |
+| Ethereum         | base          |
+
+Supported testnet chains:  
+| Network          | Name          |
+|------------------|---------------|
+| BSC              | bsc-testnet   |
+| Avalanche        | fuji          |
+| Base             | base-sepolia  |
+| Ethereum         | sepolia       |
+
+To deploy the OFT contracts to your desired blockchains, run the following command:  
 ```bash
-npx hardhat deploy --tags FT --network sonic-mainnet
+npx hardhat deploy --tags FT --network sonic
 ```
-Wire up all the chains you want cross-chain communication for
+Wire up all the chains you want cross-chain communication for mainnets
 ```bash
-npx hardhat lz:ft:wire --dst-eid 30106 --send-confirmations 1 --receive-confirmations 1 --network sonic-mainnet
+npx hardhat lz:ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic
+```
+Wire up all the chains you want cross-chain communication for testnets
+```bash
+npx hardhat lz:ft:wire --chains sepolia,fuji,bsc-testnet,base-sepolia --network base-sepolia
 ```
 Send 1 OFT from **Sonic** to **Avalanche**:
 ```bash
-npx hardhat lz:ft:send --dst-eid 30106 --to 0xa801864d0D24686B15682261aa05D4e1e6e5BD94 --amount 1000000000000000000 --network sonic-mainnet
+npx hardhat lz:ft:send --dst-eid 30106 --to 0xa801864d0D24686B15682261aa05D4e1e6e5BD94 --amount 1000000000000000000 --network sonic
 ```
-Update delegate after setting up the appropriate peer connections
+Updating the delegate afterwards
 ```bash
-npx hardhat lz:ft:set-delegate --account 0xa801864d0D24686B15682261aa05D4e1e6e5BD94 --network sonic-mainnet
+npx hardhat lz:ft:set-delegate --account 0x3419E83fe5583028e056b1aa5E62601D80799572 --network sonic
 ```
-> You can get the address of your OFT on Sonic  from the file at `./deployments/sonic-mainnet/FT.json`
+> You can get the address of your OFT on Sonic  from the file at `./deployments/sonic/FT.json`
+
+# For a new chain
+1 - Add details to the CHAINS variable in utils/constants.ts
+2 - Update support chains above in README.md
+3 - Wire them up to all needed chains
 
 # Appendix
+
+## Reference list of endpoint ids (eid)
+
+| Network        | Endpoint ID |
+|----------------|-------------|
+| Sonic          | 30332       |
+| Base           | 30184       |
+| Avalanche      | 30106       |
+| BSC            | 30102       |
+| Ethereum       | 30101       |
+| Base Sepolia   | 40245       |
+| Fuji           | 40106       |
+| BSC Testnet    | 40102       |
+| Sepolia        | 40161       |
 
 ## Running Tests
 

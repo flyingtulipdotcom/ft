@@ -1,85 +1,231 @@
 import { Options } from "@layerzerolabs/lz-v2-utilities";
-import { FT_TOKEN_ADDRESSES } from "../utils/constants";
-import {
-  DVN_ADDRESSES,
-  ENDPOINT_V2_ADDRESSES,
-  EXECUTOR_ADDRESSES,
-  RECIEVE_LIBRARY_ADDRESSES,
-  SEND_LIBRARY_ADDRESSES
-} from "../utils/constants";
 import { ILayerZeroEndpointV2 } from "../typechain-types";
 import { task, types } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { getChainConfig } from "../utils/constants";
 
-interface MasterArgs {
-  dstEid: number;
-  sendConfirmations: number;
-  receiveConfirmations: number;
+const requiredDVN = "LayerZero Labs"; // Required for both mainnet and testnet
+const requiredDVNMainnet = "Stargate" // Only required on mainnet
+
+// Number of blocks to wait for tx finality due to load balanced RPCs not always being up to date, could be adjusted per chain to be more efficient.
+const NUM_BLOCKS_TO_WAIT = 2;
+
+// Types for chain metadata structure based on your JSON (V2 only)
+interface ChainMetadata {
+  chainDetails: {
+    chainKey: string;
+    nativeChainId: number;
+    chainStatus: string;
+  };
+  deployments: Array<{
+    eid: string;
+    version: number;
+    stage: string;
+    endpointV2: {
+      address: string;
+    };
+    executor: {
+      address: string;
+    };
+    sendUln302: {
+      address: string;
+    };
+    receiveUln302: {
+      address: string;
+    };
+  }>;
+  dvns: Record<
+    string,
+    {
+      version: number;
+      canonicalName: string;
+      id: string;
+      deprecated?: boolean;
+      lzReadCompatible?: boolean;
+    }
+  >;
 }
 
-// Enable bridging by adding other chains
-task("lz:ft:wire", "Set allowed peers for cross‐chain communication from EVM chains")
-  .addParam("dstEid", "Destination endpoint ID", undefined, types.int)
-  .addParam(
-    "sendConfirmations",
-    "Number of confirmations to wait before the transaction is sent cross-chain",
-    undefined,
-    types.int
-  )
-  .addParam(
-    "receiveConfirmations",
-    "Number of confirmations to wait before the transaction is executed cross-chain",
-    undefined,
-    types.int
-  )
-  .setAction(async (args: MasterArgs, hre: HardhatRuntimeEnvironment) => {
-    const [owner] = await hre.ethers.getSigners();
+interface ChainConfig {
+  chainKey: string;
+  eid: number;
+  nativeChainId: number;
+  endpointV2Address: string;
+  executorAddress: string;
+  sendLibAddress: string;
+  receiveLibAddress: string;
+  dvnAddresses: string[];
+  ftTokenAddress?: string;
+  receiveConfirmations?: number;
+}
 
-    const chainId = await hre.getChainId();
-    console.log(`Set config from one chain to another using ${owner.address} on chain: ${chainId}`);
-    const dstEid = args.dstEid;
+class LayerZeroMultiChainWire {
+  private chainConfigMap: Map<string, ChainConfig> = new Map();
 
-    const endpointAddress = ENDPOINT_V2_ADDRESSES[chainId];
-    const executorAddress = EXECUTOR_ADDRESSES[chainId];
-    const endpointContract = (await hre.ethers.getContractAt(
+  constructor(private hre: HardhatRuntimeEnvironment) {}
+
+  /**
+   * Load chain metadata and auto-populate FT token addresses and receive confirmations
+   */
+  buildChainConfigs(metadata: Record<string, ChainMetadata>): void {
+    for (const [chainKey, chainData] of Object.entries(metadata)) {
+      this.buildChainConfig(chainKey, chainData);
+    }
+  }
+
+  /**
+   * Build chain configuration from metadata
+   */
+  private buildChainConfig(chainKey: string, metadata: ChainMetadata): void {
+    // Find the mainnet v2 deployment
+    const v2Deployment = metadata.deployments.find(
+      (deployment) => deployment.version === 2
+    );
+
+    if (!v2Deployment) {
+      return;
+    }
+
+    if (!v2Deployment.endpointV2?.address || !v2Deployment.executor?.address) {
+      return;
+    }
+
+    // Get send and receive library addresses (V2 only)
+    const sendLibAddress = v2Deployment.sendUln302?.address;
+    const receiveLibAddress = v2Deployment.receiveUln302?.address;
+
+    if (!sendLibAddress || !receiveLibAddress) {
+      throw new Error(`Missing ULN addresses for chain ${chainKey}`);
+    }
+
+    const isMainnet = v2Deployment.stage == "mainnet";
+
+    // Filter active DVNs (non-deprecated, version 2)
+    const dvnAddresses = Object.entries(metadata.dvns)
+      .filter(
+        ([_, dvn]) =>
+          dvn.version === 2 &&
+          !dvn.deprecated &&
+          !dvn.lzReadCompatible &&
+          (dvn.canonicalName == requiredDVN || (isMainnet && dvn.canonicalName == requiredDVNMainnet))
+      )
+      .map(([address, _]) => address)
+      .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+
+    if (dvnAddresses.length === 0) {
+      throw new Error(`No active DVNs found for chain ${chainKey}`);
+    }
+
+    // 2 for mainnet and 1 for the testnet
+    if (dvnAddresses.length != (isMainnet ? 2 : 1)) {
+      console.log(metadata.dvns, isMainnet, dvnAddresses)
+      throw new Error(`Did not find the corresponding dvns`);
+    }
+
+    const chainConfig: ChainConfig = {
+      chainKey,
+      eid: parseInt(v2Deployment.eid),
+      nativeChainId: metadata.chainDetails.nativeChainId,
+      endpointV2Address: v2Deployment.endpointV2.address,
+      executorAddress: v2Deployment.executor.address,
+      sendLibAddress,
+      receiveLibAddress,
+      dvnAddresses,
+      ftTokenAddress: getChainConfig(metadata.chainDetails.nativeChainId)?.ftTokenAddress,
+      receiveConfirmations: getChainConfig(metadata.chainDetails.nativeChainId)?.confirmations
+    };
+
+    this.chainConfigMap.set(chainKey, chainConfig);
+  }
+
+  /**
+   * Get chain configuration by chain key
+   */
+  getChainConfig(chainKey: string): ChainConfig {
+    const config = this.chainConfigMap.get(chainKey);
+    if (!config) {
+      throw new Error(`Chain configuration not found for ${chainKey}`);
+    }
+    return config;
+  }
+
+  /**
+   * Wire source chain with the destination chain
+   */
+  async wireChains(sourceChainKey: string, destinationChainKey: string): Promise<void> {
+    const sourceConfig = this.getChainConfig(sourceChainKey);
+    const destConfig = this.getChainConfig(destinationChainKey);
+
+    console.log(
+      `Wiring ${sourceChainKey} (EID: ${sourceConfig.eid}) <=> ${destinationChainKey} (EID: ${destConfig.eid})`
+    );
+
+    // Check if we're on the source chain
+    const sourceChainId = await this.hre.getChainId();
+    if (parseInt(sourceChainId) !== sourceConfig.nativeChainId) {
+      throw new Error(`Current chain (${sourceChainId}) doesn't match source chain (${sourceConfig.nativeChainId})`);
+    }
+
+    const endpointContract = (await this.hre.ethers.getContractAt(
       "ILayerZeroEndpointV2",
-      endpointAddress
+      sourceConfig.endpointV2Address
     )) as unknown as ILayerZeroEndpointV2;
-    const sendLibAddress = SEND_LIBRARY_ADDRESSES[chainId];
-    const receiveLibAddress = RECIEVE_LIBRARY_ADDRESSES[chainId];
-    const dvns = DVN_ADDRESSES[chainId];
 
-    const ftAddress = (await hre.deployments.get("FT")).address;
-    console.log(`FT address: ${ftAddress}`);
+    const ft = await this.hre.ethers.getContractAt("FT", (await this.hre.deployments.get("FT")).address);
 
+    const destTokenAddress = destConfig.ftTokenAddress;
+    if (!destTokenAddress) {
+      throw new Error(`No FT token address configured for destination chain ${destinationChainKey}`);
+    }
+
+    await this.configureSendSettings(endpointContract, ft, sourceConfig, destConfig);
+
+    await this.configureReceiveSettings(endpointContract, ft, sourceConfig, destConfig);
+
+    await this.setPeer(ft, destConfig, destTokenAddress);
+
+    await this.setEnforcedOptions(ft, destConfig);
+
+    console.log(`Wired ${sourceChainKey} => ${destinationChainKey}`);
+  }
+
+  /**
+   * Configure send settings for cross-chain communication
+   */
+  private async configureSendSettings(
+    endpointContract: ILayerZeroEndpointV2,
+    ft: any,
+    sourceConfig: ChainConfig,
+    destConfig: ChainConfig
+  ): Promise<void> {
     const sendConfig = [
       {
-        eid: dstEid,
+        eid: destConfig.eid,
         configType: 1, // send
-        config: hre.ethers.AbiCoder.defaultAbiCoder().encode(
+        config: this.hre.ethers.AbiCoder.defaultAbiCoder().encode(
           ["tuple(uint32 maxMessageSize, address executor)"],
           [
             {
-              maxMessageSize: 10000,
-              executor: executorAddress
+              maxMessageSize: 10000, // Fixed value for all chains
+              executor: sourceConfig.executorAddress
             }
           ]
         )
       },
       {
-        eid: dstEid,
+        eid: destConfig.eid,
         configType: 2,
-        config: hre.ethers.AbiCoder.defaultAbiCoder().encode(
+        config: this.hre.ethers.AbiCoder.defaultAbiCoder().encode(
           [
             "tuple(uint64 confirmations, uint8 requiredDVNCount, uint8 optionalDVNCount, uint8 optionalDVNThreshold, address[] requiredDVNs, address[] optionalDVNs)"
           ],
           [
             {
-              confirmations: args.sendConfirmations,
-              requiredDVNCount: dvns.length,
+              confirmations: destConfig.receiveConfirmations,
+              requiredDVNCount: sourceConfig.dvnAddresses.length,
               optionalDVNCount: 0,
               optionalDVNThreshold: 0,
-              requiredDVNs: dvns,
+              requiredDVNs: sourceConfig.dvnAddresses,
               optionalDVNs: []
             }
           ]
@@ -87,25 +233,35 @@ task("lz:ft:wire", "Set allowed peers for cross‐chain communication from EVM c
       }
     ];
 
-    let tx = await endpointContract.setConfig(ftAddress, sendLibAddress, sendConfig);
-    await tx.wait();
-    console.log("Set send config");
+    const tx = await endpointContract.setConfig(ft, sourceConfig.sendLibAddress, sendConfig);
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
+    console.log(`Send config set`);
+  }
 
+  /**
+   * Configure receive settings for cross-chain communication
+   */
+  private async configureReceiveSettings(
+    endpointContract: ILayerZeroEndpointV2,
+    ft: any,
+    sourceConfig: ChainConfig,
+    destConfig: ChainConfig
+  ): Promise<void> {
     const receiveConfig = [
       {
-        eid: dstEid,
+        eid: destConfig.eid,
         configType: 2, // receive
-        config: hre.ethers.AbiCoder.defaultAbiCoder().encode(
+        config: this.hre.ethers.AbiCoder.defaultAbiCoder().encode(
           [
             "tuple(uint64 confirmations, uint8 requiredDVNCount, uint8 optionalDVNCount, uint8 optionalDVNThreshold, address[] requiredDVNs, address[] optionalDVNs)"
           ],
           [
             {
-              confirmations: args.receiveConfirmations,
-              requiredDVNCount: dvns.length,
+              confirmations: sourceConfig.receiveConfirmations,
+              requiredDVNCount: sourceConfig.dvnAddresses.length,
               optionalDVNCount: 0,
               optionalDVNThreshold: 0,
-              requiredDVNs: dvns,
+              requiredDVNs: sourceConfig.dvnAddresses,
               optionalDVNs: []
             }
           ]
@@ -113,31 +269,147 @@ task("lz:ft:wire", "Set allowed peers for cross‐chain communication from EVM c
       }
     ];
 
-    tx = await endpointContract.setConfig(ftAddress, receiveLibAddress, receiveConfig);
-    await tx.wait();
-    console.log("Set receive config");
+    const tx = await endpointContract.setConfig(ft, sourceConfig.receiveLibAddress, receiveConfig);
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
+    console.log(`Receive config set`);
+  }
 
-    console.log(
-      `Setting token peer using ${owner.address} on chain: ${await hre.getChainId()} to dstEid: ${args.dstEid} `
-    );
+  /**
+   * Set peer relationship
+   */
+  private async setPeer(ft: any, destConfig: ChainConfig, destTokenAddress: string): Promise<void> {
+    const tx = await ft.setPeer(destConfig.eid, this.hre.ethers.zeroPadValue(destTokenAddress, 32));
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
+    console.log(`Peer set`);
+  }
 
-    const ft = await hre.ethers.getContractAt("FT", ftAddress);
+  /**
+   * Set enforced options for gas and execution
+   */
+  private async setEnforcedOptions(ft: any, destConfig: ChainConfig): Promise<void> {
+    const options = Options.newOptions()
+      .addExecutorLzReceiveOption(300000, 0) // Fixed gas limit for all chains
+      .toHex()
+      .toString();
 
-    const dstTokenAddress = FT_TOKEN_ADDRESSES[dstEid];
-
-    tx = await ft.setPeer(dstEid, hre.ethers.zeroPadValue(dstTokenAddress, 32));
-    await tx.wait();
-    console.log("Set peer");
-
-    const options = Options.newOptions().addExecutorLzReceiveOption(300_000, 0).toHex().toString();
     const enforcedOptions = [
       {
-        eid: dstEid,
+        eid: destConfig.eid,
         msgType: 2, // RECEIVE
         options
       }
     ];
-    tx = await ft.setEnforcedOptions(enforcedOptions);
-    await tx.wait();
-    console.log("Set enforced options");
+
+    const tx = await ft.setEnforcedOptions(enforcedOptions);
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
+    console.log(`Enforced options set`);
+  }
+
+  /**
+   * Wire multiple chains together in a full mesh network
+   */
+  async wireMultipleChains(chainKeys: string[]): Promise<void> {
+    console.log("🔗 Starting multi-chain wiring process...");
+    console.log(`Chains to wire: ${chainKeys.join(", ")}`);
+
+    // Validate all chains have required configuration
+    for (const chainKey of chainKeys) {
+      const tokenAddress = this.getChainConfig(chainKey).ftTokenAddress;
+      if (!tokenAddress) {
+        throw new Error(`No FT token address found for chain ${chainKey}`);
+      }
+    }
+
+    // Get current chain to determine which wiring to perform
+    const sourceChainId = await this.hre.getChainId();
+    const sourceChain = chainKeys.find((chainKey) => {
+      const config = this.getChainConfig(chainKey);
+      return config.nativeChainId === parseInt(sourceChainId);
+    });
+
+    if (!sourceChain) {
+      throw new Error(`Current chain ${sourceChainId} is not in the list of chains to wire`);
+    }
+
+    console.log(`Source chain: ${sourceChain}`);
+
+    // Wire current chain to all other chains
+    const targetChains = chainKeys.filter((chain) => chain !== sourceChain);
+    console.log(targetChains);
+
+    for (const targetChain of targetChains) {
+      try {
+        await this.wireChains(sourceChain, targetChain);
+      } catch (error) {
+        console.error(`❌ Failed to wire ${sourceChain} => ${targetChain}:`, error);
+        throw error;
+      }
+    }
+
+    console.log(`\nSuccessfully wired ${sourceChain} to ${targetChains.length} other chains!`);
+  }
+
+  /**
+   * Get summary of chain configurations
+   */
+  outputChainSummary(): void {
+    console.log("\n📊 Chain Configuration Summary:");
+    console.log("=".repeat(60));
+    for (const [chainKey, config] of this.chainConfigMap.entries()) {
+      const tokenAddress = config.ftTokenAddress;
+      console.log(`\n🔗 ${chainKey.toUpperCase()}`);
+      console.log(`   EID: ${config.eid}`);
+      console.log(`   Native Chain ID: ${config.nativeChainId}`);
+      console.log(`   Endpoint V2: ${config.endpointV2Address}`);
+      console.log(`   Executor: ${config.executorAddress}`);
+      console.log(`   DVNs: ${config.dvnAddresses.length} active`);
+      console.log(`   FT Token: ${tokenAddress || "Not found"}`);
+    }
+    console.log("=".repeat(60));
+  }
+}
+
+task("lz:ft:wire", "Wire multiple chains together using LayerZero")
+  .addParam(
+    "chains",
+    "Comma-separated list of chain keys to wire (e.g., 'sonic,avalanche') can include active chain, it will just be skipped",
+    undefined,
+    types.string
+  )
+  .setAction(async (args, hre: HardhatRuntimeEnvironment) => {
+    try {
+      const chains = args.chains.split(",").map((c: string) => c.trim());
+
+      const [signer] = await hre.ethers.getSigners();
+      console.log(`Using signer: ${signer.address}`);
+
+      console.log("Starting LayerZero Multi-Chain Wiring...");
+      console.log("Configuration:");
+      console.log(`   Chains: ${chains.join(", ")}`);
+      console.log(`   Max Message Size: 10000 (fixed)`);
+      console.log(`   Gas Limit: 300000 (fixed)`);
+      console.log(`   Required DVNs: LayerZero Labs, Stargate`);
+      console.log(`   Optional DVNs: None`);
+      console.log(`   Deployer: ${(await hre.ethers.getSigners())[0].address}`);
+      console.log("");
+
+      const wireManager = new LayerZeroMultiChainWire(hre);
+
+      const lzMetadataPath = "../utils/lzMetadata.json";
+
+      // Load chain configurations
+      const metadata = (require(lzMetadataPath) as Record<string, ChainMetadata>);
+      wireManager.buildChainConfigs(metadata);
+
+      // Show configuration summary
+      wireManager.outputChainSummary();
+
+      // Wire the chains using embedded configuration
+      await wireManager.wireMultipleChains(chains);
+    } catch (error) {
+      console.error("❌ Multi-chain wiring failed:", error);
+      process.exit(1);
+    }
   });
+
+export { LayerZeroMultiChainWire, ChainConfig };
