@@ -6,6 +6,7 @@ import { OFT } from "@layerzerolabs/oft-evm/contracts/OFT.sol";
 import { Pausable } from "@openzeppelin/contracts/utils/Pausable.sol";
 import { IFT } from "./interfaces/IFT.sol";
 import { ERC20Permit } from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import { EIP712 } from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { IERC1271 } from "@openzeppelin/contracts/interfaces/IERC1271.sol";
 
@@ -33,9 +34,6 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
     event ConfiguratorChanged(address newConfigurator);
 
     /// @param sender The address of the sender who is not authorized
-    error OnlyConfigurator(address sender);
-
-    /// @param sender The address of the sender who is not authorized
     error OnlyOwnerOrConfigurator(address sender);
 
     error ZeroAddress();
@@ -44,15 +42,6 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
     /// @param usedNonce The nonce consumed by the contract
     /// @param expectedNonce The nonce that was signed over
     error ERC2612InvalidNonce(uint256 usedNonce, uint256 expectedNonce);
-
-    /**
-     * @dev Modifier to make a function callable only by the configurator.
-     */
-    modifier onlyConfigurator() {
-        address sender = _msgSender();
-        if (_configurator != sender) revert OnlyConfigurator(sender);
-        _;
-    }
 
     /**
      * @dev Modifier to make a function callable only by the owner or the configurator.
@@ -213,7 +202,7 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
         0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9;
 
     // solhint-disable-next-line func-name-mixedcase
-    function DOMAIN_SEPARATOR() external view override returns (bytes32) {
+    function DOMAIN_SEPARATOR() external view override(ERC20Permit) returns (bytes32) {
         return _domainSeparatorDynamic();
     }
 
@@ -237,7 +226,7 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) public virtual override {
+    ) public virtual override(ERC20Permit) {
         if (block.timestamp > deadline) {
             // match OZ revert type for compatibility
             revert ERC2612ExpiredSignature(deadline);
@@ -259,6 +248,34 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
         if (usedNonce != nonce) revert ERC2612InvalidNonce(usedNonce, nonce);
 
         _approve(owner, spender, value);
+    }
+
+    // -------- EIP-5267 dynamic eip712Domain() to mirror dynamic name() --------
+
+    function eip712Domain()
+        public
+        view
+        override(EIP712)
+        returns (
+            bytes1 fields,
+            string memory name_,
+            string memory version,
+            uint256 chainId,
+            address verifyingContract,
+            bytes32 salt,
+            uint256[] memory extensions
+        )
+    {
+        // 0x0f => name, version, chainId, verifyingContract present
+        return (
+            hex"0f",
+            name(),
+            "1",
+            block.chainid,
+            address(this),
+            bytes32(0),
+            new uint256[](0)
+        );
     }
 
     /**

@@ -342,9 +342,15 @@ describe("FlyingTulip OFT", function () {
       const { myOFT, alice } = await loadFixture(deployFixture);
 
       expect(await myOFT.nonces(alice.address)).to.equal(0n);
-      expect(await myOFT.DOMAIN_SEPARATOR()).to.equal(
-        "0x23c6900826e0b7fb84b07f6e1f95076c5d8c5e216e28d3771dea75cdbf698a2e"
-      );
+      const domain = {
+        name: await myOFT.name(),
+        version: "1",
+        chainId: (await ethers.provider.getNetwork()).chainId,
+        verifyingContract: await myOFT.getAddress(),
+      };
+      // hashDomain returns keccak256 of the EIP-712 domain per spec
+      const expected = ethers.TypedDataEncoder.hashDomain(domain);
+      expect(await myOFT.DOMAIN_SEPARATOR()).to.equal(expected);
     });
 
     it("should allow permit with valid signature", async function () {
