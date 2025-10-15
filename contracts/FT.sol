@@ -5,7 +5,8 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { OFT } from "@layerzerolabs/oft-evm/contracts/OFT.sol";
 import { Pausable } from "@openzeppelin/contracts/utils/Pausable.sol";
 import { IFT } from "./interfaces/IFT.sol";
-import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import { ERC20Permit } from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract FT is IFT, OFT, ERC20Permit, Pausable {
     /**
@@ -33,13 +34,14 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
     error OnlyOwnerOrConfigurator(address sender);
 
     error ZeroAddress();
+    error InvalidMintChainId(uint256 mintChainId);
 
     /**
      * @dev Modifier to make a function callable only by the configurator.
      */
     modifier onlyConfigurator() {
         address sender = _msgSender();
-        require(_configurator == sender, OnlyConfigurator(sender));
+        if (_configurator != sender) revert OnlyConfigurator(sender);
         _;
     }
 
@@ -48,7 +50,7 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
      */
     modifier onlyOwnerOrConfigurator() {
         address sender = _msgSender();
-        require(owner() == sender || _configurator == sender, OnlyOwnerOrConfigurator(sender));
+        if (owner() != sender && _configurator != sender) revert OnlyOwnerOrConfigurator(sender);
         _;
     }
 
@@ -77,7 +79,9 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
         _transferConfigurator(ftConfigurator);
 
         // ensure the mint chain is only Sonic for mainnets, Sepolia for testnets or local dev
-        assert(mintChainId == 146 || mintChainId == 11155111 || mintChainId == 31337);
+        if (!(mintChainId == 146 || mintChainId == 11155111 || mintChainId == 31337)) {
+            revert InvalidMintChainId(mintChainId);
+        }
         if (block.chainid == mintChainId) {
             // mint before pausing
             _mint(ftConfigurator, 10_000_000_000e18);
@@ -143,7 +147,7 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
     }
 
     function _transferConfigurator(address newConfigurator) private {
-        require(newConfigurator != address(0x0), ZeroAddress());
+        if (newConfigurator == address(0)) revert ZeroAddress();
 
         _configurator = newConfigurator;
         emit ConfiguratorChanged(newConfigurator);
@@ -173,6 +177,61 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
     function _setSymbol(string memory newSymbol) private {
         _symbol = newSymbol;
         emit SymbolChanged(newSymbol);
+    }
+
+    // -------- ERC20Permit with dynamic EIP-712 domain (recomputed on name change) --------
+
+    // keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)")
+    bytes32 private constant _EIP712_DOMAIN_TYPEHASH =
+        0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f;
+
+    // keccak256("Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)")
+    bytes32 private constant _PERMIT_TYPEHASH =
+        0x6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9;
+
+    // solhint-disable-next-line func-name-mixedcase
+    function DOMAIN_SEPARATOR() external view override returns (bytes32) {
+        return _domainSeparatorDynamic();
+    }
+
+    function _domainSeparatorDynamic() internal view returns (bytes32) {
+        return keccak256(
+            abi.encode(
+                _EIP712_DOMAIN_TYPEHASH,
+                keccak256(bytes(name())),
+                keccak256(bytes("1")),
+                block.chainid,
+                address(this)
+            )
+        );
+    }
+
+    function permit(
+        address owner,
+        address spender,
+        uint256 value,
+        uint256 deadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) public virtual override {
+        if (block.timestamp > deadline) {
+            // match OZ revert type for compatibility
+            revert ERC2612ExpiredSignature(deadline);
+        }
+
+        bytes32 structHash = keccak256(
+            abi.encode(_PERMIT_TYPEHASH, owner, spender, value, _useNonce(owner), deadline)
+        );
+
+        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", _domainSeparatorDynamic(), structHash));
+
+        address signer = ECDSA.recover(digest, v, r, s);
+        if (signer != owner) {
+            revert ERC2612InvalidSigner(signer, owner);
+        }
+
+        _approve(owner, spender, value);
     }
 
     /**

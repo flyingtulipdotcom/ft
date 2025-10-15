@@ -18,6 +18,7 @@ out
 
 # pnpm
 pnpm-error.log
+package-lock.json
 
 # Editor and OS files
 .DS_Store
