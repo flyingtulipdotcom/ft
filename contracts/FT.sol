@@ -7,7 +7,12 @@ import { Pausable } from "@openzeppelin/contracts/utils/Pausable.sol";
 import { IFT } from "./interfaces/IFT.sol";
 import { ERC20Permit } from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import { IERC1271 } from "@openzeppelin/contracts/interfaces/IERC1271.sol";
 
+/// @notice ERC20 + OFT token with pause controls and ERC-2612 permit.
+///         Includes a 1271-aware permit overload for smart contract wallets.
+/// @dev Permit2 (Uniswap) does not require token-side changes; integrators can
+///      use Permit2 directly to manage allowances for this token.
 contract FT is IFT, OFT, ERC20Permit, Pausable {
     /**
      * @notice Emitted when the token name is changed
@@ -155,6 +160,9 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
 
     /**
      * @notice Sets a new name for the token, only owner can call
+     * @dev WARNING: Changing the name alters the EIP-712 domain separator which
+     *      will invalidate any existing off-chain ERC-2612 signatures. Indexers and
+     *      off-chain metadata caches may also lag or cache the previous name.
      * @param newName New name for the token
      */
     function setName(string memory newName) external onlyOwner {
@@ -168,6 +176,9 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
 
     /**
      * @notice Sets a new symbol for the token, only owner can call
+     * @dev WARNING: Some indexers and off-chain metadata caches may not update
+     *      immediately when the symbol changes; frontends relying on cached data
+     *      may show stale symbols until refreshed.
      * @param newSymbol New symbol for the token
      */
     function setSymbol(string memory newSymbol) external onlyOwner {
@@ -229,6 +240,51 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
         address signer = ECDSA.recover(digest, v, r, s);
         if (signer != owner) {
             revert ERC2612InvalidSigner(signer, owner);
+        }
+
+        _approve(owner, spender, value);
+    }
+
+    /**
+     * @notice ERC-1271-aware permit overload.
+     * @dev Accepts a single signature blob. If `owner` is a contract, validates the
+     *      signature via ERC-1271. Otherwise, falls back to ECDSA as per ERC-2612.
+     *      Nonces are consumed via {_useNonce} to prevent replay.
+     * @param owner The token owner authorizing the allowance
+     * @param spender The spender to be approved
+     * @param value The allowance amount
+     * @param deadline The timestamp after which the signature is invalid
+     * @param signature The signature bytes (65-byte ECDSA or EIP-2098; arbitrary for 1271)
+     */
+    function permit(
+        address owner,
+        address spender,
+        uint256 value,
+        uint256 deadline,
+        bytes calldata signature
+    ) public virtual {
+        if (block.timestamp > deadline) {
+            revert ERC2612ExpiredSignature(deadline);
+        }
+
+        bytes32 structHash = keccak256(
+            abi.encode(_PERMIT_TYPEHASH, owner, spender, value, _useNonce(owner), deadline)
+        );
+
+        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", _domainSeparatorDynamic(), structHash));
+
+        if (owner.code.length > 0) {
+            // ERC-1271 (smart contract wallet) path
+            bytes4 result = IERC1271(owner).isValidSignature(digest, signature);
+            if (result != IERC1271.isValidSignature.selector) {
+                revert ERC2612InvalidSigner(address(0), owner);
+            }
+        } else {
+            // EOA path (ECDSA, supports 65-byte and 64-byte EIP-2098 signatures)
+            address signer = ECDSA.recover(digest, signature);
+            if (signer != owner) {
+                revert ERC2612InvalidSigner(signer, owner);
+            }
         }
 
         _approve(owner, spender, value);

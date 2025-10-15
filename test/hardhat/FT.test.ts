@@ -475,5 +475,100 @@ describe("FlyingTulip OFT", function () {
         myOFT.connect(bob).transferFrom(alice.address, owner.address, ethers.parseEther("20"))
       ).to.be.revertedWithCustomError(myOFT, "EnforcedPause");
     });
+
+    it("should allow 1271 permit for a smart wallet owner and subsequent transferFrom", async function () {
+      const { myOFT, configurator, alice, bob } = await loadFixture(deployFixture);
+
+      // Deploy a simple ERC-1271 wallet controlled by Alice's EOA
+      const wallet = await ethers.deployContract("SmartWallet1271", [alice.address]);
+
+      // Fund smart wallet with tokens
+      await myOFT.connect(configurator).transfer(await wallet.getAddress(), ethers.parseEther("100"));
+
+      const value = ethers.parseEther("50");
+      const nonce = await myOFT.nonces(await wallet.getAddress());
+      const deadline = (await time.latest()) + 3600;
+
+      // Build EIP-712 signature signed by Alice, but authorizing the smart wallet as owner
+      const domain = {
+        name: await myOFT.name(),
+        version: "1",
+        chainId: (await ethers.provider.getNetwork()).chainId,
+        verifyingContract: await myOFT.getAddress(),
+      };
+      const types = {
+        Permit: [
+          { name: "owner", type: "address" },
+          { name: "spender", type: "address" },
+          { name: "value", type: "uint256" },
+          { name: "nonce", type: "uint256" },
+          { name: "deadline", type: "uint256" },
+        ],
+      };
+      const message = {
+        owner: await wallet.getAddress(),
+        spender: bob.address,
+        value,
+        nonce,
+        deadline,
+      };
+      const signature = await alice.signTypedData(domain, types, message);
+
+      // Call 1271-aware permit overload
+      await expect(myOFT.permit(await wallet.getAddress(), bob.address, value, deadline, signature))
+        .to.emit(myOFT, "Approval")
+        .withArgs(await wallet.getAddress(), bob.address, value);
+
+      // Bob can transfer tokens from the smart wallet
+      const transferAmount = ethers.parseEther("30");
+      await expect(myOFT.connect(bob).transferFrom(await wallet.getAddress(), bob.address, transferAmount))
+        .to.emit(myOFT, "Transfer")
+        .withArgs(await wallet.getAddress(), bob.address, transferAmount);
+
+      expect(await myOFT.balanceOf(bob.address)).to.equal(transferAmount);
+      expect(await myOFT.allowance(await wallet.getAddress(), bob.address)).to.equal(value - transferAmount);
+    });
+
+    it("should reject 1271 permit if signature is not recognized by the smart wallet", async function () {
+      const { myOFT, configurator, alice, bob } = await loadFixture(deployFixture);
+
+      const wallet = await ethers.deployContract("SmartWallet1271", [alice.address]);
+
+      // Fund smart wallet with tokens
+      await myOFT.connect(configurator).transfer(await wallet.getAddress(), ethers.parseEther("10"));
+
+      const value = ethers.parseEther("5");
+      const nonce = await myOFT.nonces(await wallet.getAddress());
+      const deadline = (await time.latest()) + 3600;
+
+      const domain = {
+        name: await myOFT.name(),
+        version: "1",
+        chainId: (await ethers.provider.getNetwork()).chainId,
+        verifyingContract: await myOFT.getAddress(),
+      };
+      const types = {
+        Permit: [
+          { name: "owner", type: "address" },
+          { name: "spender", type: "address" },
+          { name: "value", type: "uint256" },
+          { name: "nonce", type: "uint256" },
+          { name: "deadline", type: "uint256" },
+        ],
+      };
+      const message = {
+        owner: await wallet.getAddress(),
+        spender: bob.address,
+        value,
+        nonce,
+        deadline,
+      };
+      // Wrong signer (bob) signs on behalf of wallet controlled by Alice
+      const badSignature = await bob.signTypedData(domain, types, message);
+
+      await expect(
+        myOFT.permit(await wallet.getAddress(), bob.address, value, deadline, badSignature)
+      ).to.be.revertedWithCustomError(myOFT, "ERC2612InvalidSigner");
+    });
   });
 });
