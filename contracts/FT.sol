@@ -139,7 +139,12 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
     }
 
     /**
-     * @notice Pauses or unpauses the contract, only owner or configurator can call
+     * @notice Pauses or unpauses the contract.
+     * @dev Access: only owner or configurator.
+     *      Reverts with {EnforcedPause} if called to pause when already paused.
+     *      Reverts with {ExpectedPause} if called to unpause when not paused.
+     *      Approvals and permits remain allowed while paused; only token transfers
+     *      are gated by pause checks in {_update}.
      * @param isPaused true to pause, false to unpause
      */
     function setPaused(bool isPaused) external onlyOwnerOrConfigurator {
@@ -148,10 +153,13 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
     }
 
     /**
-     * @notice Sets a new configurator address
+     * @notice Sets a new configurator address.
+     * @dev Access: owner or current configurator may rotate the configurator.
+     *      The configurator is exempted from pause restrictions as described
+     *      in {_update} and can also toggle pause via {setPaused}.
      * @param newConfigurator New configurator address
      */
-    function transferConfigurator(address newConfigurator) external onlyConfigurator {
+    function transferConfigurator(address newConfigurator) external onlyOwnerOrConfigurator {
         _transferConfigurator(newConfigurator);
     }
 
@@ -303,7 +311,16 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
     }
 
     /**
-     * @dev Blocks transfers when paused, except for the endpoint and the configurator
+     * @dev While paused, blocks transfers except for the following cases:
+     *      - The LayerZero `endpoint` is the caller (cross-chain delivery).
+     *      - The caller is the `configurator`.
+     *      - Either `from` or `to` equals the `configurator` address.
+     *      Note: Approvals and permits are not blocked by pause and can be
+     *      used to set allowances while paused. Combined with the caller
+     *      exception above, this means the `configurator` can execute
+     *      `transferFrom` between third parties during a pause if allowances
+     *      are in place. This is intentional for operational recovery; review
+     *      if stricter freeze semantics are desired.
      * @dev See {ERC20-_update}.
      * @param from Sender address
      * @param to Recipient address

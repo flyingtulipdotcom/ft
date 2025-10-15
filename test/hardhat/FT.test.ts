@@ -759,4 +759,63 @@ describe("FlyingTulip OFT", function () {
       }
     });
   });
+
+  describe("1271 Reentrancy", function () {
+    it("reentrancy attempt via 1271 wallet reverts and state unchanged", async function () {
+      const { myOFT, bob } = await loadFixture(deployFixture);
+
+      const value = ethers.parseEther("1");
+      const deadline = (await time.latest()) + 3600;
+
+      // Deploy malicious 1271 wallet that attempts to reenter token.permit during validation
+      const wallet = await ethers.deployContract("Reentrant1271Wallet", [
+        await myOFT.getAddress(),
+        bob.address,
+        value,
+        deadline,
+      ]);
+
+      const beforeNonce = await myOFT.nonces(await wallet.getAddress());
+      const beforeAllowance = await myOFT.allowance(await wallet.getAddress(), bob.address);
+
+      // Use empty signature; 1271 path doesn't verify ECDSA
+      await expect(
+        myOFT.permit(await wallet.getAddress(), bob.address, value, deadline, "0x")
+      ).to.be.reverted;
+
+      // Ensure no state was changed
+      expect(await myOFT.nonces(await wallet.getAddress())).to.equal(beforeNonce);
+      expect(await myOFT.allowance(await wallet.getAddress(), bob.address)).to.equal(beforeAllowance);
+    });
+  });
+
+  describe("Pausable Idempotency", function () {
+    it("double pause reverts with EnforcedPause", async function () {
+      const { myOFT, owner } = await loadFixture(deployFixture);
+      await myOFT.connect(owner).setPaused(true);
+      await expect(myOFT.connect(owner).setPaused(true)).to.be.revertedWithCustomError(
+        myOFT,
+        "EnforcedPause"
+      );
+    });
+
+    it("double unpause reverts with ExpectedPause", async function () {
+      const { myOFT, owner } = await loadFixture(deployFixture);
+      // Initially unpaused due to MyOFTMock constructor
+      await expect(myOFT.connect(owner).setPaused(false)).to.be.revertedWithCustomError(
+        myOFT,
+        "ExpectedPause"
+      );
+    });
+  });
+
+  describe("Owner Rotation", function () {
+    it("owner can rotate configurator (if enabled)", async function () {
+      const { myOFT, owner, configurator, alice } = await loadFixture(deployFixture);
+      expect(await myOFT.configurator()).to.equal(configurator.address);
+
+      await expect(myOFT.connect(owner).transferConfigurator(alice.address)).to.not.be.reverted;
+      expect(await myOFT.configurator()).to.equal(alice.address);
+    });
+  });
 });

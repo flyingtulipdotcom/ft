@@ -105,6 +105,36 @@ npx hardhat lz:ft:set-delegate --account 0x3419E83fe5583028e056b1aa5E62601D80799
 pnpm test
 ```
 
+## Token Behavior & Controls
+
+- Pause semantics
+  - `setPaused(bool)` is callable by the owner or the configurator.
+  - Double pause reverts with `EnforcedPause`; double unpause reverts with `ExpectedPause`.
+  - While paused, transfers are blocked except when:
+    - The caller is the LayerZero `endpoint` (cross-chain delivery), or
+    - The caller is the `configurator`, or
+    - Either `from` or `to` equals the `configurator` address.
+  - Approvals and ERC-2612 permits are allowed while paused. Combined with the
+    configurator caller exception, the configurator can use `transferFrom` during
+    a pause if allowances exist. This is intentional for operational recovery.
+
+- Configurator role
+  - May pause/unpause via `setPaused`.
+  - Is exempted from pause restrictions as described above.
+  - Can be rotated by the owner or the current configurator via `transferConfigurator(newConfigurator)`.
+
+- ERC-2612 + ERC-1271 Permit
+  - Supports EOA signatures and smart contract wallets via ERC-1271.
+  - Domain separator is computed dynamically using the current token name; name
+    changes invalidate previously signed permits by design.
+  - The ERC-1271 validation path is invoked via a static call. A malicious
+    ERC-1271 wallet attempting to reenter `permit` will cause the outer call to
+    revert; nonces and allowances remain unchanged.
+
+- Initial mint chain gating
+  - Initial supply is minted only when `block.chainid` equals the configured
+    `mintChainId`. Deployments enforce an allowlist of chain IDs for safety.
+
 ## Using Multisigs
 
 The wiring task supports the usage of Safe Multisigs.
@@ -123,9 +153,32 @@ networks: {
       safeUrl: 'http://something', // URL of the Safe API, not the Safe itself
       safeAddress: 'address'
     }
-  }
+}
 }
 ```
+
+## Security Model
+
+- Roles
+  - Owner: governance authority. Can change name/symbol, pause/unpause, and rotate the configurator via `transferConfigurator`.
+  - Configurator: operational role. Can pause/unpause and is exempted from pause restrictions (see Token Behavior & Controls). Can be rotated by the Owner or the current Configurator.
+  - LayerZero Endpoint: can deliver cross-chain transfers while paused.
+
+- Pause behavior
+  - Transfers are blocked while paused except for endpoint delivery and interactions to/from or by the configurator. Approvals and ERC-2612 permits are still allowed. This permits operational recovery flows using `transferFrom` with allowances.
+  - Double pause/unpause reverts (`EnforcedPause` / `ExpectedPause`).
+
+- Permit and nonces
+  - Supports ERC-2612 (EOA) and ERC-1271 (smart wallets). Domain separator is computed from the current token name; renaming invalidates prior permits.
+  - 1271 validation is performed via a static call. Reentrant attempts from a 1271 wallet revert and do not change state; nonces/allowances are unaffected.
+
+- Mint gating
+  - Initial supply mints only on the configured `mintChainId`. Other chains deploy with zero initial supply.
+
+- Operational recommendations
+  - Use separate multisigs for Owner and Configurator with distinct signers. Consider timelocks or off-chain policies for Owner actions.
+  - Monitor `Paused`, `Unpaused`, and `ConfiguratorChanged` events. Treat configurator keys as sensitive; rotate promptly if compromised.
+  - If stricter freeze semantics are required (e.g., block configurator-initiated third-party `transferFrom` during pause), adjust pause logic in the token accordingly.
 
 ### Troubleshooting
 
