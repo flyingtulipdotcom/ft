@@ -40,9 +40,11 @@ const deploy: DeployFunction = async (hre) => {
     // Mint only on Sonic
     const mintChainId = 146;
 
-    const CONTRACT_NAME = 'FT'
+    const DEPLOYMENT_NAME = 'FTT'
+    const ARTIFACT_NAME = 'FT'
 
-    const { address } = await deploy(CONTRACT_NAME, {
+    const { address } = await deploy(DEPLOYMENT_NAME, {
+        contract: ARTIFACT_NAME,
         from: deployer,
         args: [
             name,
@@ -56,10 +58,10 @@ const deploy: DeployFunction = async (hre) => {
         skipIfAlreadyDeployed: false,
     })
 
-    console.log(`Deployed contract: ${CONTRACT_NAME}, network: ${hre.network.name}, address: ${address}`)
+    console.log(`Deployed contract: ${DEPLOYMENT_NAME} (artifact ${ARTIFACT_NAME}), network: ${hre.network.name}, address: ${address}`)
 
-    // Ensure token is unpaused (FTT constructor already unpauses, but double-check)
-    const ftt = await ethers.getContractAt(CONTRACT_NAME, address)
+    // Ensure token is unpaused
+    const ftt = await ethers.getContractAt(ARTIFACT_NAME, address)
     if (await ftt.paused()) {
         console.log('Token is paused; unpausing...')
         await (await ftt.setPaused(false)).wait()
@@ -68,6 +70,6 @@ const deploy: DeployFunction = async (hre) => {
     }
 }
 
-deploy.tags = ['FT']
+deploy.tags = ['FTT']
 
 export default deploy

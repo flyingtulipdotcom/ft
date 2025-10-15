@@ -5,6 +5,7 @@ coverage.json
 typechain
 typechain-types
 temp_*.txt
+ftt_*.txt
 
 # Hardhat files
 cache
