@@ -40,6 +40,10 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
 
     error ZeroAddress();
     error InvalidMintChainId(uint256 mintChainId);
+    
+    /// @param usedNonce The nonce consumed by the contract
+    /// @param expectedNonce The nonce that was signed over
+    error ERC2612InvalidNonce(uint256 usedNonce, uint256 expectedNonce);
 
     /**
      * @dev Modifier to make a function callable only by the configurator.
@@ -231,8 +235,9 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
             revert ERC2612ExpiredSignature(deadline);
         }
 
+        uint256 nonce = nonces(owner);
         bytes32 structHash = keccak256(
-            abi.encode(_PERMIT_TYPEHASH, owner, spender, value, _useNonce(owner), deadline)
+            abi.encode(_PERMIT_TYPEHASH, owner, spender, value, nonce, deadline)
         );
 
         bytes32 digest = keccak256(abi.encodePacked("\x19\x01", _domainSeparatorDynamic(), structHash));
@@ -241,6 +246,9 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
         if (signer != owner) {
             revert ERC2612InvalidSigner(signer, owner);
         }
+
+        uint256 usedNonce = _useNonce(owner);
+        if (usedNonce != nonce) revert ERC2612InvalidNonce(usedNonce, nonce);
 
         _approve(owner, spender, value);
     }
@@ -267,8 +275,9 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
             revert ERC2612ExpiredSignature(deadline);
         }
 
+        uint256 nonce = nonces(owner);
         bytes32 structHash = keccak256(
-            abi.encode(_PERMIT_TYPEHASH, owner, spender, value, _useNonce(owner), deadline)
+            abi.encode(_PERMIT_TYPEHASH, owner, spender, value, nonce, deadline)
         );
 
         bytes32 digest = keccak256(abi.encodePacked("\x19\x01", _domainSeparatorDynamic(), structHash));
@@ -286,6 +295,9 @@ contract FT is IFT, OFT, ERC20Permit, Pausable {
                 revert ERC2612InvalidSigner(signer, owner);
             }
         }
+
+        uint256 usedNonce = _useNonce(owner);
+        if (usedNonce != nonce) revert ERC2612InvalidNonce(usedNonce, nonce);
 
         _approve(owner, spender, value);
     }

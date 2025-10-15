@@ -571,4 +571,192 @@ describe("FlyingTulip OFT", function () {
       ).to.be.revertedWithCustomError(myOFT, "ERC2612InvalidSigner");
     });
   });
+
+  describe("Permit Nonce Safety", function () {
+    it("invalid EOA permit does not advance nonce", async function () {
+      const { myOFT, configurator, alice, bob } = await loadFixture(deployFixture);
+
+      // fund alice
+      await myOFT.connect(configurator).transfer(alice.address, ethers.parseEther("10"));
+
+      const before = await myOFT.nonces(alice.address);
+      const value = ethers.parseEther("5");
+      const deadline = (await time.latest()) + 3600;
+
+      // sign with a wrong spender to invalidate
+      const badSig = await (async () => {
+        const domain = {
+          name: await myOFT.name(),
+          version: "1",
+          chainId: (await ethers.provider.getNetwork()).chainId,
+          verifyingContract: await myOFT.getAddress(),
+        };
+        const types = {
+          Permit: [
+            { name: "owner", type: "address" },
+            { name: "spender", type: "address" },
+            { name: "value", type: "uint256" },
+            { name: "nonce", type: "uint256" },
+            { name: "deadline", type: "uint256" },
+          ],
+        };
+        const message = {
+          owner: alice.address,
+          spender: configurator.address, // signature for configurator
+          value,
+          nonce: before,
+          deadline,
+        };
+        const sig = await alice.signTypedData(domain, types, message);
+        return ethers.Signature.from(sig);
+      })();
+
+      // try to permit bob (different from signed spender) so it must revert
+      await expect(
+        myOFT.permit(alice.address, bob.address, value, deadline, badSig.v, badSig.r, badSig.s)
+      ).to.be.revertedWithCustomError(myOFT, "ERC2612InvalidSigner");
+
+      expect(await myOFT.nonces(alice.address)).to.equal(before);
+    });
+
+    it("invalid 1271 permit does not advance nonce", async function () {
+      const { myOFT, configurator, alice, bob } = await loadFixture(deployFixture);
+
+      // deploy wallet controlled by alice
+      const wallet = await ethers.deployContract("SmartWallet1271", [alice.address]);
+      await myOFT.connect(configurator).transfer(await wallet.getAddress(), ethers.parseEther("10"));
+
+      const before = await myOFT.nonces(await wallet.getAddress());
+      const value = ethers.parseEther("5");
+      const deadline = (await time.latest()) + 3600;
+
+      const domain = {
+        name: await myOFT.name(),
+        version: "1",
+        chainId: (await ethers.provider.getNetwork()).chainId,
+        verifyingContract: await myOFT.getAddress(),
+      };
+      const types = {
+        Permit: [
+          { name: "owner", type: "address" },
+          { name: "spender", type: "address" },
+          { name: "value", type: "uint256" },
+          { name: "nonce", type: "uint256" },
+          { name: "deadline", type: "uint256" },
+        ],
+      };
+      const message = {
+        owner: await wallet.getAddress(),
+        spender: bob.address,
+        value,
+        nonce: before,
+        deadline,
+      };
+      // wrong signer (bob) signs
+      const badSignature = await bob.signTypedData(domain, types, message);
+
+      await expect(
+        myOFT.permit(await wallet.getAddress(), bob.address, value, deadline, badSignature)
+      ).to.be.revertedWithCustomError(myOFT, "ERC2612InvalidSigner");
+
+      expect(await myOFT.nonces(await wallet.getAddress())).to.equal(before);
+    });
+  });
+
+  describe("Domain Changes", function () {
+    it("name change invalidates previously signed permit", async function () {
+      const { myOFT, owner, configurator, alice, bob } = await loadFixture(deployFixture);
+
+      await myOFT.connect(configurator).transfer(alice.address, ethers.parseEther("10"));
+
+      const value = ethers.parseEther("5");
+      const nonce = await myOFT.nonces(alice.address);
+      const deadline = (await time.latest()) + 3600;
+
+      const signature = await (async () => {
+        const domain = {
+          name: await myOFT.name(),
+          version: "1",
+          chainId: (await ethers.provider.getNetwork()).chainId,
+          verifyingContract: await myOFT.getAddress(),
+        };
+        const types = {
+          Permit: [
+            { name: "owner", type: "address" },
+            { name: "spender", type: "address" },
+            { name: "value", type: "uint256" },
+            { name: "nonce", type: "uint256" },
+            { name: "deadline", type: "uint256" },
+          ],
+        };
+        const message = {
+          owner: alice.address,
+          spender: bob.address,
+          value,
+          nonce,
+          deadline,
+        };
+        const sig = await alice.signTypedData(domain, types, message);
+        return ethers.Signature.from(sig);
+      })();
+
+      // change name after signing
+      await myOFT.connect(owner).setName("FlyingTulipOFT v2");
+
+      await expect(
+        myOFT.permit(alice.address, bob.address, value, deadline, signature.v, signature.r, signature.s)
+      ).to.be.revertedWithCustomError(myOFT, "ERC2612InvalidSigner");
+
+      // nonce remains unchanged
+      expect(await myOFT.nonces(alice.address)).to.equal(nonce);
+    });
+  });
+
+  describe("Paused Transfer Matrix", function () {
+    it("enumerates allowed combos while paused (by/to/from configurator)", async function () {
+      const { myOFT, owner, configurator, alice, bob } = await loadFixture(deployFixture);
+
+      const amount = 1n;
+      // pre-fund actors
+      await myOFT.connect(configurator).transfer(alice.address, ethers.parseEther("10"));
+      await myOFT.connect(configurator).transfer(bob.address, ethers.parseEther("10"));
+
+      // pause contract
+      await myOFT.connect(owner).setPaused(true);
+
+      const actors = [configurator, alice, bob];
+
+      for (const sender of actors) {
+        for (const from of actors) {
+          for (const to of actors) {
+            // set allowance if needed (approve is allowed while paused)
+            if (sender.address !== from.address) {
+              await myOFT.connect(from).approve(sender.address, amount);
+            }
+
+            const shouldSucceed =
+              from.address === configurator.address ||
+              to.address === configurator.address ||
+              sender.address === configurator.address;
+
+            if (sender.address === from.address) {
+              const tx = myOFT.connect(sender).transfer(to.address, amount);
+              if (shouldSucceed) {
+                await expect(tx).to.not.be.reverted;
+              } else {
+                await expect(tx).to.be.revertedWithCustomError(myOFT, "EnforcedPause");
+              }
+            } else {
+              const tx = myOFT.connect(sender).transferFrom(from.address, to.address, amount);
+              if (shouldSucceed) {
+                await expect(tx).to.not.be.reverted;
+              } else {
+                await expect(tx).to.be.revertedWithCustomError(myOFT, "EnforcedPause");
+              }
+            }
+          }
+        }
+      }
+    });
+  });
 });
