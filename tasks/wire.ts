@@ -234,6 +234,10 @@ class LayerZeroMultiChainWire {
       }
     ];
 
+    if ((await endpointContract.defaultSendLibrary(sourceConfig.eid)) !== sourceConfig.sendLibAddress) {
+      throw new Error(`Send library mismatch`);
+    }
+
     let tx = await endpointContract.setSendLibrary(ft, destConfig.eid, sourceConfig.sendLibAddress);
     await tx.wait(NUM_BLOCKS_TO_WAIT);
     console.log(`Send library set`);
@@ -273,6 +277,10 @@ class LayerZeroMultiChainWire {
         )
       }
     ];
+
+    if ((await endpointContract.defaultReceiveLibrary(sourceConfig.eid)) !== sourceConfig.receiveLibAddress) {
+      throw new Error(`Receive library mismatch`);
+    }
 
     let tx = await endpointContract.setReceiveLibrary(ft, sourceConfig.eid, sourceConfig.receiveLibAddress, 0);
     await tx.wait(NUM_BLOCKS_TO_WAIT);
