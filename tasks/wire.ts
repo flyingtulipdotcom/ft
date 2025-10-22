@@ -1,4 +1,5 @@
 import { Options } from "@layerzerolabs/lz-v2-utilities";
+import { NIL_DVN_COUNT } from "@layerzerolabs/metadata-tools"
 import { ILayerZeroEndpointV2 } from "../typechain-types";
 import { task, types } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
@@ -223,7 +224,7 @@ class LayerZeroMultiChainWire {
             {
               confirmations: destConfig.receiveConfirmations,
               requiredDVNCount: sourceConfig.dvnAddresses.length,
-              optionalDVNCount: 0,
+              optionalDVNCount: NIL_DVN_COUNT,
               optionalDVNThreshold: 0,
               requiredDVNs: sourceConfig.dvnAddresses,
               optionalDVNs: []
@@ -233,7 +234,15 @@ class LayerZeroMultiChainWire {
       }
     ];
 
-    const tx = await endpointContract.setConfig(ft, sourceConfig.sendLibAddress, sendConfig);
+    if ((await endpointContract.defaultSendLibrary(sourceConfig.eid)) !== sourceConfig.sendLibAddress) {
+      throw new Error(`Send library mismatch`);
+    }
+
+    let tx = await endpointContract.setSendLibrary(ft, destConfig.eid, sourceConfig.sendLibAddress);
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
+    console.log(`Send library set`);
+
+    tx = await endpointContract.setConfig(ft, sourceConfig.sendLibAddress, sendConfig);
     await tx.wait(NUM_BLOCKS_TO_WAIT);
     console.log(`Send config set`);
   }
@@ -259,7 +268,7 @@ class LayerZeroMultiChainWire {
             {
               confirmations: sourceConfig.receiveConfirmations,
               requiredDVNCount: sourceConfig.dvnAddresses.length,
-              optionalDVNCount: 0,
+              optionalDVNCount: NIL_DVN_COUNT,
               optionalDVNThreshold: 0,
               requiredDVNs: sourceConfig.dvnAddresses,
               optionalDVNs: []
@@ -269,7 +278,15 @@ class LayerZeroMultiChainWire {
       }
     ];
 
-    const tx = await endpointContract.setConfig(ft, sourceConfig.receiveLibAddress, receiveConfig);
+    if ((await endpointContract.defaultReceiveLibrary(sourceConfig.eid)) !== sourceConfig.receiveLibAddress) {
+      throw new Error(`Receive library mismatch`);
+    }
+
+    let tx = await endpointContract.setReceiveLibrary(ft, sourceConfig.eid, sourceConfig.receiveLibAddress, 0);
+    await tx.wait(NUM_BLOCKS_TO_WAIT);
+    console.log(`Receive library set`);
+
+    tx = await endpointContract.setConfig(ft, sourceConfig.receiveLibAddress, receiveConfig);
     await tx.wait(NUM_BLOCKS_TO_WAIT);
     console.log(`Receive config set`);
   }
