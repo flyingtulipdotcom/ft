@@ -24,7 +24,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "1",
     name: "ethereum",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
-    confirmations: 12,
+    confirmations: 60,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR
   },
@@ -32,7 +32,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "56",
     name: "bsc",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
-    confirmations: 10,
+    confirmations: 15,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR
   },
@@ -48,7 +48,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "146",
     name: "sonic",
     endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
-    confirmations: 3,
+    confirmations: 1,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR
   },
@@ -56,7 +56,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "8453",
     name: "base",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
-    confirmations: 12,
+    confirmations: 9000,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR
   },
