@@ -337,17 +337,7 @@ class LayerZeroMultiChainWire {
       }
     }
 
-    // Get current chain to determine which wiring to perform
-    const sourceChainId = await this.hre.getChainId();
-    const sourceChain = chainKeys.find((chainKey) => {
-      const config = this.getChainConfig(chainKey);
-      return config.nativeChainId === parseInt(sourceChainId);
-    });
-
-    if (!sourceChain) {
-      throw new Error(`Current chain ${sourceChainId} is not in the list of chains to wire`);
-    }
-
+    const sourceChain = this.hre.network.name;
     console.log(`Source chain: ${sourceChain}`);
 
     // Wire current chain to all other chains
@@ -405,7 +395,7 @@ task("lz:ft:wire", "Wire multiple chains together using LayerZero")
       console.log(`   Chains: ${chains.join(", ")}`);
       console.log(`   Max Message Size: 10000 (fixed)`);
       console.log(`   Gas Limit: 300000 (fixed)`);
-      console.log(`   Required DVNs: LayerZero Labs, Stargate`);
+      console.log(`   Required DVNs: ${requiredDVN}, ${requiredDVNMainnet}`);
       console.log(`   Optional DVNs: None`);
       console.log(`   Deployer: ${(await hre.ethers.getSigners())[0].address}`);
       console.log("");
