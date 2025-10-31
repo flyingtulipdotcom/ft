@@ -49,7 +49,7 @@ const deploy: DeployFunction = async (hre) => {
 
   // Verify it
   try {
-    await run("verify:verify", {
+    await hre.run("verify:verify", {
       address,
       constructorArguments: [name, symbol, endpointV2Address, delegate, ftConfigurator, mintChainId]
     });
