@@ -9,11 +9,19 @@
 - Copy `.env.example` into a new `.env`
 - Set up your deployer address/account via the `.env`
 
-  - You can specify either `MNEMONIC` or `PRIVATE_KEY`:
+  - **Option 1 (Recommended for Production)**: Use an encrypted keystore file
+    ```
+    KEYSTORE_PATH="~/.foundry/keystores/keystore-file"
+    ```
+    You will be prompted for your password at runtime.
 
+  - **Option 2 (ONLY for Testing, NOT RECOMMENDED FOR PRODUCTION)**: Use a mnemonic
     ```
     MNEMONIC="test test test test test test test test test test test junk"
-    or...
+    ```
+
+  - **Option 3 (ONLY for Testing, NOT RECOMMENDED FOR PRODUCTION)**: Use a private key
+    ```
     PRIVATE_KEY="0xabc...def"
     ```
 
@@ -34,6 +42,12 @@ pnpm install
 ```bash
 pnpm compile
 ```
+
+> **Note:** If `pnpm compile` fails with TypeChain-related errors (e.g., cannot find module from `typechain-types`), run:
+> ```bash
+> pnpm hardhat compile --force
+> ```
+> This will generate the TypeChain types needed by the task files.
 
 ## Deploy
 
