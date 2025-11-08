@@ -5,11 +5,16 @@ type ChainConfig = {
   confirmations: number;
   delegate: string;
   configurator: string;
+  finalOwner: string;
   ftTokenAddress?: string;
 };
 
-const STANDARD_FT_DELEGATE = "0x3419E83fe5583028e056b1aa5E62601D80799572";
-const STANDARD_FT_CONFIGURATOR = "0x3419E83fe5583028e056b1aa5E62601D80799572";
+// I-2: Support environment variable overrides for role addresses
+// This allows rotation without code changes
+const STANDARD_FT_DELEGATE = process.env.FT_DELEGATE || "0x3419E83fe5583028e056b1aa5E62601D80799572";
+const STANDARD_FT_CONFIGURATOR = process.env.FT_CONFIGURATOR || "0x3419E83fe5583028e056b1aa5E62601D80799572";
+// MSIG address for all chains
+const STANDARD_FINAL_OWNER = process.env.FINAL_OWNER || "0x1118e1c057211306a40A4d7006C040dbfE1370Cb";
 
 function safeRequire(path: string): string | undefined {
   try {
@@ -26,7 +31,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
     confirmations: 60,
     delegate: STANDARD_FT_DELEGATE,
-    configurator: STANDARD_FT_CONFIGURATOR
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER
   },
   {
     id: "56",
@@ -34,7 +40,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
     confirmations: 15,
     delegate: STANDARD_FT_DELEGATE,
-    configurator: STANDARD_FT_CONFIGURATOR
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER
   },
   {
     id: "43114",
@@ -42,7 +49,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
     confirmations: 1,
     delegate: STANDARD_FT_DELEGATE,
-    configurator: STANDARD_FT_CONFIGURATOR
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER
   },
   {
     id: "146",
@@ -50,7 +58,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
     confirmations: 1,
     delegate: STANDARD_FT_DELEGATE,
-    configurator: STANDARD_FT_CONFIGURATOR
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER
   },
   {
     id: "8453",
@@ -58,7 +67,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
     confirmations: 9000,
     delegate: STANDARD_FT_DELEGATE,
-    configurator: STANDARD_FT_CONFIGURATOR
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER
   },
   {
     id: "11155111",
@@ -66,7 +76,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
     confirmations: 1,
     delegate: STANDARD_FT_DELEGATE,
-    configurator: STANDARD_FT_CONFIGURATOR
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER
   },
   {
     id: "97",
@@ -74,7 +85,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
     confirmations: 2,
     delegate: STANDARD_FT_DELEGATE,
-    configurator: STANDARD_FT_CONFIGURATOR
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER
   },
   {
     id: "43113",
@@ -82,7 +94,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
     confirmations: 3,
     delegate: STANDARD_FT_DELEGATE,
-    configurator: STANDARD_FT_CONFIGURATOR
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER
   },
   {
     id: "84532",
@@ -90,7 +103,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
     confirmations: 4,
     delegate: STANDARD_FT_DELEGATE,
-    configurator: STANDARD_FT_CONFIGURATOR
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER
   }
 ];
 
