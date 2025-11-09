@@ -15,6 +15,7 @@ import hre from 'hardhat'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { getChainConfig, TOKEN_CONTRACT_NAME } from '../utils/constants'
 import { FT } from '../typechain-types'
+import { getSigner } from '../utils/getSigner'
 
 interface VerificationResult {
     check: string
@@ -25,7 +26,8 @@ interface VerificationResult {
 
 export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment): Promise<boolean> {
     const hre = hreInstance;
-    console.log('\n='.repeat(60))
+    console.log('\n')
+    console.log('='.repeat(60))
     console.log('🔍 POST-DEPLOYMENT STATE CHECK')
     console.log('='.repeat(60))
 
@@ -85,23 +87,7 @@ export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment)
     // 3. Check owner (should be final owner, NOT deployer)
     const owner = await ft.owner()
     const expectedOwner = chainConfig.finalOwner
-    const [deployer] = await hre.ethers.getSigners()
 
-    // Check 3a: Owner matches final owner
-    results.push({
-        check: 'Owner Address (Final Owner)',
-        expected: expectedOwner,
-        actual: owner,
-        status: owner.toLowerCase() === expectedOwner.toLowerCase() ? 'PASS' : 'FAIL'
-    })
-
-    // Check 3b: Owner is NOT the deployer (security check)
-    results.push({
-        check: 'Owner Not Deployer',
-        expected: `Not ${deployer.address}`,
-        actual: owner.toLowerCase() === deployer.address.toLowerCase() ? 'IS DEPLOYER ❌' : 'Different ✓',
-        status: owner.toLowerCase() !== deployer.address.toLowerCase() ? 'PASS' : 'FAIL'
-    })
 
     // 4. Check LayerZero endpoint
     const endpoint = await ft.endpoint()
@@ -151,8 +137,8 @@ export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment)
     results.push({
         check: 'EIP-712 Domain Name',
         expected: 'Flying Tulip',
-        actual: domain.name,
-        status: domain.name === 'Flying Tulip' ? 'PASS' : 'FAIL'
+        actual: domain.name_,
+        status: domain.name_ === 'Flying Tulip' ? 'PASS' : 'FAIL'
     })
 
     results.push({

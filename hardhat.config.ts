@@ -42,12 +42,19 @@ const MNEMONIC = process.env.MNEMONIC
 // Option 3 (ONLY for Testing, NOT RECOMMENDED FOR PRODUCTION): Use a private key
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 
-// Fallback accounts for mnemonic or private key (keystore is loaded at runtime)
-const accounts: HttpNetworkAccountsUserConfig | undefined = MNEMONIC
-    ? { mnemonic: MNEMONIC }
-    : PRIVATE_KEY
-      ? [PRIVATE_KEY]
-      : undefined
+// Load keystore synchronously if provided, otherwise fall back to mnemonic or private key
+let accounts: HttpNetworkAccountsUserConfig | undefined = undefined
+
+if (KEYSTORE_PATH) {
+    // For keystore, we need to load it at runtime in tasks/scripts
+    // But for hardhat-deploy compatibility, we can use a custom provider
+    // Leave accounts undefined and handle in deploy script
+    console.log('Using keystore authentication. Password will be requested when needed.')
+} else if (MNEMONIC) {
+    accounts = { mnemonic: MNEMONIC }
+} else if (PRIVATE_KEY) {
+    accounts = [PRIVATE_KEY]
+}
 
 if (accounts == null && !KEYSTORE_PATH) {
     console.warn(
