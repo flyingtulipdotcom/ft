@@ -1,12 +1,12 @@
 import { Options } from "@layerzerolabs/lz-v2-utilities";
 import { NIL_DVN_COUNT } from "@layerzerolabs/metadata-tools"
-import { ILayerZeroEndpointV2 } from "../typechain-types";
+import { FT, ILayerZeroEndpointV2 } from "../typechain-types";
 import { task, types } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { getChainConfig } from "../utils/constants";
 
 const requiredDVN = "LayerZero Labs"; // Required for both mainnet and testnet
-const requiredDVNMainnet = "Stargate" // Only required on mainnet
+const requiredDVNMainnet = "Horizen" // Only required on mainnet
 
 // Number of blocks to wait for tx finality due to load balanced RPCs not always being up to date, could be adjusted per chain to be more efficient.
 const NUM_BLOCKS_TO_WAIT = 2;
@@ -57,13 +57,13 @@ interface ChainConfig {
   receiveLibAddress: string;
   dvnAddresses: string[];
   ftTokenAddress?: string;
-  receiveConfirmations?: number;
+  confirmations?: number;
 }
 
 class LayerZeroMultiChainWire {
   private chainConfigMap: Map<string, ChainConfig> = new Map();
 
-  constructor(private hre: HardhatRuntimeEnvironment) {}
+  constructor(private hre: HardhatRuntimeEnvironment) { }
 
   /**
    * Load chain metadata and auto-populate FT token addresses and receive confirmations
@@ -133,7 +133,7 @@ class LayerZeroMultiChainWire {
       receiveLibAddress,
       dvnAddresses,
       ftTokenAddress: getChainConfig(metadata.chainDetails.nativeChainId)?.ftTokenAddress,
-      receiveConfirmations: getChainConfig(metadata.chainDetails.nativeChainId)?.confirmations
+      confirmations: getChainConfig(metadata.chainDetails.nativeChainId)?.confirmations
     };
 
     this.chainConfigMap.set(chainKey, chainConfig);
@@ -172,7 +172,7 @@ class LayerZeroMultiChainWire {
       sourceConfig.endpointV2Address
     )) as unknown as ILayerZeroEndpointV2;
 
-    const ft = await this.hre.ethers.getContractAt("FT", (await this.hre.deployments.get("FT")).address);
+    const ft = await this.hre.ethers.getContractAt("FT", (await this.hre.deployments.get("FT")).address) as unknown as FT;
 
     const destTokenAddress = destConfig.ftTokenAddress;
     if (!destTokenAddress) {
@@ -195,7 +195,7 @@ class LayerZeroMultiChainWire {
    */
   private async configureSendSettings(
     endpointContract: ILayerZeroEndpointV2,
-    ft: any,
+    ft: FT,
     sourceConfig: ChainConfig,
     destConfig: ChainConfig
   ): Promise<void> {
@@ -222,7 +222,7 @@ class LayerZeroMultiChainWire {
           ],
           [
             {
-              confirmations: destConfig.receiveConfirmations,
+              confirmations: destConfig.confirmations,
               requiredDVNCount: sourceConfig.dvnAddresses.length,
               optionalDVNCount: NIL_DVN_COUNT,
               optionalDVNThreshold: 0,
@@ -266,7 +266,7 @@ class LayerZeroMultiChainWire {
           ],
           [
             {
-              confirmations: sourceConfig.receiveConfirmations,
+              confirmations: sourceConfig.confirmations,
               requiredDVNCount: sourceConfig.dvnAddresses.length,
               optionalDVNCount: NIL_DVN_COUNT,
               optionalDVNThreshold: 0,
@@ -282,7 +282,7 @@ class LayerZeroMultiChainWire {
       throw new Error(`Receive library mismatch`);
     }
 
-    let tx = await endpointContract.setReceiveLibrary(ft, sourceConfig.eid, sourceConfig.receiveLibAddress, 0);
+    let tx = await endpointContract.setReceiveLibrary(ft, destConfig.eid, sourceConfig.receiveLibAddress, 0);
     await tx.wait(NUM_BLOCKS_TO_WAIT);
     console.log(`Receive library set`);
 
@@ -353,7 +353,7 @@ class LayerZeroMultiChainWire {
       }
     }
 
-    console.log(`\nSuccessfully wired ${sourceChain} to ${targetChains.length} other chains!`);
+    console.log(`\nSuccessfully wired ${sourceChain} to ${targetChains.length} other chain(s)!`);
   }
 
   /**
