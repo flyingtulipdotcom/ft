@@ -18,6 +18,7 @@ import '@typechain/hardhat'
 import "./tasks"
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
 import { EndpointId } from '@layerzerolabs/lz-definitions'
+import { loadKeystorePrivateKey } from './utils/keystore'
 
 declare module 'hardhat/types/config' {
   interface HttpNetworkUserConfig {
@@ -28,22 +29,36 @@ declare module 'hardhat/types/config' {
 
 // Set your preferred authentication method
 //
-// If you prefer using a mnemonic, set a MNEMONIC environment variable
-// to a valid mnemonic
+// Priority: KEYSTORE_PATH > MNEMONIC > PRIVATE_KEY
+//
+// Option 1 (Recommended for Production): Use an encrypted keystore file
+// Set KEYSTORE_PATH to the path of your keystore file (e.g., ~/.foundry/keystores/keystore-file)
+// You will be prompted for password at runtime
+const KEYSTORE_PATH = process.env.KEYSTORE_PATH
+
+// Option 2 (ONLY for Testing, NOT RECOMMENDED FOR PRODUCTION): Use a mnemonic
 const MNEMONIC = process.env.MNEMONIC
 
-// If you prefer to be authenticated using a private key, set a PRIVATE_KEY environment variable
+// Option 3 (ONLY for Testing, NOT RECOMMENDED FOR PRODUCTION): Use a private key
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 
-const accounts: HttpNetworkAccountsUserConfig | undefined = MNEMONIC
-    ? { mnemonic: MNEMONIC }
-    : PRIVATE_KEY
-      ? [PRIVATE_KEY]
-      : undefined
+// Load keystore synchronously if provided, otherwise fall back to mnemonic or private key
+let accounts: HttpNetworkAccountsUserConfig | undefined = undefined
 
-if (accounts == null) {
+if (KEYSTORE_PATH) {
+    // For keystore, we need to load it at runtime in tasks/scripts
+    // But for hardhat-deploy compatibility, we can use a custom provider
+    // Leave accounts undefined and handle in deploy script
+    console.log('Using keystore authentication. Password will be requested when needed.')
+} else if (MNEMONIC) {
+    accounts = { mnemonic: MNEMONIC }
+} else if (PRIVATE_KEY) {
+    accounts = [PRIVATE_KEY]
+}
+
+if (accounts == null && !KEYSTORE_PATH) {
     console.warn(
-        'Could not find MNEMONIC or PRIVATE_KEY environment variables. It will not be possible to execute transactions in your example.'
+        'Could not find KEYSTORE_PATH, MNEMONIC, or PRIVATE_KEY environment variables. It will not be possible to execute transactions.'
     )
 }
 
