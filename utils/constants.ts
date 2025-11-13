@@ -24,6 +24,8 @@ function safeRequire(path: string): string | undefined {
   }
 }
 
+// See default configurations for what LayerZero labs team recommmend not going below
+// https://layerzeroscan.com/tools/defaults 
 const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
   {
     id: "1",
