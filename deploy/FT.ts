@@ -38,7 +38,7 @@ const deploy: DeployFunction = async (hre) => {
     }
 
     console.log(`Chain Config: ${chainConfig.name}`);
-    console.log(`Configurator: ${ftConfigurator}`);
+    console.log(`Configurator: ${ftConfigurator} owner of the initial mint if network is sonic`);
     console.log(`Endpoint V2: ${endpointV2Address}`);
     console.log(`Final Owner: ${chainConfig.finalOwner}`);
 

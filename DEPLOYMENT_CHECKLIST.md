@@ -9,7 +9,8 @@ Quick reference checklist for deploying FT token to production.
 - [ ] Copy `.env.example` to `.env`
 - [ ] Set `KEYSTORE_PATH=~/.foundry/keystores/<file>`
 - [ ] Set `ETHERSCAN_API_KEY=<key>`
-- [ ] Set `FINAL_OWNER=<multisig-address>` (or use default)
+- [ ] Set `FT_CONFIGURATOR=<multisig-address>` role to have control of initial mint if network is sonic
+- [ ] Set `FINAL_OWNER=<multisig-address>`
 - [ ] Run `pnpm compile`
 - [ ] Run `pnpm test`
 
