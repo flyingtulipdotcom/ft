@@ -72,8 +72,8 @@ const deploy: DeployFunction = async (hre) => {
     const isTestnet = (hre.network.config as any).isTestnet ?? false;
     const mintChainId = isTestnet ? 11155111 : 146; // Sepolia : Sonic
 
-    const name = "Flying Tulip Test";
-    const symbol = "FTTest";
+    const name = "Flying Tulip";
+    const symbol = "FT";
     const delegate = deployer;
 
     // Use ethers directly for deployment to support keystore
