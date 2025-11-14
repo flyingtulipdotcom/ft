@@ -3,6 +3,7 @@ import assert from 'assert'
 import { type DeployFunction } from 'hardhat-deploy/types'
 import { getChainConfig, TOKEN_CONTRACT_NAME } from '../utils/constants';
 import { getSigner } from '../utils/getSigner';
+import { FT } from '../typechain-types';
 
 const deploy: DeployFunction = async (hre) => {
 
@@ -80,18 +81,18 @@ const deploy: DeployFunction = async (hre) => {
     console.log(`\nDeploying ${TOKEN_CONTRACT_NAME}...`);
 
     const FTFactory = await hre.ethers.getContractFactory(TOKEN_CONTRACT_NAME, signer);
-    const ftContract = await FTFactory.deploy(
+    const ft = await FTFactory.deploy(
         name,
         symbol,
         endpointV2Address,
         delegate,
         ftConfigurator,
         mintChainId
-    );
+    ) as unknown as FT;
 
-    console.log(`Deployment transaction: ${ftContract.deploymentTransaction()?.hash}`);
-    await ftContract.waitForDeployment();
-    const address = await ftContract.getAddress();
+    console.log(`Deployment transaction: ${ft.deploymentTransaction()?.hash}`);
+    await ft.waitForDeployment();
+    const address = await ft.getAddress();
 
     // Save deployment for hardhat-deploy compatibility and future reference
     const artifact = await hre.artifacts.readArtifact(TOKEN_CONTRACT_NAME);
@@ -101,14 +102,14 @@ const deploy: DeployFunction = async (hre) => {
         bytecode: artifact.bytecode,
         deployedBytecode: artifact.deployedBytecode,
         args: [name, symbol, endpointV2Address, delegate, ftConfigurator, mintChainId],
-        transactionHash: ftContract.deploymentTransaction()?.hash,
+        transactionHash: ft.deploymentTransaction()?.hash,
     });
 
     console.log(`Deployed contract: ${TOKEN_CONTRACT_NAME}, network: ${hre.network.name}, address: ${address}`)
 
     // Wait for more confirmations before verification
     console.log('\nWaiting for 5 block confirmations before verification...');
-    await ftContract.deploymentTransaction()?.wait(5); // Wait for 5 confirmations
+    await ft.deploymentTransaction()?.wait(5); // Wait for 5 confirmations
     console.log('Block confirmations received');
 
     // Additional delay to allow Etherscan to index
@@ -133,7 +134,6 @@ const deploy: DeployFunction = async (hre) => {
   const finalOwner = chainConfig.finalOwner;
   console.log(`\nTransferring ownership to final owner: ${finalOwner}`);
 
-  const ft = await hre.ethers.getContractAt(TOKEN_CONTRACT_NAME, address, signer);
   const transferTx = await ft.transferOwnership(finalOwner);
   await transferTx.wait(2); // Wait for 2 confirmations
   console.log(`✅ Ownership transferred to ${finalOwner}`);
