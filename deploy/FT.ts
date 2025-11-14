@@ -38,7 +38,7 @@ const deploy: DeployFunction = async (hre) => {
     }
 
     console.log(`Chain Config: ${chainConfig.name}`);
-    console.log(`Configurator: ${ftConfigurator}`);
+    console.log(`Configurator: ${ftConfigurator}`, ` Owner of the initial mint if network is sonic`);
     console.log(`Endpoint V2: ${endpointV2Address}`);
     console.log(`Final Owner: ${chainConfig.finalOwner}`);
 
@@ -72,8 +72,8 @@ const deploy: DeployFunction = async (hre) => {
     const isTestnet = (hre.network.config as any).isTestnet ?? false;
     const mintChainId = isTestnet ? 11155111 : 146; // Sepolia : Sonic
 
-    const name = "Flying Tulip";
-    const symbol = "FT";
+    const name = "Flying Tulip Test";
+    const symbol = "FTTest";
     const delegate = deployer;
 
     // Use ethers directly for deployment to support keystore
