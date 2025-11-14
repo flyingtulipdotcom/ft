@@ -24,12 +24,14 @@ function safeRequire(path: string): string | undefined {
   }
 }
 
+// See default configurations for what LayerZero labs team recommmend not going below
+// https://layerzeroscan.com/tools/defaults 
 const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
   {
     id: "1",
     name: "ethereum",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
-    confirmations: 60,
+    confirmations: 15,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
     finalOwner: STANDARD_FINAL_OWNER
@@ -38,7 +40,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "56",
     name: "bsc",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
-    confirmations: 15,
+    confirmations: 20,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
     finalOwner: STANDARD_FINAL_OWNER
@@ -47,7 +49,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "43114",
     name: "avalanche",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
-    confirmations: 1,
+    confirmations: 12,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
     finalOwner: STANDARD_FINAL_OWNER
@@ -56,7 +58,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "146",
     name: "sonic",
     endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
-    confirmations: 1,
+    confirmations: 20,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
     finalOwner: STANDARD_FINAL_OWNER
@@ -65,7 +67,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "8453",
     name: "base",
     endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
-    confirmations: 9000,
+    confirmations: 10,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
     finalOwner: STANDARD_FINAL_OWNER
@@ -74,7 +76,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "11155111",
     name: "sepolia",
     endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
-    confirmations: 1,
+    confirmations: 15,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
     finalOwner: STANDARD_FINAL_OWNER
@@ -83,7 +85,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "97",
     name: "bsc-testnet",
     endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
-    confirmations: 2,
+    confirmations: 12,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
     finalOwner: STANDARD_FINAL_OWNER
@@ -92,7 +94,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "43113",
     name: "fuji",
     endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
-    confirmations: 3,
+    confirmations: 12,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
     finalOwner: STANDARD_FINAL_OWNER
@@ -101,7 +103,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     id: "84532",
     name: "base-sepolia",
     endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
-    confirmations: 4,
+    confirmations: 10,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
     finalOwner: STANDARD_FINAL_OWNER

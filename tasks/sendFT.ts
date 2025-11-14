@@ -1,7 +1,7 @@
 import { task, types } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Options } from "@layerzerolabs/lz-v2-utilities";
-import { MessagingFeeStruct, SendParamStruct } from "../typechain-types/contracts/FT";
+import { FT, MessagingFeeStruct, SendParamStruct } from "../typechain-types/contracts/FT";
 import { ChainType, endpointIdToChainType, endpointIdToNetwork } from "@layerzerolabs/lz-definitions";
 
 interface MasterArgs {
@@ -21,7 +21,7 @@ task("lz:ft:send", "Sends FT tokens cross‐chain from EVM chains")
 
     // Only support EVM chains in this example
     if (chainType === ChainType.EVM) {
-      const ft = await hre.ethers.getContractAt("FT", (await hre.deployments.get("FT")).address);
+      const ft = await hre.ethers.getContractAt("FT", (await hre.deployments.get("FT")).address) as unknown as FT;
       console.log(`FT address: ${await ft.getAddress()}`);
 
       // Defining extra message execution options for the send operation
@@ -37,11 +37,15 @@ task("lz:ft:send", "Sends FT tokens cross‐chain from EVM chains")
         oftCmd: "0x"
       };
 
+      const [owner] = await hre.ethers.getSigners();
+      console.log(`FT balance of ${await owner.getAddress()}: ${await ft.balanceOf(owner)}`);
+
       // Fetching the native fee for the token send operation
       const [sendFee] = await ft.quoteSend(sendParams, false);
 
+      console.log(`Send fee: ${hre.ethers.formatEther(sendFee)} ETH`);
+
       // Executing the send operation from contract
-      const [owner] = await hre.ethers.getSigners();
       const feeStruct: MessagingFeeStruct = { nativeFee: sendFee, lzTokenFee: 0 };
       const tx = await ft.send(sendParams, feeStruct, owner, { value: sendFee });
       const receipt = await tx.wait();
