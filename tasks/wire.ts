@@ -4,6 +4,13 @@ import { FT, ILayerZeroEndpointV2 } from "../typechain-types";
 import { task, types } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { getChainConfig } from "../utils/constants";
+import SafeApiKit from '@safe-global/api-kit'
+import Safe from '@safe-global/protocol-kit'
+import {
+  MetaTransactionData,
+  OperationType
+} from '@safe-global/types-kit'
+import { Wallet } from "ethers";
 
 const requiredDVN = "LayerZero Labs"; // Required for both mainnet and testnet
 const requiredDVNMainnet = "Horizen" // Only required on mainnet
@@ -60,10 +67,192 @@ interface ChainConfig {
   confirmations?: number;
 }
 
+interface SafeConfig {
+  safeAddress: string;
+}
+
 class LayerZeroMultiChainWire {
   private chainConfigMap: Map<string, ChainConfig> = new Map();
+  private useSafe: boolean = false;
+  private safeService?: SafeApiKit;
+  private safeSdk?: Safe;
 
-  constructor(private hre: HardhatRuntimeEnvironment) { }
+  constructor(private hre: HardhatRuntimeEnvironment, useSafe: boolean = false) {
+    this.useSafe = useSafe;
+  }
+
+  /**
+   * Initialize Safe SDK if --safe flag is used
+   */
+  private async initializeSafe(): Promise<void> {
+    if (!this.useSafe) return;
+
+    const network = this.hre.network;
+    const safeConfig = (network.config as any).safeConfig as SafeConfig | undefined;
+
+    if (!safeConfig) {
+      throw new Error(
+        `Safe config not found for network ${network.name}. Please add safeConfig to your hardhat.config.ts:\n` +
+        `safeConfig: {\n` +
+        `  safeAddress: '0x...'\n` +
+        `}`
+      );
+    }
+
+    console.log(`Initializing Safe SDK for ${network.name}...`);
+    console.log(`Safe Address: ${safeConfig.safeAddress}`);
+
+    try {
+      // Get the private key
+      const privateKey = process.env.PRIVATE_KEY_PROPOSER
+      if (!privateKey) {
+        throw new Error('Private key not found. Make sure PRIVATE_KEY_PROPOSER env var is set');
+      }
+      
+      // Safe SDK v4 - Simpler initialization
+      this.safeSdk = await Safe.init({
+        provider: (network.config as any).url,
+        signer: privateKey,
+        safeAddress: safeConfig.safeAddress,
+      });
+
+      // Safe API Kit v2 - Updated to use chainId instead of txServiceUrl
+      const chainId = await this.hre.getChainId();
+      this.safeService = new SafeApiKit({
+        chainId: BigInt(chainId),
+        apiKey: process.env.SAFE_API_KEY,
+      });
+
+      console.log(`Safe SDK initialized successfully`);
+      console.log(`Chain ID: ${chainId}`);
+    } catch (error) {
+      console.error('Failed to initialize Safe SDK:', error);
+      throw new Error(`Safe SDK initialization failed. Make sure @safe-global packages are installed: ${error}`);
+    }
+  }
+
+  /**
+   * Propose a transaction to Safe multisig
+   */
+  private async proposeSafeTransaction(
+    to: string,
+    data: string,
+    description: string
+  ): Promise<void> {
+    if (!this.safeSdk || !this.safeService) {
+      throw new Error("Safe SDK not initialized");
+    }
+
+    console.log(`Proposing Safe transaction: ${description}`);
+
+    const safeTransactionData: MetaTransactionData = {
+      to,
+      value: "0",
+      data,
+      operation: OperationType.Call,
+    };
+
+    // Create the transaction
+    const safeTransaction = await this.safeSdk.createTransaction({
+      transactions: [safeTransactionData],
+    });
+   
+    // Get the safe transaction hash
+    const safeTxHash = await this.safeSdk.getTransactionHash(safeTransaction);
+    const signature = await this.safeSdk.signHash(safeTxHash)
+
+    // Get the private key
+    const privateKey = process.env.PRIVATE_KEY_PROPOSER
+    if (!privateKey) {
+      throw new Error('Private key not found. Make sure PRIVATE_KEY_PROPOSER env var is set');
+    }
+
+    const senderAddress = new Wallet(privateKey).address;
+      
+    // Get the Safe address
+    const safeAddress = await this.safeSdk.getAddress();
+
+    // Propose the transaction to the Safe Transaction Service
+    await this.safeService.proposeTransaction({
+      safeAddress,
+      safeTransactionData: safeTransaction.data,
+      safeTxHash,
+      senderAddress,
+      senderSignature: signature.data,
+    });
+
+    console.log(`Safe transaction proposed successfully`);
+    console.log(`Transaction hash: ${safeTxHash}`);
+    console.log(`View in Safe UI: https://app.safe.global/transactions/queue?safe=${safeAddress}`);
+  }
+
+  /**
+   * Propose a batch transaction to Safe multisig
+   */
+  private async proposeSafeBatchTransaction(
+    transactions: MetaTransactionData[],
+    description: string
+  ): Promise<void> {
+    if (!this.safeSdk || !this.safeService) {
+      throw new Error("Safe SDK not initialized");
+    }
+
+    console.log(`Proposing Safe batch transaction: ${description}`);
+
+    // Create the batch transaction
+    const safeTransaction = await this.safeSdk.createTransaction({
+      transactions,
+    });
+   
+    // Get the safe transaction hash
+    const safeTxHash = await this.safeSdk.getTransactionHash(safeTransaction);
+    const signature = await this.safeSdk.signHash(safeTxHash)
+
+    // Get the private key
+    const privateKey = process.env.PRIVATE_KEY_PROPOSER
+    if (!privateKey) {
+      throw new Error('Private key not found. Make sure PRIVATE_KEY_PROPOSER env var is set');
+    }
+
+    const senderAddress = new Wallet(privateKey).address;
+      
+    // Get the Safe address
+    const safeAddress = await this.safeSdk.getAddress();
+
+    // Propose the transaction to the Safe Transaction Service
+    await this.safeService.proposeTransaction({
+      safeAddress,
+      safeTransactionData: safeTransaction.data,
+      safeTxHash,
+      senderAddress,
+      senderSignature: signature.data,
+    });
+
+    console.log(`Safe batch transaction proposed successfully (${transactions.length} transactions)`);
+    console.log(`Transaction hash: ${safeTxHash}`);
+    console.log(`View in Safe UI: https://app.safe.global/transactions/queue?safe=${safeAddress}`);
+  }
+
+  /**
+   * Execute transaction directly or propose to Safe
+   */
+  private async executeOrPropose(
+    contract: any,
+    method: string,
+    args: any[],
+    description: string
+  ): Promise<void> {
+    if (this.useSafe) {
+      // Encode the transaction data
+      const data = contract.interface.encodeFunctionData(method, args);
+      await this.proposeSafeTransaction(await contract.getAddress(), data, description);
+    } else {
+      // Execute directly
+      const tx = await contract[method](...args);
+      await tx.wait(NUM_BLOCKS_TO_WAIT);
+      console.log(`✅ ${description}`);
+    }
+  }
 
   /**
    * Load chain metadata and auto-populate FT token addresses and receive confirmations
@@ -152,8 +341,13 @@ class LayerZeroMultiChainWire {
 
   /**
    * Wire source chain with the destination chain
+   * Returns the transactions to be executed (for batching when using Safe)
    */
-  async wireChains(sourceChainKey: string, destinationChainKey: string): Promise<void> {
+  async wireChains(
+    sourceChainKey: string,
+    destinationChainKey: string,
+    ft: FT
+  ): Promise<MetaTransactionData[]> {
     const sourceConfig = this.getChainConfig(sourceChainKey);
     const destConfig = this.getChainConfig(destinationChainKey);
 
@@ -172,8 +366,6 @@ class LayerZeroMultiChainWire {
       sourceConfig.endpointV2Address
     )) as unknown as ILayerZeroEndpointV2;
 
-    const ft = await this.hre.ethers.getContractAt("FT", (await this.hre.deployments.get("FT")).address) as unknown as FT;
-
     const destTokenAddress = destConfig.ftTokenAddress;
     if (!destTokenAddress) {
       throw new Error(`No FT token address configured for destination chain ${destinationChainKey}`);
@@ -183,11 +375,7 @@ class LayerZeroMultiChainWire {
 
     await this.configureReceiveSettings(endpointContract, ft, sourceConfig, destConfig);
 
-    await this.setPeer(ft, destConfig, destTokenAddress);
-
-    await this.setEnforcedOptions(ft, destConfig);
-
-    console.log(`Wired ${sourceChainKey} => ${destinationChainKey}`);
+    return this.preparePeerAndEnforcedOptions(ft, destConfig, destTokenAddress);
   }
 
   /**
@@ -292,18 +480,14 @@ class LayerZeroMultiChainWire {
   }
 
   /**
-   * Set peer relationship
+   * Prepare peer relationship and enforced options transactions
+   * Returns the transactions to be batched together
    */
-  private async setPeer(ft: any, destConfig: ChainConfig, destTokenAddress: string): Promise<void> {
-    const tx = await ft.setPeer(destConfig.eid, this.hre.ethers.zeroPadValue(destTokenAddress, 32));
-    await tx.wait(NUM_BLOCKS_TO_WAIT);
-    console.log(`Peer set`);
-  }
-
-  /**
-   * Set enforced options for gas and execution
-   */
-  private async setEnforcedOptions(ft: any, destConfig: ChainConfig): Promise<void> {
+  private async preparePeerAndEnforcedOptions(
+    ft: any,
+    destConfig: ChainConfig,
+    destTokenAddress: string
+  ): Promise<MetaTransactionData[]> {
     const options = Options.newOptions()
       .addExecutorLzReceiveOption(300000, 0) // Fixed gas limit for all chains
       .toHex()
@@ -317,9 +501,31 @@ class LayerZeroMultiChainWire {
       }
     ];
 
-    const tx = await ft.setEnforcedOptions(enforcedOptions);
-    await tx.wait(NUM_BLOCKS_TO_WAIT);
-    console.log(`Enforced options set`);
+    const ftAddress = await ft.getAddress();
+    
+    const setPeerData = ft.interface.encodeFunctionData("setPeer", [
+      destConfig.eid,
+      this.hre.ethers.zeroPadValue(destTokenAddress, 32)
+    ]);
+
+    const setEnforcedOptionsData = ft.interface.encodeFunctionData("setEnforcedOptions", [
+      enforcedOptions
+    ]);
+
+    return [
+      {
+        to: ftAddress,
+        value: "0",
+        data: setPeerData,
+        operation: OperationType.Call,
+      },
+      {
+        to: ftAddress,
+        value: "0",
+        data: setEnforcedOptionsData,
+        operation: OperationType.Call,
+      }
+    ];
   }
 
   /**
@@ -338,22 +544,73 @@ class LayerZeroMultiChainWire {
     }
 
     const sourceChain = this.hre.network.name;
+    const sourceConfig = this.getChainConfig(sourceChain);
     console.log(`Source chain: ${sourceChain}`);
+
+    // Check if we're on the source chain
+    const sourceChainId = await this.hre.getChainId();
+    if (parseInt(sourceChainId) !== sourceConfig.nativeChainId) {
+      throw new Error(`Current chain (${sourceChainId}) doesn't match source chain (${sourceConfig.nativeChainId})`);
+    }
+
+    // Initialize Safe if needed
+    if (this.useSafe) {
+      await this.initializeSafe();
+    }
+
+    const ft = await this.hre.ethers.getContractAt("FT", (await this.hre.deployments.get("FT")).address) as unknown as FT;
 
     // Wire current chain to all other chains
     const targetChains = chainKeys.filter((chain) => chain !== sourceChain);
-    console.log(targetChains);
+    console.log(`Target chains: ${targetChains.join(", ")}`);
 
-    for (const targetChain of targetChains) {
-      try {
-        await this.wireChains(sourceChain, targetChain);
-      } catch (error) {
-        console.error(`❌ Failed to wire ${sourceChain} => ${targetChain}:`, error);
-        throw error;
+    if (this.useSafe) {
+      // Collect all transactions first
+      const allTransactions: MetaTransactionData[] = [];
+      
+      for (const targetChain of targetChains) {
+        try {
+          const transactions = await this.wireChains(sourceChain, targetChain, ft);
+          allTransactions.push(...transactions);
+        } catch (error) {
+          console.error(`❌ Failed to prepare wiring for ${sourceChain} => ${targetChain}:`, error);
+          throw error;
+        }
       }
-    }
 
-    console.log(`\nSuccessfully wired ${sourceChain} to ${targetChains.length} other chain(s)!`);
+      // Propose all transactions as a single batch
+      await this.proposeSafeBatchTransaction(
+        allTransactions,
+        `Wire ${sourceChain} to ${targetChains.length} chains (${targetChains.join(", ")})`
+      );
+
+      console.log(`\nSuccessfully proposed 1 batch transaction for setting peers & enforced options containing ${allTransactions.length} operations to Safe multisig!`);
+      console.log(`Please review and sign the transaction in the Safe UI.`);
+    } else {
+      // Execute directly (sequential)
+      for (const targetChain of targetChains) {
+        try {
+          const transactions = await this.wireChains(sourceChain, targetChain, ft);
+          
+          // Execute each transaction
+          for (const txData of transactions) {
+            const tx = await (await this.hre.ethers.provider.getSigner()).sendTransaction({
+              to: txData.to,
+              data: txData.data,
+              value: txData.value,
+            });
+            await tx.wait(NUM_BLOCKS_TO_WAIT);
+          }
+          
+          console.log(`✅ Wired ${sourceChain} => ${targetChain}`);
+        } catch (error) {
+          console.error(`❌ Failed to wire ${sourceChain} => ${targetChain}:`, error);
+          throw error;
+        }
+      }
+
+      console.log(`\n✅ Successfully wired ${sourceChain} to ${targetChains.length} other chain(s)!`);
+    }
   }
 
   /**
@@ -383,9 +640,11 @@ task("lz:ft:wire", "Wire multiple chains together using LayerZero")
     undefined,
     types.string
   )
+  .addFlag("safe", "Use Safe multisig for setPeer and setEnforcedOptions transactions")
   .setAction(async (args, hre: HardhatRuntimeEnvironment) => {
     try {
       const chains = args.chains.split(",").map((c: string) => c.trim());
+      const useSafe = args.safe || false;
 
       const [signer] = await hre.ethers.getSigners();
       console.log(`Using signer: ${signer.address}`);
@@ -398,9 +657,10 @@ task("lz:ft:wire", "Wire multiple chains together using LayerZero")
       console.log(`   Required DVNs: ${requiredDVN}, ${requiredDVNMainnet}`);
       console.log(`   Optional DVNs: None`);
       console.log(`   Deployer: ${(await hre.ethers.getSigners())[0].address}`);
+      console.log(`   Use Safe Multisig: ${useSafe ? "Yes" : "No"}`);
       console.log("");
 
-      const wireManager = new LayerZeroMultiChainWire(hre);
+      const wireManager = new LayerZeroMultiChainWire(hre, useSafe);
 
       const lzMetadataPath = "../utils/lzMetadata.json";
 

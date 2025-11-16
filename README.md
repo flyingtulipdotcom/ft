@@ -74,9 +74,9 @@ To deploy the OFT contracts to your desired blockchains, run the following comma
 ```bash
 npx hardhat deploy --tags FT --network sonic
 ```
-Wire up all the chains you want cross-chain communication for mainnets
+Wire up all the chains you want cross-chain communication for mainnets. Remove --safe to use deployer private key for setting peers and enforced options
 ```bash
-npx hardhat lz:ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic
+npx hardhat lz:ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic --safe
 ```
 Wire up all the chains you want cross-chain communication for testnets
 ```bash

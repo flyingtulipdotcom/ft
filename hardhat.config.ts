@@ -18,12 +18,15 @@ import '@typechain/hardhat'
 import "./tasks"
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
 import { EndpointId } from '@layerzerolabs/lz-definitions'
-import { loadKeystorePrivateKey } from './utils/keystore'
 
 declare module 'hardhat/types/config' {
   interface HttpNetworkUserConfig {
     eid?: EndpointId;
     isTestnet?: boolean,
+    safeConfig?: {
+      safeAddress: string;
+      apiKey?: string;
+    }
   }
 }
 
@@ -61,6 +64,9 @@ if (accounts == null && !KEYSTORE_PATH) {
         'Could not find KEYSTORE_PATH, MNEMONIC, or PRIVATE_KEY environment variables. It will not be possible to execute transactions.'
     )
 }
+
+const SAFE_ADDRESS = process.env.SAFE_ADDRESS || '';
+const SAFE_API_KEY = process.env.SAFE_API_KEY || '';
 
 const config: HardhatUserConfig = {
     paths: {
@@ -103,30 +109,50 @@ const config: HardhatUserConfig = {
             url: process.env.RPC_URL_SONIC || 'https://rpc.soniclabs.com',
             isTestnet: false,
             accounts,
+            safeConfig: {
+                safeAddress: SAFE_ADDRESS, // Address of the Safe wallet for the network
+                apiKey: process.env.SAFE_API_KEY // API key for the Safe Transaction Service
+            }
         },
         'bsc': {
             eid: EndpointId.BSC_V2_MAINNET,
             url: process.env.RPC_URL_BSC || 'https://bsc.drpc.org',
             isTestnet: false,
             accounts,
+            safeConfig: {
+                safeAddress: SAFE_ADDRESS, // Address of the Safe wallet for the network
+                apiKey: SAFE_API_KEY // API key for the Safe Transaction Service
+            }
         },
         'ethereum': {
             eid: EndpointId.ETHEREUM_V2_MAINNET,
             url: process.env.RPC_URL_ETHEREUM || 'https://ethereum-rpc.publicnode.com',
             isTestnet: false,
             accounts,
+            safeConfig: {
+                safeAddress: SAFE_ADDRESS, // Address of the Safe wallet for the network
+                apiKey: SAFE_API_KEY // API key for the Safe Transaction Service
+            }
         },
         'avalanche': {
             eid: EndpointId.AVALANCHE_V2_MAINNET,
             url: process.env.RPC_URL_AVALANCHE || 'https://api.avax.network/ext/bc/C/rpc',
             isTestnet: false,
             accounts,
+            safeConfig: {
+                safeAddress: SAFE_ADDRESS, // Address of the Safe wallet for the network
+                apiKey: SAFE_API_KEY // API key for the Safe Transaction Service
+            }
         },
         'base': {
             eid: EndpointId.BASE_V2_MAINNET,
             url: process.env.RPC_URL_BASE || 'https://base-rpc.publicnode.com',
             isTestnet: false,
             accounts,
+            safeConfig: {
+                safeAddress: SAFE_ADDRESS, // Address of the Safe wallet for the network
+                apiKey: SAFE_API_KEY // API key for the Safe Transaction Service
+            }
         },
         'bsc-testnet': {
             eid: EndpointId.BSC_V2_TESTNET,
@@ -139,6 +165,10 @@ const config: HardhatUserConfig = {
             url: process.env.RPC_URL_ETHEREUM_TESTNET || 'https://sepolia.gateway.tenderly.co',
             isTestnet: true,
             accounts,
+            safeConfig: {
+                safeAddress: SAFE_ADDRESS, // Address of the Safe wallet for the network
+                apiKey: SAFE_API_KEY // API key for the Safe Transaction Service
+            }
         },
         'fuji': {
             eid: EndpointId.AVALANCHE_V2_TESTNET,
