@@ -11,8 +11,8 @@ type ChainConfig = {
 
 // I-2: Support environment variable overrides for role addresses
 // This allows rotation without code changes
-const STANDARD_FT_DELEGATE = process.env.FT_DELEGATE || "0x3419E83fe5583028e056b1aa5E62601D80799572";
-const STANDARD_FT_CONFIGURATOR = process.env.FT_CONFIGURATOR || "0x3419E83fe5583028e056b1aa5E62601D80799572";
+const STANDARD_FT_DELEGATE = process.env.FT_DELEGATE || "0x22246a9183ce2ce6e2c2a9973f94aea91435017c";
+const STANDARD_FT_CONFIGURATOR = process.env.FT_CONFIGURATOR || "0x22246a9183ce2ce6e2c2a9973f94aea91435017c";
 // MSIG address for all chains
 const STANDARD_FINAL_OWNER = process.env.FINAL_OWNER || "0x1118e1c057211306a40A4d7006C040dbfE1370Cb";
 
