@@ -76,15 +76,15 @@ npx hardhat deploy --tags FT --network sonic
 ```
 Wire up all the chains you want cross-chain communication for mainnets. Remove --safe to use deployer private key for setting peers and enforced options
 ```bash
-npx hardhat lz:ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic --safe
+npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic --safe
 ```
 Wire up all the chains you want cross-chain communication for testnets
 ```bash
-npx hardhat lz:ft:wire --chains sepolia,fuji,bsc-testnet,base-sepolia --network base-sepolia
+npx hardhat ft:wire --chains sepolia,fuji,bsc-testnet,base-sepolia --network base-sepolia
 ```
 Send 1 OFT from **Sonic** to **Avalanche**:
 ```bash
-npx hardhat lz:ft:send --dst-eid 30106 --to 0xa801864d0D24686B15682261aa05D4e1e6e5BD94 --amount 1000000000000000000 --network sonic
+npx hardhat ft:send --dst-eid 30106 --to 0xa801864d0D24686B15682261aa05D4e1e6e5BD94 --amount 1000000000000000000 --network sonic
 ```
 Updating the delegate afterwards
 ```bash
@@ -95,7 +95,8 @@ npx hardhat lz:ft:set-delegate --account 0x22246a9183ce2ce6e2c2a9973f94aea914350
 # For a new chain
 1 - Add details to the CHAINS variable in utils/constants.ts
 2 - Update support chains above in README.md
-3 - Wire them up to all needed chains
+3 - Call `ft:wire` on the new chain to hook up all other chains. 
+4 - Call `ft:wire` on all other networks to wire the new chain up to it for a full mesh
 
 # Appendix
 
@@ -151,25 +152,11 @@ pnpm test
 
 ## Using Multisigs
 
-The wiring task supports the usage of Safe Multisigs.
+The peering task supports the usage of Safe Multisigs.
 
-To use a Safe multisig as the signer for these transactions, add the following to each network in your `hardhat.config.ts` and add the `--safe` flag to `lz:ft:wire --safe`:
+To use a Safe multisig as the signer for these transactions, add the following to each network in your `hardhat.config.ts` and add the `--safe` flag to `ft:peer-options --safe`:
 
-```typescript
-// hardhat.config.ts
-
-networks: {
-  // Include configurations for other networks as needed
-  fuji: {
-    /* ... */
-    // Network-specific settings
-    safeConfig: {
-      safeUrl: 'http://something', // URL of the Safe API, not the Safe itself
-      safeAddress: 'address'
-    }
-}
-}
-```
+Specify `PRIVATE_KEY_PROPOSER`, `SAFE_ADDRESS` & `SAFE_API_KEY` env variables
 
 ## Security Model
 

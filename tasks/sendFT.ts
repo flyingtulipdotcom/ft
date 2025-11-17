@@ -10,7 +10,7 @@ interface MasterArgs {
   to: string;
 }
 
-task("lz:ft:send", "Sends FT tokens cross‐chain from EVM chains")
+task("ft:send", "Sends FT tokens cross‐chain from EVM chains")
   .addParam("dstEid", "Destination endpoint ID", undefined, types.int)
   .addParam("amount", "Amount to send in wei", undefined, types.string)
   .addParam("to", "Recipient address (20-byte hex for EVM)", undefined, types.string)
