@@ -88,7 +88,7 @@ npx hardhat lz:ft:send --dst-eid 30106 --to 0xa801864d0D24686B15682261aa05D4e1e6
 ```
 Updating the delegate afterwards
 ```bash
-npx hardhat lz:ft:set-delegate --account 0x3419E83fe5583028e056b1aa5E62601D80799572 --network sonic
+npx hardhat lz:ft:set-delegate --account 0x22246a9183ce2ce6e2c2a9973f94aea91435017c --network sonic
 ```
 > You can get the address of your OFT on Sonic  from the file at `./deployments/sonic/FT.json`
 
