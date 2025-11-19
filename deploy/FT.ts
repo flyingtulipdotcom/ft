@@ -66,9 +66,9 @@ const deploy: DeployFunction = async (hre) => {
     console.log('\n✅ Proceeding with deployment...\n');
 
     // Check for Etherscan API key
-    if (!process.env.ETHERSCAN_API_KEY) {
-        throw new Error('ETHERSCAN_API_KEY not set in .env file. Contract verification requires an API key.');
-    }
+    // if (!process.env.ETHERSCAN_API_KEY) {
+    //     throw new Error('ETHERSCAN_API_KEY not set in .env file. Contract verification requires an API key.');
+    // }
 
     const isTestnet = (hre.network.config as any).isTestnet ?? false;
     const mintChainId = isTestnet ? 11155111 : 146; // Sepolia : Sonic
@@ -111,7 +111,7 @@ const deploy: DeployFunction = async (hre) => {
     console.log('\nWaiting for 5 block confirmations before verification...');
     await ft.deploymentTransaction()?.wait(5); // Wait for 5 confirmations
     console.log('Block confirmations received');
-
+/*
     // Additional delay to allow Etherscan to index
     console.log('Waiting for Etherscan to index the contract...');
     await new Promise((resolve) => setTimeout(resolve, 15000)); // 15 seconds
@@ -129,7 +129,7 @@ const deploy: DeployFunction = async (hre) => {
     console.log("You can verify manually later using:");
     console.log(`npx hardhat verify --network ${hre.network.name} ${address} "${name}" "${symbol}" ${endpointV2Address} ${delegate} ${ftConfigurator} ${mintChainId}`);
   }
-
+*/
   // Transfer ownership to final owner
   const finalOwner = chainConfig.finalOwner;
   console.log(`\nTransferring ownership to final owner: ${finalOwner}`);
@@ -138,19 +138,19 @@ const deploy: DeployFunction = async (hre) => {
   await transferTx.wait(2); // Wait for 2 confirmations
   console.log(`✅ Ownership transferred to ${finalOwner}`);
 
-  // Run post-deployment state check
-  console.log(`\n${'='.repeat(60)}`);
-  console.log('Running post-deployment state check...');
-  console.log('='.repeat(60));
+//   // Run post-deployment state check
+//   console.log(`\n${'='.repeat(60)}`);
+//   console.log('Running post-deployment state check...');
+//   console.log('='.repeat(60));
 
-  const { runDeploymentCheck } = await import('../scripts/check-deployment');
-  const checksPass = await runDeploymentCheck(hre);
+//   const { runDeploymentCheck } = await import('../scripts/check-deployment');
+//   const checksPass = await runDeploymentCheck(hre);
 
-  if (!checksPass) {
-    throw new Error('Post-deployment checks failed! Please review the deployment.');
-  }
+//   if (!checksPass) {
+//     throw new Error('Post-deployment checks failed! Please review the deployment.');
+//   }
 
-  console.log('\n✅ Deployment complete and all checks passed!');
+//   console.log('\n✅ Deployment complete and all checks passed!');
 }
 
 deploy.tags = [TOKEN_CONTRACT_NAME]

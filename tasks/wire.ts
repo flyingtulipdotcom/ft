@@ -2,54 +2,32 @@ import { NIL_DVN_COUNT } from "@layerzerolabs/metadata-tools"
 import { FT, ILayerZeroEndpointV2 } from "../typechain-types";
 import { task, types } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
+import {
+  MetaTransactionData,
+  OperationType
+} from '@safe-global/types-kit'
+import { SafeManager, SafeAddressType } from "./SafeManager";
 import { LayerZeroPeerOptionsManager } from "./peerOptions";
 import { ChainConfig, TaskArgs, NUM_BLOCKS_TO_WAIT } from "./types";
 import { LayerZeroBaseManager, CLIUtils } from "./BaseManager";
 
 class LayerZeroMultiChainWire extends LayerZeroBaseManager {
-  constructor(hre: HardhatRuntimeEnvironment) {
+  private useSafe: boolean = false;
+  private safeManager?: SafeManager;
+
+  constructor(hre: HardhatRuntimeEnvironment, useSafe: boolean = false) {
     super(hre);
-  }
-
-  /**
-   * Wire source chain with the destination chain (only endpoint configuration)
-   */
-  async wireChains(
-    sourceChainKey: string,
-    destinationChainKey: string,
-    ft: FT
-  ): Promise<void> {
-    const sourceConfig = this.getChainConfig(sourceChainKey);
-    const destConfig = this.getChainConfig(destinationChainKey);
-
-    console.log(
-      `Wiring ${sourceChainKey} (EID: ${sourceConfig.eid}) <=> ${destinationChainKey} (EID: ${destConfig.eid})`
-    );
-
-    const endpointContract = (await this.hre.ethers.getContractAt(
-      "ILayerZeroEndpointV2",
-      sourceConfig.endpointV2Address
-    )) as unknown as ILayerZeroEndpointV2;
-
-    const destTokenAddress = destConfig.ftTokenAddress;
-    if (!destTokenAddress) {
-      throw new Error(`No FT token address configured for destination chain ${destinationChainKey}`);
+    this.useSafe = useSafe;
+    if (this.useSafe) {
+      this.safeManager = new SafeManager(this.hre, SafeAddressType.DELEGATE);
     }
-
-    await this.configureSendSettings(endpointContract, ft, sourceConfig, destConfig);
-    await this.configureReceiveSettings(endpointContract, ft, sourceConfig, destConfig);
   }
 
   /**
-   * Configure send settings for cross-chain communication
+   * Build send config for a destination chain
    */
-  private async configureSendSettings(
-    endpointContract: ILayerZeroEndpointV2,
-    ft: FT,
-    sourceConfig: ChainConfig,
-    destConfig: ChainConfig
-  ): Promise<void> {
-    const sendConfig = [
+  private buildSendConfig(sourceConfig: ChainConfig, destConfig: ChainConfig): any[] {
+    return [
       {
         eid: destConfig.eid,
         configType: 1, // send
@@ -83,30 +61,13 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
         )
       }
     ];
-
-    if ((await endpointContract.defaultSendLibrary(sourceConfig.eid)) !== sourceConfig.sendLibAddress) {
-      throw new Error(`Send library mismatch`);
-    }
-  
-    let tx = await endpointContract.setSendLibrary(ft, destConfig.eid, sourceConfig.sendLibAddress);
-    await tx.wait(NUM_BLOCKS_TO_WAIT);
-    console.log(`Send library set`);
-
-    tx = await endpointContract.setConfig(ft, sourceConfig.sendLibAddress, sendConfig);
-    await tx.wait(NUM_BLOCKS_TO_WAIT);
-    console.log(`Send config set`);
   }
 
   /**
-   * Configure receive settings for cross-chain communication
+   * Build receive config for a destination chain
    */
-  private async configureReceiveSettings(
-    endpointContract: ILayerZeroEndpointV2,
-    ft: any,
-    sourceConfig: ChainConfig,
-    destConfig: ChainConfig
-  ): Promise<void> {
-    const receiveConfig = [
+  private buildReceiveConfig(sourceConfig: ChainConfig, destConfig: ChainConfig): any[] {
+    return [
       {
         eid: destConfig.eid,
         configType: 2, // receive
@@ -127,24 +88,90 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
         )
       }
     ];
+  }
 
-    if ((await endpointContract.defaultReceiveLibrary(sourceConfig.eid)) !== sourceConfig.receiveLibAddress) {
-      throw new Error(`Receive library mismatch`);
-    }
+  /**
+   * Prepare endpoint configuration transactions for a single destination
+   * Returns the transactions to be batched together
+   */
+  private async prepareEndpointConfig(
+    endpointContract: ILayerZeroEndpointV2,
+    ft: FT,
+    sourceConfig: ChainConfig,
+    destConfig: ChainConfig
+  ): Promise<MetaTransactionData[]> {
+    const transactions: MetaTransactionData[] = [];
+    const endpointAddress = await endpointContract.getAddress();
+    const ftAddress = await ft.getAddress();
 
-    let tx = await endpointContract.setReceiveLibrary(ft, destConfig.eid, sourceConfig.receiveLibAddress, 0);
-    await tx.wait(NUM_BLOCKS_TO_WAIT);
-    console.log(`Receive library set`);
+    // Build configs
+    const sendConfig = this.buildSendConfig(sourceConfig, destConfig);
+    const receiveConfig = this.buildReceiveConfig(sourceConfig, destConfig);
 
-    tx = await endpointContract.setConfig(ft, sourceConfig.receiveLibAddress, receiveConfig);
-    await tx.wait(NUM_BLOCKS_TO_WAIT);
-    console.log(`Receive config set`);
+    // 1. Set send library
+    const setSendLibData = endpointContract.interface.encodeFunctionData("setSendLibrary", [
+      ftAddress,
+      destConfig.eid,
+      sourceConfig.sendLibAddress
+    ]);
+
+    transactions.push({
+      to: endpointAddress,
+      value: "0",
+      data: setSendLibData,
+      operation: OperationType.Call,
+    });
+
+    // 2. Set send config
+    const setSendConfigData = endpointContract.interface.encodeFunctionData("setConfig", [
+      ftAddress,
+      sourceConfig.sendLibAddress,
+      sendConfig
+    ]);
+
+    transactions.push({
+      to: endpointAddress,
+      value: "0",
+      data: setSendConfigData,
+      operation: OperationType.Call,
+    });
+
+    // 3. Set receive library
+    const setReceiveLibData = endpointContract.interface.encodeFunctionData("setReceiveLibrary", [
+      ftAddress,
+      destConfig.eid,
+      sourceConfig.receiveLibAddress,
+      0
+    ]);
+
+    transactions.push({
+      to: endpointAddress,
+      value: "0",
+      data: setReceiveLibData,
+      operation: OperationType.Call,
+    });
+
+    // 4. Set receive config
+    const setReceiveConfigData = endpointContract.interface.encodeFunctionData("setConfig", [
+      ftAddress,
+      sourceConfig.receiveLibAddress,
+      receiveConfig
+    ]);
+
+    transactions.push({
+      to: endpointAddress,
+      value: "0",
+      data: setReceiveConfigData,
+      operation: OperationType.Call,
+    });
+
+    return transactions;
   }
 
   /**
    * Wire multiple chains together in a full mesh network
    */
-  async wireMultipleChains(chainKeys: string[], useSafe: boolean): Promise<void> {
+  async wireMultipleChains(chainKeys: string[]): Promise<void> {
     console.log("🔗 Starting multi-chain wiring process...");
     console.log(`Chains to wire: ${chainKeys.join(", ")}`);
 
@@ -155,23 +182,85 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
     const { sourceChain, sourceConfig } = await this.validateSourceChain();
     console.log(`Source chain: ${sourceChain}`);
 
+    // Initialize Safe if needed
+    if (this.useSafe && this.safeManager) {
+      await this.safeManager.initialize();
+    }
+
     const ft = await this.getFTContract() as unknown as FT;
 
     // Wire current chain to all other chains (endpoint configuration only)
     const targetChains = chainKeys.filter((chain) => chain !== sourceChain);
     console.log(`Target chains: ${targetChains.join(", ")}`);
 
+    // Collect all endpoint configuration transactions first
+    const allTransactions: MetaTransactionData[] = [];
+    
+    const endpointContract = (await this.hre.ethers.getContractAt(
+      "ILayerZeroEndpointV2",
+      sourceConfig.endpointV2Address
+    )) as unknown as ILayerZeroEndpointV2;
+
     for (const targetChain of targetChains) {
       try {
-        await this.wireChains(sourceChain, targetChain, ft);
+        const destConfig = this.getChainConfig(targetChain);
+        const destTokenAddress = destConfig.ftTokenAddress;
+        if (!destTokenAddress) {
+          throw new Error(`No FT token address configured for destination chain ${targetChain}`);
+        }
+
+        console.log(
+          `Preparing ${sourceChain} (EID: ${sourceConfig.eid}) <=> ${targetChain} (EID: ${destConfig.eid})`
+        );
+
+        // Validate libraries before preparing transactions
+        if ((await endpointContract.defaultSendLibrary(sourceConfig.eid)) !== sourceConfig.sendLibAddress) {
+          throw new Error(`Send library mismatch for ${targetChain}`);
+        }
+        if ((await endpointContract.defaultReceiveLibrary(sourceConfig.eid)) !== sourceConfig.receiveLibAddress) {
+          throw new Error(`Receive library mismatch for ${targetChain}`);
+        }
+
+        const transactions = await this.prepareEndpointConfig(endpointContract, ft, sourceConfig, destConfig);
+        allTransactions.push(...transactions);
       } catch (error) {
-        console.error(`❌ Failed to configure endpoints for ${sourceChain} => ${targetChain}:`, error);
+        console.error(`❌ Failed to prepare endpoint config for ${sourceChain} => ${targetChain}:`, error);
         throw error;
       }
     }
 
+    // Execute transactions - either via Safe or directly
+    if (this.useSafe && this.safeManager) {
+      // Propose all endpoint configuration transactions as a single batch
+      await this.safeManager.proposeSafeBatchTransaction(
+        allTransactions,
+        `Wire endpoint configuration for ${sourceChain} to ${targetChains.length} chains (${targetChains.join(", ")})`
+      );
+
+      console.log(`\n✅ Successfully proposed 1 batch transaction containing ${allTransactions.length} endpoint operations to Safe multisig!`);
+      console.log(`Please review and sign the transaction in the Safe UI.`);
+    } else {
+      // Execute directly (sequential)
+      console.log(`\nExecuting ${allTransactions.length} endpoint configuration transactions...`);
+      
+      const signer = await this.hre.ethers.provider.getSigner();
+      for (let i = 0; i < allTransactions.length; i++) {
+        const txData = allTransactions[i];
+        console.log(`Transaction ${i + 1}/${allTransactions.length}: ${txData.to}`);
+        
+        const tx = await signer.sendTransaction({
+          to: txData.to,
+          data: txData.data,
+          value: txData.value,
+        });
+        await tx.wait(NUM_BLOCKS_TO_WAIT);
+      }
+      
+      console.log(`All endpoint configurations completed`);
+    }
+
     // Use the peer options manager to handle setPeer and setEnforcedOptions
-    const peerOptionsManager = new LayerZeroPeerOptionsManager(this.hre, useSafe);
+    const peerOptionsManager = new LayerZeroPeerOptionsManager(this.hre, this.useSafe);
 
     // Build chain configs for the peer options manager (it only needs basic info)
     const metadata = this.loadMetadata();
@@ -202,7 +291,7 @@ task("ft:wire", "Wire multiple chains together using LayerZero")
         "Optional DVNs": "None"
       });
 
-      const wireManager = new LayerZeroMultiChainWire(hre);
+      const wireManager = new LayerZeroMultiChainWire(hre, useSafe);
 
       // Load chain configurations (include DVNs for endpoint config)
       const metadata = wireManager.loadMetadata();
@@ -212,7 +301,7 @@ task("ft:wire", "Wire multiple chains together using LayerZero")
       wireManager.outputChainSummary();
 
       // Wire the chains using embedded configuration
-      await wireManager.wireMultipleChains(chains, useSafe);
+      await wireManager.wireMultipleChains(chains);
     } catch (error) {
       CLIUtils.handleTaskError(error, "Multi-chain wiring");
     }

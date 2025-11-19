@@ -108,7 +108,7 @@ const config: HardhatUserConfig = {
         },
         'bsc': {
             eid: EndpointId.BSC_V2_MAINNET,
-            url: process.env.RPC_URL_BSC || 'https://1rpc.io/bnb',
+            url: process.env.RPC_URL_BSC || 'https://binance.llamarpc.com',
             isTestnet: false,
             accounts,
         },

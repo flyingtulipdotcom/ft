@@ -6,7 +6,7 @@ import {
   MetaTransactionData,
   OperationType
 } from '@safe-global/types-kit'
-import { SafeManager } from "./SafeManager";
+import { SafeManager, SafeAddressType } from "./SafeManager";
 import { ChainConfig, TaskArgs, NUM_BLOCKS_TO_WAIT } from "./types";
 import { LayerZeroBaseManager, CLIUtils } from "./BaseManager";
 
@@ -19,7 +19,7 @@ class LayerZeroPeerOptionsManager extends LayerZeroBaseManager {
     super(hre);
     this.useSafe = useSafe;
     if (this.useSafe) {
-      this.safeManager = new SafeManager(this.hre);
+      this.safeManager = new SafeManager(this.hre, SafeAddressType.OWNER);
     }
   }
 

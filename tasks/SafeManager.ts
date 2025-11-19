@@ -7,12 +7,52 @@ import {
 import { Wallet } from "ethers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
+/**
+ * Enum for Safe address types
+ */
+export enum SafeAddressType {
+  /** Safe that owns the FT contracts - used for peer and enforced options operations */
+  OWNER = 'OWNER',
+  /** Safe for endpoint configuration - used for wire operations */
+  DELEGATE = 'DELEGATE'
+}
+
 export class SafeManager {
   private safeService?: SafeApiKit;
   private safeSdk?: Safe;
   private initialized: boolean = false;
+  private addressType: SafeAddressType;
 
-  constructor(private hre: HardhatRuntimeEnvironment) {}
+  /**
+   * @param hre - Hardhat Runtime Environment
+   * @param addressType - Type of Safe address to use:
+   *                      - SafeAddressType.OWNER: Uses SAFE_OWNER_ADDRESS (for peer/options operations)
+   *                      - SafeAddressType.DELEGATE: Uses SAFE_DELEGATE_ADDRESS (for wire operations)
+   */
+  constructor(
+    private hre: HardhatRuntimeEnvironment,
+    addressType: SafeAddressType = SafeAddressType.OWNER
+  ) {
+    this.addressType = addressType;
+  }
+
+  /**
+   * Get the environment variable name for the current address type
+   */
+  private getAddressEnvVar(): string {
+    return this.addressType === SafeAddressType.DELEGATE 
+      ? 'SAFE_DELEGATE_ADDRESS' 
+      : 'SAFE_OWNER_ADDRESS';
+  }
+
+  /**
+   * Get the operation type description for the current address type
+   */
+  private getOperationType(): string {
+    return this.addressType === SafeAddressType.DELEGATE 
+      ? 'wire/endpoint' 
+      : 'peer/options';
+  }
 
   /**
    * Initialize Safe SDK
@@ -21,17 +61,28 @@ export class SafeManager {
     if (this.initialized) return;
 
     const network = this.hre.network;
-    const safeAddress = process.env.SAFE_ADDRESS;
+    
+    // Select the appropriate Safe address based on the address type
+    const safeAddressEnvVar = this.getAddressEnvVar();
+    const safeAddress = process.env[safeAddressEnvVar];
     const safeApiKey = process.env.SAFE_API_KEY;
 
-    if (!safeAddress || !safeApiKey) {
+    if (!safeAddress) {
       throw new Error(
-        `SAFE_ADDRESS or SAFE_API_KEY not set in .env file. SafeManager initialization failed.`
+        `${safeAddressEnvVar} not set in .env file. SafeManager initialization failed.\n` +
+        `Use SAFE_OWNER_ADDRESS for peer/options operations, or SAFE_DELEGATE_ADDRESS for wire operations.`
       );
     }
 
-    console.log(`Initializing Safe SDK for ${network.name}...`);
-    console.log(`Safe Address: ${safeAddress}`);
+    if (!safeApiKey) {
+      throw new Error(
+        `SAFE_API_KEY not set in .env file. SafeManager initialization failed.`
+      );
+    }
+
+    const operationType = this.getOperationType();
+    console.log(`Initializing Safe SDK for ${network.name} (${operationType} operations)...`);
+    console.log(`Safe Address (${safeAddressEnvVar}): ${safeAddress}`);
 
     try {
       // Get the private key
@@ -57,6 +108,7 @@ export class SafeManager {
       this.initialized = true;
       console.log(`Safe SDK initialized successfully`);
       console.log(`Chain ID: ${chainId}`);
+      console.log(`Address Type: ${this.addressType}`);
     } catch (error) {
       console.error('Failed to initialize Safe SDK:', error);
       throw new Error(`Safe SDK initialization failed. Make sure @safe-global packages are installed: ${error}`);
@@ -130,6 +182,8 @@ export class SafeManager {
     }
 
     console.log(`Proposing Safe batch transaction: ${description}`);
+    console.log(`Number of transactions: ${transactions.length}`);
+    console.log(`Address Type: ${this.addressType}`);
 
     // Create the batch transaction
     const safeTransaction = await this.safeSdk.createTransaction({
@@ -170,5 +224,36 @@ export class SafeManager {
    */
   isInitialized(): boolean {
     return this.initialized;
+  }
+
+  /**
+   * Get the Safe address being used
+   */
+  async getSafeAddress(): Promise<string> {
+    if (!this.safeSdk || !this.initialized) {
+      throw new Error("Safe SDK not initialized. Call initialize() first.");
+    }
+    return await this.safeSdk.getAddress();
+  }
+
+  /**
+   * Get the current address type being used
+   */
+  getAddressType(): SafeAddressType {
+    return this.addressType;
+  }
+
+  /**
+   * Check if using delegate address
+   */
+  isUsingDelegateAddress(): boolean {
+    return this.addressType === SafeAddressType.DELEGATE;
+  }
+
+  /**
+   * Check if using owner address
+   */
+  isUsingOwnerAddress(): boolean {
+    return this.addressType === SafeAddressType.OWNER;
   }
 }
