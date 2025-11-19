@@ -33,14 +33,14 @@ class LayerZeroPeerOptionsManager extends LayerZeroBaseManager {
     destTokenAddress: string
   ): Promise<MetaTransactionData[]> {
     const options = Options.newOptions()
-      .addExecutorLzReceiveOption(300000, 0) // Fixed gas limit for all chains
+      .addExecutorLzReceiveOption(80000, 0) // Fixed gas limit for all chains
       .toHex()
       .toString();
 
     const enforcedOptions = [
       {
         eid: destConfig.eid,
-        msgType: 2, // RECEIVE
+        msgType: 1, // SEND
         options
       }
     ];
