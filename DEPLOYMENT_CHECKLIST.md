@@ -51,19 +51,19 @@ From each chain, wire to all chains:
 
 ```bash
 # From Sonic
-npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic
+npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic --safe
 
 # From Ethereum
-npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network ethereum
+npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network ethereum --safe
 
 # From BSC
-npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network bsc
+npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network bsc --safe
 
 # From Avalanche
-npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network avalanche
+npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network avalanche --safe
 
 # From Base
-npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network base
+npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network base --safe
 ```
 
 **Expected per chain:**
