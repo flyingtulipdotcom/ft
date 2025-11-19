@@ -147,7 +147,7 @@ class LayerZeroPeerOptionsManager extends LayerZeroBaseManager {
             await tx.wait(NUM_BLOCKS_TO_WAIT);
           }
           
-          console.log(`Set peer and enforced options`);
+          console.log(`Set peer and enforced options for ${sourceChain} => ${targetChain}`);
         } catch (error) {
           console.error(`Failed to set peer/options for ${sourceChain} => ${targetChain}:`, error);
           throw error;

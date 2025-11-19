@@ -287,7 +287,7 @@ task("ft:wire", "Wire multiple chains together using LayerZero")
 
       await CLIUtils.printTaskHeader("LayerZero Multi-Chain Wiring", chains, useSafe, hre, {
         "Max Message Size": "10000 (fixed)",
-        "Required DVNs": "LayerZero Labs, Horizen",
+        "Required DVNs": "LayerZero Labs, Canary",
         "Optional DVNs": "None"
       });
 

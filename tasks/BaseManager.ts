@@ -5,7 +5,7 @@ import { ChainConfig, ChainMetadata } from "./types";
 export abstract class LayerZeroBaseManager {
   protected chainConfigMap: Map<string, ChainConfig> = new Map();
   protected requiredDVN = "LayerZero Labs"; // Required for both mainnet and testnet
-  protected requiredDVNMainnet = "Horizen"; // Only required on mainnet
+  protected requiredDVNMainnet = "Canary"; // Only required on mainnet
 
   constructor(protected hre: HardhatRuntimeEnvironment) {}
 
