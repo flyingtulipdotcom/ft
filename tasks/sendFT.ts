@@ -24,8 +24,8 @@ task("ft:send", "Sends FT tokens cross‐chain from EVM chains")
       const ft = await hre.ethers.getContractAt("FT", (await hre.deployments.get("FT")).address) as unknown as FT;
       console.log(`FT address: ${await ft.getAddress()}`);
 
-      // Defining extra message execution options for the send operation
-      const options = Options.newOptions().addExecutorLzReceiveOption(200_000, 0).toHex().toString();
+      // Defining extra message execution options for the send operation (none currently)
+      const options = Options.newOptions().toHex().toString();
 
       const sendParams: SendParamStruct = {
         dstEid: args.dstEid,
