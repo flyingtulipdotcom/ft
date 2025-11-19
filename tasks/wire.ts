@@ -246,7 +246,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
       const signer = await this.hre.ethers.provider.getSigner();
       for (let i = 0; i < allTransactions.length; i++) {
         const txData = allTransactions[i];
-        console.log(`Transaction ${i + 1}/${allTransactions.length}: ${txData.to}`);
+        console.log(`Transaction ${i + 1}/${allTransactions.length}`);
         
         const tx = await signer.sendTransaction({
           to: txData.to,
