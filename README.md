@@ -56,11 +56,11 @@ If you're adding another EVM chain, first, add it to the `hardhat.config.ts`. Ad
 Supported mainnet chains:  
 | Network          | Name          |
 |------------------|---------------|
-| Sonic            | ethereum      |
-| Base             | bsc           |
+| Sonic            | sonic         |
+| Base             | base          |
 | Avalanche        | avalanche     |
-| BSC              | sonic         |
-| Ethereum         | base          |
+| BSC              | bsc           |
+| Ethereum         | ethereum      |
 
 Supported testnet chains:  
 | Network          | Name          |
