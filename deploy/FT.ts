@@ -29,6 +29,8 @@ const deploy: DeployFunction = async (hre) => {
 
     const ftConfigurator = chainConfig.configurator;
     const endpointV2Address = chainConfig.endpointV2;
+    const delegate = chainConfig.delegate;
+    const finalOwner = chainConfig.finalOwner;
 
     if (!ftConfigurator) {
         throw new Error(`Configurator address not defined for chain ${chainConfig.name} (ID: ${chainId})`);
@@ -38,10 +40,19 @@ const deploy: DeployFunction = async (hre) => {
         throw new Error(`LayerZero Endpoint V2 address not defined for chain ${chainConfig.name} (ID: ${chainId})`);
     }
 
+    if (!delegate) {
+        throw new Error(`Delegate address not defined for chain ${chainConfig.name} (ID: ${chainId})`);
+    }
+
+    if (!finalOwner) {
+        throw new Error(`Final owner not defined for chain ${chainConfig.name} (ID: ${chainId})`);
+    }
+
     console.log(`Chain Config: ${chainConfig.name}`);
     console.log(`Configurator: ${ftConfigurator} owner of the initial mint if network is sonic`);
     console.log(`Endpoint V2: ${endpointV2Address}`);
-    console.log(`Final Owner: ${chainConfig.finalOwner}`);
+    console.log(`Delegate: ${delegate}`);
+    console.log(`Final Owner: ${finalOwner}`);
 
     // Ask for confirmation before proceeding
     console.log('\n⚠️  Please review the configuration above.');
@@ -75,7 +86,6 @@ const deploy: DeployFunction = async (hre) => {
 
     const name = "Flying Tulip";
     const symbol = "FT";
-    const delegate = deployer;
 
     // Use ethers directly for deployment to support keystore
     console.log(`\nDeploying ${TOKEN_CONTRACT_NAME}...`);
@@ -129,14 +139,6 @@ const deploy: DeployFunction = async (hre) => {
     console.log("You can verify manually later using:");
     console.log(`npx hardhat verify --network ${hre.network.name} ${address} "${name}" "${symbol}" ${endpointV2Address} ${delegate} ${ftConfigurator} ${mintChainId}`);
   }
-
-  // Transfer ownership to final owner
-  const finalOwner = chainConfig.finalOwner;
-  console.log(`\nTransferring ownership to final owner: ${finalOwner}`);
-
-  const transferTx = await ft.transferOwnership(finalOwner);
-  await transferTx.wait(2); // Wait for 2 confirmations
-  console.log(`✅ Ownership transferred to ${finalOwner}`);
 
   // Run post-deployment state check
   console.log(`\n${'='.repeat(60)}`);
