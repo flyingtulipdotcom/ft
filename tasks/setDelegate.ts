@@ -6,7 +6,7 @@ interface MasterArgs {
   account: string;
 }
 
-task("lz:ft:set-delegate", "Configures the FT delegate addres")
+task("ft:set-delegate", "Configures the FT delegate addres")
   .addParam("account", "Delegate address (20-byte hex for EVM)", undefined, types.string)
   .setAction(async (args: MasterArgs, hre: HardhatRuntimeEnvironment) => {
     const [owner] = await hre.ethers.getSigners();

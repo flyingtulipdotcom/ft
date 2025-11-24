@@ -15,7 +15,6 @@ import hre from 'hardhat'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { getChainConfig, TOKEN_CONTRACT_NAME } from '../utils/constants'
 import { FT } from '../typechain-types'
-import { getSigner } from '../utils/getSigner'
 
 interface VerificationResult {
     check: string

@@ -18,12 +18,11 @@ import '@typechain/hardhat'
 import "./tasks"
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from 'hardhat/types'
 import { EndpointId } from '@layerzerolabs/lz-definitions'
-import { loadKeystorePrivateKey } from './utils/keystore'
 
 declare module 'hardhat/types/config' {
   interface HttpNetworkUserConfig {
     eid?: EndpointId;
-    isTestnet?: boolean,
+    isTestnet?: boolean;
   }
 }
 
@@ -61,6 +60,9 @@ if (accounts == null && !KEYSTORE_PATH) {
         'Could not find KEYSTORE_PATH, MNEMONIC, or PRIVATE_KEY environment variables. It will not be possible to execute transactions.'
     )
 }
+
+const SAFE_ADDRESS = process.env.SAFE_ADDRESS || '';
+const SAFE_API_KEY = process.env.SAFE_API_KEY || '';
 
 const config: HardhatUserConfig = {
     paths: {
@@ -106,7 +108,7 @@ const config: HardhatUserConfig = {
         },
         'bsc': {
             eid: EndpointId.BSC_V2_MAINNET,
-            url: process.env.RPC_URL_BSC || 'https://bsc.drpc.org',
+            url: process.env.RPC_URL_BSC || 'https://binance.llamarpc.com',
             isTestnet: false,
             accounts,
         },
