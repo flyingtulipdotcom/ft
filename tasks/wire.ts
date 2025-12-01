@@ -50,7 +50,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
           ],
           [
             {
-              confirmations: destConfig.confirmations,
+              confirmations: sourceConfig.confirmations,
               requiredDVNCount: sourceConfig.dvnAddresses.length,
               optionalDVNCount: NIL_DVN_COUNT,
               optionalDVNThreshold: 0,
@@ -77,7 +77,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
           ],
           [
             {
-              confirmations: sourceConfig.confirmations,
+              confirmations: destConfig.confirmations,
               requiredDVNCount: sourceConfig.dvnAddresses.length,
               optionalDVNCount: NIL_DVN_COUNT,
               optionalDVNThreshold: 0,
