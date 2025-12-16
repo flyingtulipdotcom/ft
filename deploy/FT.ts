@@ -51,6 +51,7 @@ const deploy: DeployFunction = async (hre) => {
     console.log(`Chain Config: ${chainConfig.name}`);
     console.log(`Configurator: ${ftConfigurator} owner of the initial mint if network is sonic`);
     console.log(`Endpoint V2: ${endpointV2Address}`);
+    // This confused me with safe delegate for the wiring. I guess there is a separate log in the wiring process.
     console.log(`Delegate: ${delegate}`);
     console.log(`Final Owner: ${finalOwner}`);
 
