@@ -11,6 +11,7 @@ Quick reference checklist for deploying FT token to production.
 - [ ] Set `ETHERSCAN_API_KEY=<key>`
 - [ ] Set `FT_CONFIGURATOR=<multisig-address>` role to have control of initial mint if network is sonic
 - [ ] Set `FINAL_OWNER=<multisig-address>`
+- [ ] Run `pnpm install`
 - [ ] Run `pnpm compile`
 - [ ] Run `pnpm test`
 
