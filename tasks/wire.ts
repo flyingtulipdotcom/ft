@@ -24,6 +24,27 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
   }
 
   /**
+   * Use the local chain's verifier addresses for both send and receive.
+   * Confirmations always describe the chain where the message originated.
+   */
+  private buildUlnConfig(localConfig: ChainConfig, confirmations: number | undefined) {
+    if (localConfig.dvnAddresses.length === 0) {
+      throw new Error(`DVN policy not loaded for ${localConfig.chainKey}; build chain configs with includeDVNs=true`);
+    }
+    if (confirmations === undefined || !Number.isSafeInteger(confirmations) || confirmations <= 0) {
+      throw new Error(`Missing or invalid confirmation count for wiring ${localConfig.chainKey}`);
+    }
+    return {
+      confirmations,
+      requiredDVNCount: localConfig.dvnAddresses.length,
+      optionalDVNCount: localConfig.optionalDvnAddresses.length || NIL_DVN_COUNT,
+      optionalDVNThreshold: localConfig.optionalDvnThreshold,
+      requiredDVNs: localConfig.dvnAddresses,
+      optionalDVNs: localConfig.optionalDvnAddresses
+    };
+  }
+
+  /**
    * Build send config for a destination chain
    */
   private buildSendConfig(sourceConfig: ChainConfig, destConfig: ChainConfig): any[] {
@@ -48,16 +69,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
           [
             "tuple(uint64 confirmations, uint8 requiredDVNCount, uint8 optionalDVNCount, uint8 optionalDVNThreshold, address[] requiredDVNs, address[] optionalDVNs)"
           ],
-          [
-            {
-              confirmations: sourceConfig.confirmations,
-              requiredDVNCount: sourceConfig.dvnAddresses.length,
-              optionalDVNCount: NIL_DVN_COUNT,
-              optionalDVNThreshold: 0,
-              requiredDVNs: sourceConfig.dvnAddresses,
-              optionalDVNs: []
-            }
-          ]
+          [this.buildUlnConfig(sourceConfig, sourceConfig.confirmations)]
         )
       }
     ];
@@ -75,16 +87,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
           [
             "tuple(uint64 confirmations, uint8 requiredDVNCount, uint8 optionalDVNCount, uint8 optionalDVNThreshold, address[] requiredDVNs, address[] optionalDVNs)"
           ],
-          [
-            {
-              confirmations: destConfig.confirmations,
-              requiredDVNCount: sourceConfig.dvnAddresses.length,
-              optionalDVNCount: NIL_DVN_COUNT,
-              optionalDVNThreshold: 0,
-              requiredDVNs: sourceConfig.dvnAddresses,
-              optionalDVNs: []
-            }
-          ]
+          [this.buildUlnConfig(sourceConfig, destConfig.confirmations)]
         )
       }
     ];
@@ -171,7 +174,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
   /**
    * Wire multiple chains together in a full mesh network
    */
-  async wireMultipleChains(chainKeys: string[]): Promise<void> {
+  async wireMultipleChains(chainKeys: string[], dryRun: boolean = false): Promise<void> {
     console.log("🔗 Starting multi-chain wiring process...");
     console.log(`Chains to wire: ${chainKeys.join(", ")}`);
 
@@ -182,11 +185,6 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
     const { sourceChain, sourceConfig } = await this.validateSourceChain();
     console.log(`Source chain: ${sourceChain}`);
 
-    // Initialize Safe if needed
-    if (this.useSafe && this.safeManager) {
-      await this.safeManager.initialize();
-    }
-
     const ft = await this.getFTContract() as unknown as FT;
 
     // Wire current chain to all other chains (endpoint configuration only)
@@ -196,10 +194,11 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
     // Collect all endpoint configuration transactions first
     const allTransactions: MetaTransactionData[] = [];
     
-    const endpointContract = (await this.hre.ethers.getContractAt(
-      "ILayerZeroEndpointV2",
-      sourceConfig.endpointV2Address
-    )) as unknown as ILayerZeroEndpointV2;
+    const endpointContract = new this.hre.ethers.Contract(
+      sourceConfig.endpointV2Address,
+      (await this.hre.artifacts.readArtifact("ILayerZeroEndpointV2")).abi,
+      this.hre.ethers.provider
+    ) as unknown as ILayerZeroEndpointV2;
 
     for (const targetChain of targetChains) {
       try {
@@ -212,12 +211,16 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
         console.log(
           `Preparing ${sourceChain} (EID: ${sourceConfig.eid}) <=> ${targetChain} (EID: ${destConfig.eid})`
         );
+        console.log(
+          `ULN: send confirmations=${sourceConfig.confirmations}, receive confirmations=${destConfig.confirmations}; ` +
+          `required=${sourceConfig.dvnAddresses.length}, optional=${sourceConfig.optionalDvnThreshold} of ${sourceConfig.optionalDvnAddresses.length}`
+        );
 
-        // Validate libraries before preparing transactions
-        if ((await endpointContract.defaultSendLibrary(sourceConfig.eid)) !== sourceConfig.sendLibAddress) {
+        // Validate libraries before preparing transactions (per destination EID)
+        if ((await endpointContract.defaultSendLibrary(destConfig.eid)) !== sourceConfig.sendLibAddress) {
           throw new Error(`Send library mismatch for ${targetChain}`);
         }
-        if ((await endpointContract.defaultReceiveLibrary(sourceConfig.eid)) !== sourceConfig.receiveLibAddress) {
+        if ((await endpointContract.defaultReceiveLibrary(destConfig.eid)) !== sourceConfig.receiveLibAddress) {
           throw new Error(`Receive library mismatch for ${targetChain}`);
         }
 
@@ -230,7 +233,10 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
     }
 
     // Execute transactions - either via Safe or directly
-    if (this.useSafe && this.safeManager) {
+    if (dryRun) {
+      console.log(JSON.stringify({ chain: sourceChain, role: "delegate", transactions: allTransactions }, null, 2));
+    } else if (this.useSafe && this.safeManager) {
+      await this.safeManager.initialize();
       // Propose all endpoint configuration transactions as a single batch
       await this.safeManager.proposeSafeBatchTransaction(
         allTransactions,
@@ -264,11 +270,13 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
 
     // Build chain configs for the peer options manager (it only needs basic info)
     const metadata = this.loadMetadata();
-    peerOptionsManager.buildChainConfigs(metadata);
+    peerOptionsManager.buildChainConfigs(metadata, false, [sourceChain, ...chainKeys]);
     
-    await peerOptionsManager.setPeersAndOptions(chainKeys);
+    await peerOptionsManager.setPeersAndOptions(chainKeys, dryRun);
 
-    console.log(`\nSuccessfully wired ${sourceChain} to ${targetChains.length} other chain(s)!`);
+    console.log(dryRun
+      ? "\nDry run complete: endpoint and peer/options calldata generated; no transactions signed or submitted."
+      : `\nSuccessfully wired ${sourceChain} to ${targetChains.length} other chain(s)!`);
   }
 }
 
@@ -280,28 +288,30 @@ task("ft:wire", "Wire multiple chains together using LayerZero")
     types.string
   )
   .addFlag("safe", "Use Safe multisig for setPeer and setEnforcedOptions transactions")
+  .addFlag("dryRun", "Preview endpoint and peer/options calldata without signing or submitting transactions")
   .setAction(async (args: TaskArgs, hre: HardhatRuntimeEnvironment) => {
     try {
       const chains = CLIUtils.parseChains(args.chains);
       const useSafe = args.safe || false;
+      const dryRun = args.dryRun || false;
 
       await CLIUtils.printTaskHeader("LayerZero Multi-Chain Wiring", chains, useSafe, hre, {
         "Max Message Size": "10000 (fixed)",
-        "Required DVNs": "LayerZero Labs, Canary",
-        "Optional DVNs": "None"
-      });
+        "Required DVNs": "Mainnet: LayerZero Labs + Canary; testnet: LayerZero Labs",
+        "Optional DVNs": "Mainnet: 2 of 3 (Deutsche Telekom, Horizen, Nethermind); testnet: None"
+      }, dryRun);
 
       const wireManager = new LayerZeroMultiChainWire(hre, useSafe);
 
       // Load chain configurations (include DVNs for endpoint config)
       const metadata = wireManager.loadMetadata();
-      wireManager.buildChainConfigs(metadata, true);
+      wireManager.buildChainConfigs(metadata, true, [hre.network.name, ...chains]);
 
       // Show configuration summary
       wireManager.outputChainSummary();
 
       // Wire the chains using embedded configuration
-      await wireManager.wireMultipleChains(chains);
+      await wireManager.wireMultipleChains(chains, dryRun);
     } catch (error) {
       CLIUtils.handleTaskError(error, "Multi-chain wiring");
     }

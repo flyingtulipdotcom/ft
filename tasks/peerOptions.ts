@@ -75,7 +75,7 @@ class LayerZeroPeerOptionsManager extends LayerZeroBaseManager {
   /**
    * Set peers and enforced options for multiple chains
    */
-  async setPeersAndOptions(chainKeys: string[]): Promise<void> {
+  async setPeersAndOptions(chainKeys: string[], dryRun: boolean = false): Promise<void> {
     console.log("🔗 Starting peer and enforced options setup...");
     console.log(`Chains to configure: ${chainKeys.join(", ")}`);
 
@@ -87,7 +87,7 @@ class LayerZeroPeerOptionsManager extends LayerZeroBaseManager {
     console.log(`Source chain: ${sourceChain}`);
 
     // Initialize Safe if needed
-    if (this.useSafe && this.safeManager) {
+    if (!dryRun && this.useSafe && this.safeManager) {
       await this.safeManager.initialize();
     }
 
@@ -96,6 +96,16 @@ class LayerZeroPeerOptionsManager extends LayerZeroBaseManager {
     // Configure current chain to all other chains
     const targetChains = chainKeys.filter((chain) => chain !== sourceChain);
     console.log(`Target chains: ${targetChains.join(", ")}`);
+
+    if (dryRun) {
+      const transactions: MetaTransactionData[] = [];
+      for (const targetChain of targetChains) {
+        const config = this.getChainConfig(targetChain);
+        transactions.push(...await this.preparePeerAndEnforcedOptions(ft, config, config.ftTokenAddress!));
+      }
+      console.log(JSON.stringify({ chain: sourceChain, role: "owner", transactions }, null, 2));
+      return;
+    }
 
     if (this.useSafe && this.safeManager) {
       // Collect all transactions first
@@ -167,26 +177,28 @@ task("ft:peer-options", "Set peers and enforced options for FT tokens across mul
     types.string
   )
   .addFlag("safe", "Use Safe multisig for setPeer and setEnforcedOptions transactions")
+  .addFlag("dryRun", "Preview peer/options calldata without signing or submitting transactions")
   .setAction(async (args: TaskArgs, hre: HardhatRuntimeEnvironment) => {
     try {
       const chains = CLIUtils.parseChains(args.chains);
       const useSafe = args.safe || false;
+      const dryRun = args.dryRun || false;
 
       await CLIUtils.printTaskHeader("LayerZero Peer & Enforced Options Setup", chains, useSafe, hre, {
-        "Gas Limit": "300000 (fixed)"
-      });
+        "lzReceive Gas": "80000 (fixed)"
+      }, dryRun);
 
       const manager = new LayerZeroPeerOptionsManager(hre, useSafe);
 
       // Load chain configurations
       const metadata = manager.loadMetadata();
-      manager.buildChainConfigs(metadata, false);
+      manager.buildChainConfigs(metadata, false, [hre.network.name, ...chains]);
 
       // Show configuration summary
       manager.outputSimpleChainSummary();
 
       // Set peers and enforced options
-      await manager.setPeersAndOptions(chains);
+      await manager.setPeersAndOptions(chains, dryRun);
     } catch (error) {
       CLIUtils.handleTaskError(error, "Peer and enforced options setup");
     }

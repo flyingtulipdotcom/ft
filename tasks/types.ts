@@ -44,6 +44,8 @@ export interface ChainConfig {
   sendLibAddress: string;
   receiveLibAddress: string;
   dvnAddresses: string[];
+  optionalDvnAddresses: string[];
+  optionalDvnThreshold: number;
   ftTokenAddress?: string;
   confirmations?: number;
 }
@@ -51,6 +53,7 @@ export interface ChainConfig {
 export interface TaskArgs {
   chains: string;
   safe?: boolean;
+  dryRun?: boolean;
 }
 
 export const NUM_BLOCKS_TO_WAIT = 2;

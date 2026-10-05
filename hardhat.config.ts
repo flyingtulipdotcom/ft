@@ -108,13 +108,13 @@ const config: HardhatUserConfig = {
         },
         'bsc': {
             eid: EndpointId.BSC_V2_MAINNET,
-            url: process.env.RPC_URL_BSC || 'https://binance.llamarpc.com',
+            url: process.env.RPC_URL_BSC || 'https://bsc.publicnode.com',
             isTestnet: false,
             accounts,
         },
         'ethereum': {
             eid: EndpointId.ETHEREUM_V2_MAINNET,
-            url: process.env.RPC_URL_ETHEREUM || 'https://ethereum-rpc.publicnode.com',
+            url: process.env.RPC_URL_ETHEREUM || 'https://1rpc.io/eth',
             isTestnet: false,
             accounts,
         },
@@ -126,7 +126,7 @@ const config: HardhatUserConfig = {
         },
         'base': {
             eid: EndpointId.BASE_V2_MAINNET,
-            url: process.env.RPC_URL_BASE || 'https://base-rpc.publicnode.com',
+            url: process.env.RPC_URL_BASE || 'https://mainnet.base.org',
             isTestnet: false,
             accounts,
         },

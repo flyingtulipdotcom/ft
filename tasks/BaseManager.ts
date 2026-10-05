@@ -6,14 +6,22 @@ export abstract class LayerZeroBaseManager {
   protected chainConfigMap: Map<string, ChainConfig> = new Map();
   protected requiredDVN = "LayerZero Labs"; // Required for both mainnet and testnet
   protected requiredDVNMainnet = "Canary"; // Only required on mainnet
+  protected optionalDVNsMainnet = ["Deutsche Telekom", "Horizen", "Nethermind"];
 
   constructor(protected hre: HardhatRuntimeEnvironment) {}
 
   /**
    * Load chain metadata and auto-populate FT token addresses and receive confirmations
    */
-  buildChainConfigs(metadata: Record<string, ChainMetadata>, includeDVNs: boolean = true): void {
-    for (const [chainKey, chainData] of Object.entries(metadata)) {
+  buildChainConfigs(
+    metadata: Record<string, ChainMetadata>,
+    includeDVNs: boolean = true,
+    chainKeys: string[] = Object.keys(metadata)
+  ): void {
+    this.chainConfigMap.clear();
+    for (const chainKey of new Set(chainKeys)) {
+      const chainData = metadata[chainKey];
+      if (!chainData) throw new Error(`Missing LayerZero metadata for chain ${chainKey}`);
       this.buildChainConfig(chainKey, chainData, includeDVNs);
     }
   }
@@ -44,30 +52,34 @@ export abstract class LayerZeroBaseManager {
     }
 
     let dvnAddresses: string[] = [];
+    let optionalDvnAddresses: string[] = [];
+    let optionalDvnThreshold = 0;
 
     if (includeDVNs) {
-      const isMainnet = v2Deployment.stage == "mainnet";
-
-      // Filter active DVNs (non-deprecated, version 2)
-      dvnAddresses = Object.entries(metadata.dvns)
-        .filter(
-          ([_, dvn]) =>
-            dvn.version === 2 &&
-            !dvn.deprecated &&
-            !dvn.lzReadCompatible &&
-            (dvn.canonicalName == this.requiredDVN || (isMainnet && dvn.canonicalName == this.requiredDVNMainnet))
-        )
-        .map(([address, _]) => address)
-        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-
-      if (dvnAddresses.length === 0) {
-        throw new Error(`No active DVNs found for chain ${chainKey}`);
+      if (v2Deployment.stage !== "mainnet" && v2Deployment.stage !== "testnet") {
+        throw new Error(`Unknown LayerZero stage for ${chainKey}: ${v2Deployment.stage}`);
       }
+      const isMainnet = v2Deployment.stage === "mainnet";
+      const activeDvns = Object.entries(metadata.dvns).filter(
+        ([_, dvn]) => dvn.version === 2 && !dvn.deprecated && !dvn.lzReadCompatible
+      );
+      const resolveProviders = (names: string[]): string[] => names.map((name) => {
+        const matches = activeDvns.filter(([_, dvn]) => dvn.canonicalName === name);
+        if (matches.length !== 1) {
+          throw new Error(
+            `${chainKey}: expected exactly one active V2 messaging DVN for ${name}; found ${matches.length}. ` +
+            "Cannot apply the FT DVN policy. Resolve missing or ambiguous provider metadata before wiring."
+          );
+        }
+        return matches[0][0];
+      }).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 
-      // 2 for mainnet and 1 for the testnet
-      if (dvnAddresses.length != (isMainnet ? 2 : 1)) {
-        console.log(metadata.dvns, isMainnet, dvnAddresses)
-        throw new Error(`Did not find the corresponding dvns`);
+      dvnAddresses = resolveProviders(isMainnet
+        ? [this.requiredDVN, this.requiredDVNMainnet]
+        : [this.requiredDVN]);
+      if (isMainnet) {
+        optionalDvnAddresses = resolveProviders(this.optionalDVNsMainnet);
+        optionalDvnThreshold = 2;
       }
     }
 
@@ -80,6 +92,8 @@ export abstract class LayerZeroBaseManager {
       sendLibAddress,
       receiveLibAddress,
       dvnAddresses,
+      optionalDvnAddresses,
+      optionalDvnThreshold,
       ftTokenAddress: getChainConfig(metadata.chainDetails.nativeChainId)?.ftTokenAddress,
       confirmations: getChainConfig(metadata.chainDetails.nativeChainId)?.confirmations
     };
@@ -137,7 +151,11 @@ export abstract class LayerZeroBaseManager {
    * Get the FT contract instance
    */
   protected async getFTContract() {
-    return await this.hre.ethers.getContractAt("FT", (await this.hre.deployments.get("FT")).address);
+    return new this.hre.ethers.Contract(
+      (await this.hre.deployments.get("FT")).address,
+      (await this.hre.artifacts.readArtifact("FT")).abi,
+      this.hre.ethers.provider
+    );
   }
 
   /**
@@ -153,7 +171,8 @@ export abstract class LayerZeroBaseManager {
       console.log(`   Native Chain ID: ${config.nativeChainId}`);
       console.log(`   Endpoint V2: ${config.endpointV2Address}`);
       console.log(`   Executor: ${config.executorAddress}`);
-      console.log(`   DVNs: ${config.dvnAddresses.length} active`);
+      console.log(`   Required DVNs (${config.dvnAddresses.length}): ${config.dvnAddresses.join(", ")}`);
+      console.log(`   Optional DVNs (${config.optionalDvnThreshold} of ${config.optionalDvnAddresses.length}): ${config.optionalDvnAddresses.join(", ") || "None"}`);
       console.log(`   FT Token: ${tokenAddress || "Not found"}`);
     }
     console.log("=".repeat(60));
@@ -185,10 +204,11 @@ export class CLIUtils {
     chains: string[],
     useSafe: boolean,
     hre: HardhatRuntimeEnvironment,
-    additionalConfig?: Record<string, any>
+    additionalConfig?: Record<string, any>,
+    readOnly: boolean = false
   ): Promise<void> {
-    const [signer] = await hre.ethers.getSigners();
-    console.log(`Using signer: ${signer.address}`);
+    const signer = readOnly ? undefined : (await hre.ethers.getSigners())[0];
+    if (signer) console.log(`Using signer: ${signer.address}`);
 
     console.log(`Starting ${taskName}...`);
     console.log("Configuration:");
@@ -200,7 +220,8 @@ export class CLIUtils {
       }
     }
     
-    console.log(`   Deployer: ${signer.address}`);
+    if (signer) console.log(`   Deployer: ${signer.address}`);
+    if (readOnly) console.log("   Dry run: read-only transaction preview; no signing or submission");
     console.log(`   Use Safe Multisig: ${useSafe ? "Yes" : "No"}`);
     console.log("");
   }

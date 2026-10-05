@@ -78,6 +78,42 @@ Wire up all the chains you want cross-chain communication for mainnets. Remove -
 ```bash
 npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic --safe
 ```
+
+Mainnet wiring uses the same verification policy as the existing FT deployments:
+**LayerZero Labs and Canary are required, plus any two of Deutsche Telekom,
+Horizen, and Nethermind**. The five providers use their local addresses on each
+chain. Both send and receive configurations encode `requiredDVNCount=2`,
+`optionalDVNCount=3`, and `optionalDVNThreshold=2`; send confirmations refer to
+the local source, and receive confirmations refer to the remote source.
+
+Preview the generated endpoint and peer/options batches before proposing them:
+
+```bash
+npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic --safe --dry-run
+```
+
+This reads the selected network and prints the exact calldata using the same
+builders as normal wiring. It does not initialize a Safe, request a signer,
+sign, propose, or send transactions. It is a calldata preview, not a fork
+execution or cross-chain delivery test. The summary includes both DVN groups
+and the optional threshold. Run the task separately on each source chain.
+When expanding the mesh, target only the new remotes on existing chains.
+The task always emits library setters, which can revert with `LZ_SameValue`
+when a route already explicitly selects those libraries.
+
+Every selected chain must have exactly one active V2 messaging deployment for
+each required provider in `utils/lzMetadata.json`. Missing, deprecated,
+read-only, or ambiguous DVNs cause wiring to stop before submission; the task
+never reduces the policy automatically. A new network missing one of the five
+providers cannot reproduce this policy until a supported configuration is
+explicitly agreed and implemented. Only selected source/destination metadata
+is validated. Testnets retain their existing single LayerZero Labs DVN policy
+with optional DVNs explicitly disabled.
+
+External fork dry-run scripts must use these updated wiring builders and check
+both DVN arrays and the threshold. A report that prints only a DVN count of `2`
+does not demonstrate the complete mainnet policy.
+
 Wire up all the chains you want cross-chain communication for testnets
 ```bash
 npx hardhat ft:wire --chains sepolia,fuji,bsc-testnet,base-sepolia --network base-sepolia

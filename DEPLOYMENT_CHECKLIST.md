@@ -94,8 +94,83 @@ npx hardhat run scripts/check-deployment.ts --network base
 - ✅ Owner Not Deployer: Different ✓
 - ✅ LayerZero Endpoint V2: Correct
 - ✅ Paused: true
-- ✅ Total Supply: Correct (10B on Sonic, 0 elsewhere)
+- ✅ Total Supply: Global sum equals 10B cap (distribution varies across chains)
 - ✅ EIP-712 Domain: Correct
+
+## Mesh Safety Audit (Recommended)
+
+After wiring (and any time you update peers/options or endpoint ULN config), run the cross-chain audit:
+
+```bash
+# Uses RPC URLs from hardhat.config.ts (override via RPC_URL_* env vars for reliability)
+npx hardhat run scripts/audit-prod.ts --network hardhat
+```
+
+This specifically targets the “wrong peer / miswired ULN” class of incidents by verifying:
+- `peers[eid]` points to the correct FT contract on every destination chain
+- Enforced options are set for `SEND` (lzReceive gas)
+- Send/receive libraries + ULN confirmations/DVNs are correctly configured for every path
+- Global supply across the mesh has not exceeded the initial mint (detects unauthorized minting)
+
+## Emergency Halt (Runbook)
+
+Pause is **not** a full cross-chain kill switch for this token: LayerZero inbound delivery can still credit tokens while paused (the endpoint is exempted in `FT._update`).
+
+In an incident, pause **and** unset peers (set to `bytes32(0)`) to stop accepting inbound messages from remote chains.
+
+```bash
+# Example (Ethereum). Repeat on each chain you want to freeze.
+# Requires SAFE_OWNER_ADDRESS / SAFE_API_KEY / PRIVATE_KEY_PROPOSER when using --safe.
+npx hardhat ft:emergency-halt --chains ethereum,avalanche,base,bsc,sonic --safe --network ethereum
+```
+
+## Emergency Reactivation Snapshot
+
+Snapshot date: `2026-04-18`
+
+If bridging was disabled by **unsetting peers only**, local ERC20 transfers remain live and you only need to restore the peer mappings.
+
+If bridging was disabled by **pause + unset peers**, restore the peers first and only then queue `setPaused(false)` on chains you intentionally paused for the incident.
+
+Current live restore values:
+
+- Mainnet FT address on all 5 production chains: `0x5DD1A7A369e8273371d2DBf9d83356057088082c`
+- Peer value to restore on active mainnet paths:
+  `0x0000000000000000000000005dd1a7a369e8273371d2dbf9d83356057088082c`
+- Mainnet EIDs:
+  `ethereum=30101`, `bsc=30102`, `avalanche=30106`, `base=30184`, `sonic=30332`
+- Current enforced option for `SEND` on active mainnet paths:
+  `0x00030100110100000000000000000000000000013880`
+- Live paused-state snapshot when this was recorded:
+  `ethereum=false`, `avalanche=true`, `base=false`, `bsc=false`, `sonic=false`
+
+Recommended restore path:
+
+```bash
+# Restores peers + enforced options from repo metadata.
+# Repeat once per chain.
+npx hardhat ft:peer-options --chains ethereum,avalanche,base,bsc,sonic --safe --network ethereum
+npx hardhat ft:peer-options --chains ethereum,avalanche,base,bsc,sonic --safe --network avalanche
+npx hardhat ft:peer-options --chains ethereum,avalanche,base,bsc,sonic --safe --network base
+npx hardhat ft:peer-options --chains ethereum,avalanche,base,bsc,sonic --safe --network bsc
+npx hardhat ft:peer-options --chains ethereum,avalanche,base,bsc,sonic --safe --network sonic
+```
+
+If you restore manually in Safe, set `peers[eid]` back to the peer value above for these remote EIDs:
+
+- On `ethereum`: `30102`, `30106`, `30184`, `30332`
+- On `avalanche`: `30101`, `30102`, `30184`, `30332`
+- On `base`: `30101`, `30102`, `30106`, `30332`
+- On `bsc`: `30101`, `30106`, `30184`, `30332`
+- On `sonic`: `30101`, `30102`, `30106`, `30184`
+
+If you need to verify a chain before re-enabling:
+
+```bash
+npx hardhat run scripts/audit-prod.ts --network hardhat
+```
+
+Before reactivation, inspect for any suspicious pending verified packets and nilify/burn them if needed. Do not re-enable peers blindly after an incident.
 
 ## Verify on Block Explorers
 

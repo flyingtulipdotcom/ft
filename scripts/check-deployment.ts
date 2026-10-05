@@ -20,7 +20,7 @@ interface VerificationResult {
     check: string
     expected: string
     actual: string
-    status: 'PASS' | 'FAIL'
+    status: 'PASS' | 'WARN' | 'FAIL'
 }
 
 export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment): Promise<boolean> {
@@ -83,9 +83,24 @@ export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment)
         status: configurator.toLowerCase() === chainConfig.configurator.toLowerCase() ? 'PASS' : 'FAIL'
     })
 
-    // 3. Check owner (should be final owner, NOT deployer)
+    // 3. Check owner (prefer final owner multisig; allow delegate temporarily during ops)
     const owner = await ft.owner()
     const expectedOwner = chainConfig.finalOwner
+    const delegateOwner = chainConfig.delegate
+
+    const ownerStatus =
+        owner.toLowerCase() === expectedOwner.toLowerCase()
+            ? 'PASS'
+            : owner.toLowerCase() === delegateOwner.toLowerCase()
+            ? 'WARN'
+            : 'FAIL'
+
+    results.push({
+        check: 'Owner Address',
+        expected: `${expectedOwner} (final owner preferred); ${delegateOwner} (temporary delegate allowed)`,
+        actual: owner,
+        status: ownerStatus
+    })
 
 
     // 4. Check LayerZero endpoint
@@ -155,8 +170,8 @@ export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment)
     let failCount = 0
 
     for (const result of results) {
-        const icon = result.status === 'PASS' ? '✅' : '❌'
-        const status = result.status === 'PASS' ? 'PASS' : 'FAIL'
+        const icon = result.status === 'PASS' ? '✅' : result.status === 'WARN' ? '⚠️ ' : '❌'
+        const status = result.status
 
         console.log(`${icon} ${result.check}: ${status}`)
         console.log(`   Expected: ${result.expected}`)
@@ -165,7 +180,7 @@ export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment)
 
         if (result.status === 'PASS') {
             passCount++
-        } else {
+        } else if (result.status === 'FAIL') {
             failCount++
         }
     }
@@ -173,6 +188,8 @@ export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment)
     console.log('='.repeat(60))
     console.log(`Total: ${results.length} checks`)
     console.log(`✅ Passed: ${passCount}`)
+    const warnCount = results.filter((r) => r.status === 'WARN').length
+    console.log(`⚠️  Warn:   ${warnCount}`)
     console.log(`❌ Failed: ${failCount}`)
     console.log('='.repeat(60))
 
