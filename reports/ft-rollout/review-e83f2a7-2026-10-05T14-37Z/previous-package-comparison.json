@@ -1,0 +1,119 @@
+{
+  "previous": "reports/ft-rollout/all-nine-2026-10-05",
+  "comparedSafeFiles": 28,
+  "unchangedCalldata": 28,
+  "files": [
+    {
+      "file": "ethereum/01-delegate-endpoints.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "ethereum/03-owner-peers.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "sonic/01-delegate-endpoints.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "sonic/03-owner-peers.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "bsc/01-delegate-endpoints.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "bsc/03-owner-peers.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "avalanche/01-delegate-endpoints.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "avalanche/03-owner-peers.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "base/01-delegate-endpoints.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "base/03-owner-peers.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "monad/01-delegate-endpoints.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "monad/02-delegate-ownership.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "monad/03-owner-peers.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "monad/04-optional-activation.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "robinhood/01-delegate-endpoints.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "robinhood/02-delegate-ownership.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "robinhood/03-owner-peers.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "robinhood/04-optional-activation.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arc/01-delegate-endpoints.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arc/02-delegate-ownership.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arc/03-owner-peers.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arc/04-optional-activation.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arbitrum/00b-governance-1.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arbitrum/00b-governance-2.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arbitrum/01-delegate-endpoints.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arbitrum/02-delegate-ownership.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arbitrum/03-owner-peers.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    },
+    {
+      "file": "arbitrum/04-optional-activation.safe.json",
+      "calldataUnchangedFromPriorPackage": true
+    }
+  ]
+}

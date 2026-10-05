@@ -21,6 +21,7 @@ import { buildSafeBootstrapPlan, simulateSafeBootstrap, SafeBootstrapPlan } from
 
 const FT = "0x5DD1A7A369e8273371d2DBf9d83356057088082c";
 const DEFAULT_CHAINS = ["ethereum", "sonic", "bsc", "avalanche", "base", "monad", "robinhood", "arc", "arbitrum"];
+const EXPANSION_CHAINS = new Set(["monad", "robinhood", "arc", "arbitrum"]);
 const PUBLIC_RPCS: Record<string, string> = {
   ethereum: "https://ethereum-rpc.publicnode.com", sonic: "https://rpc.soniclabs.com",
   bsc: "https://bsc-rpc.publicnode.com", avalanche: "https://api.avax.network/ext/bc/C/rpc",
@@ -239,8 +240,13 @@ async function processChain(key: string, chains: string[], configs: Map<string, 
     report.roles = { owner, delegate, configurator, desiredOwner: roles.finalOwner };
     assert(equal(delegate, roles.delegate), "Unexpected LayerZero delegate");
     assert(equal(configurator, roles.configurator), "Unexpected configurator");
-    assert(equal(owner, isNew ? roles.delegate : roles.finalOwner), "Unexpected FT owner");
+    // A freshly deployed expansion FT remains owned by its constructor delegate
+    // until the separate ownership batch executes, even on a later rehearsal.
+    assert(equal(owner, roles.finalOwner) || (EXPANSION_CHAINS.has(key) && equal(owner, roles.delegate)), "Unexpected FT owner");
     report.pausedBefore = await ft.paused();
+    const needsOwnershipTransfer = !equal(owner, roles.finalOwner);
+    const needsActivation = EXPANSION_CHAINS.has(key) && report.pausedBefore;
+    report.needsOwnershipTransfer = needsOwnershipTransfer;
     report.totalSupplyBefore = await ft.totalSupply();
     const delegateCalls: Call[] = [];
     const ownerCalls: Call[] = [];
@@ -270,13 +276,13 @@ async function processChain(key: string, chains: string[], configs: Map<string, 
       report.routes.push({ remote: remoteKey, before, desired, endpointOperations: endpointCalls.length, ownerOperations: changedOwner.length });
     }
     // This first transaction must be signed by the constructor's owner (delegate Safe).
-    const ownershipCalls: Call[] = isNew ? [{ to: FT, value: "0", data: ft.interface.encodeFunctionData("transferOwnership", [roles.finalOwner]) }] : [];
+    const ownershipCalls: Call[] = needsOwnershipTransfer ? [{ to: FT, value: "0", data: ft.interface.encodeFunctionData("transferOwnership", [roles.finalOwner]) }] : [];
     const specifications = [
       { file: "01-delegate-endpoints.safe.json", role: "delegate endpoint configuration", safe: roles.delegate, calls: delegateCalls },
       { file: "02-delegate-ownership.safe.json", role: "transfer FT ownership", safe: roles.delegate, calls: ownershipCalls },
       { file: "03-owner-peers.safe.json", role: "owner peers and enforced options", safe: roles.finalOwner, calls: ownerCalls },
       { file: "04-optional-activation.safe.json", role: "OPTIONAL unpause after ALL networks are ready", safe: roles.configurator,
-        calls: isNew ? [{ to: FT, value: "0", data: ft.interface.encodeFunctionData("setPaused", [false]) }] : [] }
+        calls: needsActivation ? [{ to: FT, value: "0", data: ft.interface.encodeFunctionData("setPaused", [false]) }] : [] }
     ];
     const missingSafes: string[] = [];
     for (const address of new Set(specifications.filter(s => s.calls.length).map(s => s.safe))) {
@@ -316,12 +322,19 @@ async function processChain(key: string, chains: string[], configs: Map<string, 
           [after.rawExecutorBytes, route.desired.executorBytes], [after.effectiveExecutorBytes, route.desired.executorBytes],
           [after.peer, route.desired.peer], [after.options, route.desired.options]
         ]) assert(equal(actual, desired), `${key}->${route.remote}: final config mismatch`);
+        // Exercise the complete messaging quote, including the selected DVNs,
+        // executor, treasury and FT's enforced receive options. This is read-only.
+        const sendParam = { dstEid: remote.eid, to: zeroPadValue(roles.finalOwner, 32),
+          amountLD: 10n ** 18n, minAmountLD: 10n ** 18n, extraOptions: "0x", composeMsg: "0x", oftCmd: "0x" };
+        const fee = await ft.quoteSend(sendParam, false);
+        route.messagingQuote = { sendParam, payInLzToken: false, nativeFee: fee.nativeFee.toString(),
+          lzTokenFee: fee.lzTokenFee.toString(), status: "passed" };
       }
       assert(equal(await ft.owner(), roles.finalOwner), "Final owner mismatch");
       assert.equal(await ft.totalSupply(), report.totalSupplyBefore, "Wiring changed token supply");
-      assert.equal(await ft.paused(), isNew ? false : report.pausedBefore, "Unexpected pause state after simulation");
+      assert.equal(await ft.paused(), needsActivation ? false : report.pausedBefore, "Unexpected pause state after simulation");
       report.status = "passed";
-      report.activationSimulatedSeparately = isNew;
+      report.activationSimulatedSeparately = needsActivation;
     }
     const unchangedHead = await live.getBlock(head.number);
     assert(unchangedHead && unchangedHead.hash === head.hash, "Pinned source block changed during simulation; rerun after the reorganization");
@@ -402,11 +415,13 @@ async function main() {
   write(path.join(output, "manifest.json"), manifest);
   console.log(`Writing rollout evidence to ${output}`);
   const retrySources = (process.env.FT_ROLLOUT_RETRY_SOURCES || "").split(",").filter(Boolean);
+  const canRetain = (result: any) => result?.status === "passed"
+    && result.routes.every((route: any) => route.messagingQuote?.status === "passed");
   const bootstrapPlan = chains.includes("arbitrum") && (!previous || retrySources.includes("arbitrum")
-    || previous.results.find((r: any) => r.chain === "arbitrum")?.status !== "passed") ? await buildSafeBootstrapPlan() : undefined;
+    || !canRetain(previous.results.find((r: any) => r.chain === "arbitrum"))) ? await buildSafeBootstrapPlan() : undefined;
   for (const key of chains) {
     const prior = previous?.results.find((r: any) => r.chain === key);
-    if (prior?.status === "passed" && !retrySources.includes(key)) {
+    if (canRetain(prior) && !retrySources.includes(key)) {
       // Resume preserves previously executed artifacts only when their hashes
       // and every raw/observed route value still match the current builders.
       assert.equal(prior.routes.length, chains.length - 1, "Incomplete prior source report");
@@ -451,12 +466,15 @@ async function main() {
     }
   }
   manifest.completeDirectedRouteComparison = manifest.crossChainComparisons.length === chains.length * (chains.length - 1);
+  manifest.successfulMessagingQuotes = manifest.results.reduce((sum: number, r: any) =>
+    sum + r.routes.filter((route: any) => route.messagingQuote?.status === "passed").length, 0);
+  manifest.allMessagingQuotesPassed = manifest.successfulMessagingQuotes === chains.length * (chains.length - 1);
   manifest.allConfigurationSimulationsPassed = manifest.completeDirectedRouteComparison && manifest.results.every((r: any) => r.status === "passed");
   manifest.executionBlockers = manifest.results.flatMap((r: any) => [
     ...(r.status !== "passed" ? [{ chain: r.chain, reason: r.blocker || r.error || "Simulation incomplete" }] : []),
     ...(r.liveDeployerPreflight && !r.liveDeployerPreflight.fundedAtSnapshot ? [{ chain: r.chain, reason: "Original FT deployer needs native gas funding; the fork supplied a local balance top-up" }] : [])
   ]);
-  manifest.readyForAllNetworkExecution = manifest.allConfigurationSimulationsPassed && !manifest.executionBlockers.length;
+  manifest.readyForAllNetworkExecution = manifest.allConfigurationSimulationsPassed && manifest.allMessagingQuotesPassed && !manifest.executionBlockers.length;
   manifest.totalSafeFiles = manifest.results.reduce((sum: number, r: any) => sum + r.batches.length, 0);
   manifest.simulatedSafeFiles = manifest.results.reduce((sum: number, r: any) => sum + r.batches.filter((b: any) => b.status === "passed").length, 0);
   manifest.unchangedExistingRoutes = manifest.results.flatMap((r: any) => r.routes.filter((route: any) =>

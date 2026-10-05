@@ -11,8 +11,7 @@
  * Usage: npx hardhat run scripts/check-deployment.ts --network <network>
  */
 
-import hre from 'hardhat'
-import { HardhatRuntimeEnvironment } from 'hardhat/types'
+import type { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { getChainConfig, TOKEN_CONTRACT_NAME } from '../utils/constants'
 import { FT } from '../typechain-types'
 
@@ -43,7 +42,9 @@ export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment)
 
     // Get deployed contract
     const deployment = await hre.deployments.get(TOKEN_CONTRACT_NAME)
-    const ft = (await hre.ethers.getContractAt(TOKEN_CONTRACT_NAME, deployment.address)) as unknown as FT
+    // Mainnet deploys the saved production bytecode even when local build artifacts are absent.
+    // Use its recorded ABI and a read-only runner for the corresponding state checks.
+    const ft = new hre.ethers.Contract(deployment.address, deployment.abi, hre.ethers.provider) as unknown as FT
 
     console.log(`Contract Address: ${deployment.address}\n`)
 
@@ -204,6 +205,7 @@ export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment)
 
 // Allow standalone execution
 if (require.main === module) {
+    const hre = require('hardhat') as HardhatRuntimeEnvironment
     runDeploymentCheck(hre)
         .then((success) => {
             process.exit(success ? 0 : 1)

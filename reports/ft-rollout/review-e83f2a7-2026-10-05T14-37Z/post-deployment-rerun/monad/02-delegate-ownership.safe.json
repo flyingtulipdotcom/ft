@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "chainId": "143",
+  "createdAt": 1791212008835,
+  "meta": {
+    "name": "FT monad: transfer FT ownership",
+    "txBuilderVersion": "1.18.0",
+    "description": "FT rollout. Execute only after reviewing manifest.json and its deployment, Safe and route prerequisites. Delegate endpoint batches on every network precede owner peer batches. Activation is separate.",
+    "createdFromSafeAddress": "0x22246a9183ce2ce6e2c2a9973f94aea91435017c",
+    "createdFromOwnerAddress": ""
+  },
+  "transactions": [
+    {
+      "to": "0x5DD1A7A369e8273371d2DBf9d83356057088082c",
+      "value": "0",
+      "data": "0xf2fde38b0000000000000000000000001118e1c057211306a40a4d7006c040dbfe1370cb",
+      "contractMethod": null,
+      "contractInputsValues": null
+    }
+  ]
+}

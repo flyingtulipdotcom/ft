@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "chainId": "42161",
+  "createdAt": 1791211858549,
+  "meta": {
+    "name": "Match the captured Ethereum FT Safe owners",
+    "createdFromSafeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+    "createdFromOwnerAddress": "",
+    "txBuilderVersion": "1.18.0",
+    "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+  },
+  "transactions": [
+    {
+      "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+      "value": "0",
+      "data": "0x0d582f13000000000000000000000000b7b543337539219a5a1326acb71dba8bba408bc80000000000000000000000000000000000000000000000000000000000000002",
+      "contractMethod": null,
+      "contractInputsValues": null
+    },
+    {
+      "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+      "value": "0",
+      "data": "0x0d582f13000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a100000000000000000000000000000000000000000000000000000000000000003",
+      "contractMethod": null,
+      "contractInputsValues": null
+    }
+  ]
+}

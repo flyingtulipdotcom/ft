@@ -134,7 +134,9 @@ npx hardhat run --no-compile scripts/rollout-ft.ts
 The checker verifies all five selected DVNs on all 72 directed routes using
 read-only worker fee quotes. The rollout validates that evidence against the
 current metadata and policy, forks each chain at a recorded block, and uses
-the same transaction builders as `ft:wire`. RPC overrides are
+the same transaction builders as `ft:wire`. After wiring, it also calls
+`FT.quoteSend` for one FT on every route, including DVN, executor, treasury and
+enforced-option pricing. These quotes do not transfer tokens. RPC overrides are
 `RPC_URL_ETHEREUM`, `RPC_URL_SONIC`, `RPC_URL_BSC`, `RPC_URL_AVALANCHE`,
 `RPC_URL_BASE`, `RPC_URL_MONAD`, `RPC_URL_ROBINHOOD`, `RPC_URL_ARC`, and
 `RPC_URL_ARBITRUM`. `FT_ROLLOUT_OUTPUT` selects the report directory;
@@ -154,14 +156,19 @@ Transaction Builder JSON, grouped by signing authority:
 3. `03-owner-peers.safe.json`: peers and 80,000-gas enforced receive options.
 4. `04-optional-activation.safe.json`: separately reviewed unpause on new chains.
 
+On a fresh rerun after FT deployment, expansion contracts still owned by the
+constructor delegate receive an ownership-transfer batch. Already completed
+ownership transfers are skipped; paused expansion contracts retain a separate
+optional activation batch.
+
 Complete deployment and endpoint configuration on **every** network before
 executing the owner peer batches on the four new chains first, then the five
 existing chains. The manifest lists prerequisites and
 simulation results. Missing governance Safes block execution; a successful
 fork funded locally does not mean the production deployer is funded.
 
-Arbitrum additionally includes `00a-safe-deployments.unsigned.json`: two
-ordinary factory calls that replay the original canonical Safe CREATE2 setup.
+Arbitrum additionally includes `00a-safe-deployments.unsigned.json`: up to two
+ordinary factory calls that replay missing canonical Safe CREATE2 deployments.
 Send those from a funded EOA **other than the FT deployer**, preserving the
 FT deployer's nonce zero. Then import both `00b-governance-*.safe.json` files
 into their respective newly created Safes. These add the missing owners and
@@ -170,6 +177,10 @@ the FT endpoint/ownership/peer batches. The original setup must be deployed
 first because changing its initializer changes the CREATE2 Safe address.
 The bootstrap plan records original setup data, salts, provenance, infrastructure
 code hashes, the Ethereum membership snapshot and simulated execution results.
+Fresh reruns validate existing Safe proxy/singleton code and approved ownership
+states, then generate only remaining creations and owner additions. A completed
+3-of-5 setup requires no further bootstrap transactions. Unexpected ownership
+states stop the rollout for review.
 
 Safe simulation calls the existing Safe implementation's `execTransaction`
 through a verified MultiSendCallOnly deployment, using threshold approvals

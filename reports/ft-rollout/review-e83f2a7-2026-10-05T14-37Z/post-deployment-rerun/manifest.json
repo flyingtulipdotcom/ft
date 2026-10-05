@@ -1,0 +1,934 @@
+{
+  "createdAt": "2026-10-05T14:53:28.835Z",
+  "chains": [
+    "monad",
+    "ethereum"
+  ],
+  "ftAddress": "0x5DD1A7A369e8273371d2DBf9d83356057088082c",
+  "simulationOnly": true,
+  "liveTransactionsSent": 0,
+  "readyForAllNetworkExecution": true,
+  "providerSupport": {
+    "file": "provider-support.json",
+    "completedAt": "2026-10-05T14:39:09.536Z",
+    "summary": {
+      "expectedRoutes": 72,
+      "checkedRoutes": 72,
+      "passingRoutes": 72,
+      "expectedProviderQuotes": 360,
+      "checkedProviderQuotes": 360,
+      "passingProviderQuotes": 360,
+      "failedQuotes": [],
+      "confirmationMismatches": [],
+      "confirmationReadErrors": [],
+      "chainReadErrors": []
+    },
+    "metadataSha256": "706a755c2618ddc5db8f07a82f38ff8d918ea77e8ecb8c8758dc511f503827b8"
+  },
+  "executionOrder": [
+    "Resolve all blockers and review Safe owners/thresholds; confirm both governance Safes exist on every chain.",
+    "On Arbitrum, execute the canonical SafeProxyFactory calls in 00a-safe-deployments.unsigned.json from a funded EOA OTHER THAN the FT deployer, then the 00b-governance-*.safe.json batches to align both Safes to the captured Ethereum 3-of-5 membership.",
+    "Deploy missing FT contracts using each 00-deployment-unsigned.json, original deployer and nonce 0. Recheck pending nonce and empty target address immediately before signing.",
+    "Execute 01-delegate-endpoints.safe.json on every chain; then transfer new FT ownership with each 02-delegate-ownership.safe.json.",
+    "After all deployments and both ends' endpoint configurations are verified, execute 03-owner-peers.safe.json on the four new chains first, then the five existing chains.",
+    "Review and execute 04-optional-activation.safe.json only when ready to enable transfers; those files were simulated separately."
+  ],
+  "limitations": [
+    "Forks use Cancun EVM execution; chain-specific live gas pricing, finality and sequencer behavior are not reproduced.",
+    "Safe execution uses approvals from impersonated current owners on local forks. This tests actual Safe/guard/MultiSend execution, not access to real signing keys.",
+    "Configuration and worker quotes do not simulate off-chain DVN attestations or end-to-end LayerZero delivery.",
+    "Safe Transaction Builder files contain calls, not signatures or a fixed live Safe nonce. Refresh chain state and re-simulate before signing."
+  ],
+  "results": [
+    {
+      "chain": "monad",
+      "chainId": 143,
+      "status": "passed",
+      "batches": [
+        {
+          "file": "monad/01-delegate-endpoints.safe.json",
+          "safe": "0x22246a9183ce2ce6e2c2a9973f94aea91435017c",
+          "operations": 4,
+          "sha256": "21a7b30a9c9fa68002b0ad2253424d607ee1e92a2a30361d85b9b4dec3a5f56c",
+          "simulation": {
+            "chainId": 143,
+            "forkBlockNumber": 110781035,
+            "safeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "version": "1.3.0",
+            "owners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 3,
+            "guard": "0x0000000000000000000000000000000000000000",
+            "nonceBefore": "1",
+            "nonceAfter": "2",
+            "approvedOwners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8"
+            ],
+            "approvalTransactions": [
+              "0x711fda48f25af83332aa051b54b4494405efefed47b41829beed562614b0572d",
+              "0xdfdeb47092b488bba6364d72cf18c5f2273c81893cea5b120e3b7d911797e286",
+              "0xbd10cc2a5783e43cdac3efa92fb0204dd84677856e0e2c04be6074d015318bf9"
+            ],
+            "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+            "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+            "packedTransactionsHash": "0x76eee8bb6b41230a832ff0ceff9812052470dddad397357fbc1d58649cb54851",
+            "safeTxHash": "0x56504762d7d6ea062cb84d7c7e7bc221c11959fd7cb77a2f1b17837e19d09165",
+            "executionTransactionHash": "0x9cf44cd0833ecfc96f23fdd8760101d88e1c4d2ebc7d26a77bb110e3c7f2df70",
+            "gasUsed": "716123",
+            "transactionCount": 4,
+            "success": true,
+            "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+          },
+          "status": "passed"
+        },
+        {
+          "file": "monad/02-delegate-ownership.safe.json",
+          "safe": "0x22246a9183ce2ce6e2c2a9973f94aea91435017c",
+          "operations": 1,
+          "sha256": "7abf105b81f995435fd5993d01a3421b760a3b9dd0dcd508329fc954fe8b97ad",
+          "simulation": {
+            "chainId": 143,
+            "forkBlockNumber": 110781035,
+            "safeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "version": "1.3.0",
+            "owners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 3,
+            "guard": "0x0000000000000000000000000000000000000000",
+            "nonceBefore": "2",
+            "nonceAfter": "3",
+            "approvedOwners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8"
+            ],
+            "approvalTransactions": [
+              "0x7d5563d4a537876c254ab34a09ccad217c4b8f63a8aebcc219efc5512c3b2f0d",
+              "0x6095ae0795f945897d138ce36ba498b5cc26c42a01eb78c032f650263e99e323",
+              "0x6bdeab6fb71d7a2595142aa0bcd2ebb409b36f3dbfa663f4a8c367bf33d2a7f5"
+            ],
+            "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+            "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+            "packedTransactionsHash": "0xb0da6deb89c450fd28ff912526d652fc4c019971862e6f090dc4c7d71655901c",
+            "safeTxHash": "0xe41bfcbd39462d1e35ac8e5ad85506cbfde603d47f90b980b3f7345a38ff784c",
+            "executionTransactionHash": "0x4e8b7870e6687ab94689e0d075e38f2142d784659e05c11b65cfd912a89cb567",
+            "gasUsed": "149310",
+            "transactionCount": 1,
+            "success": true,
+            "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+          },
+          "status": "passed"
+        },
+        {
+          "file": "monad/03-owner-peers.safe.json",
+          "safe": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "operations": 2,
+          "sha256": "d3224a93770290c06d58e1ea9eccfecd5d4c0a493494a8fd01b5cc0b4fa06148",
+          "simulation": {
+            "chainId": 143,
+            "forkBlockNumber": 110781035,
+            "safeAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "version": "1.3.0",
+            "owners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10"
+            ],
+            "threshold": 3,
+            "guard": "0x0000000000000000000000000000000000000000",
+            "nonceBefore": "3",
+            "nonceAfter": "4",
+            "approvedOwners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8"
+            ],
+            "approvalTransactions": [
+              "0xa366efe0662be24d84e3e92fb296529d7ec245a69d6bcecd7daf596ce8fa938c",
+              "0x5df60861e64cd2cc9976d878c8cc5fbaa574c09e7f097975343c1fd77db6e080",
+              "0x55a86c0f6602102710b9da1ca5a0196e08b835a98b57180a0058b776ef58482a"
+            ],
+            "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+            "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+            "packedTransactionsHash": "0xef249c12e004f5dee8026f5d458d9038d2a12b7c65d61d54a4e91befaec0ce36",
+            "safeTxHash": "0xa6808e7f330b8a62c5cbaec13cf39c31c585b0931deeb68ffb7813525ec9390b",
+            "executionTransactionHash": "0x893785cc9fd74e087d51066ad4c908bc0c8066920dd6b6cc3e46268848ef1a35",
+            "gasUsed": "213778",
+            "transactionCount": 2,
+            "success": true,
+            "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+          },
+          "status": "passed"
+        },
+        {
+          "file": "monad/04-optional-activation.safe.json",
+          "safe": "0x22246a9183ce2ce6e2c2a9973f94aea91435017c",
+          "operations": 1,
+          "sha256": "a57e61ee1fe26e4c95d3754da7ff732d2651eaccfb04d42e18e6fb17a54aafb7",
+          "simulation": {
+            "chainId": 143,
+            "forkBlockNumber": 110781035,
+            "safeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "version": "1.3.0",
+            "owners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 3,
+            "guard": "0x0000000000000000000000000000000000000000",
+            "nonceBefore": "3",
+            "nonceAfter": "4",
+            "approvedOwners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8"
+            ],
+            "approvalTransactions": [
+              "0x99697ee6c3cf51b4816fb4289ff087e48e6b6aca1c0788d09a617007450af390",
+              "0x2f0a887169089191b058b01901c57ed8a269a0142c403a8b40deaa9ad7c614a5",
+              "0x23a4105245ddc26d57ade9f30cc4a7b0d1b156f361474c4131a50b9766cd3bfe"
+            ],
+            "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+            "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+            "packedTransactionsHash": "0x57ba67a534c326f1223d2f34bdd621cca581883fda59cef125b013c4573b504b",
+            "safeTxHash": "0x848615d988fa8835aa6b7dc5924bfecdf9725996d08ecff747486e42ad7d3f9f",
+            "executionTransactionHash": "0xeac3b7b58543ae358c0862a616d560a6ff319e2e6eef8507b4ab4f415264ad4c",
+            "gasUsed": "147730",
+            "transactionCount": 1,
+            "success": true,
+            "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+          },
+          "status": "passed"
+        }
+      ],
+      "routes": [
+        {
+          "remote": "ethereum",
+          "before": {
+            "remote": "ethereum",
+            "remoteEid": 30101,
+            "sendLibrary": "0xC39161c743D0307EB9BCc9FEF03eeb9Dc4802de7",
+            "isDefaultSendLibrary": true,
+            "receiveLibrary": "0xe1844c5D63a9543023008D332Bd3d2e6f1FE1043",
+            "isDefaultReceiveLibrary": true,
+            "rawSend": {
+              "confirmations": 0,
+              "requiredDVNCount": 0,
+              "optionalDVNCount": 0,
+              "optionalDVNThreshold": 0,
+              "requiredDVNs": [],
+              "optionalDVNs": [],
+              "requiredProviders": [],
+              "optionalProviders": []
+            },
+            "rawReceive": {
+              "confirmations": 0,
+              "requiredDVNCount": 0,
+              "optionalDVNCount": 0,
+              "optionalDVNThreshold": 0,
+              "requiredDVNs": [],
+              "optionalDVNs": [],
+              "requiredProviders": [],
+              "optionalProviders": []
+            },
+            "rawSendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "rawReceiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "rawExecutorBytes": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "effectiveSend": {
+              "confirmations": 4,
+              "requiredDVNCount": 4,
+              "optionalDVNCount": 0,
+              "optionalDVNThreshold": 0,
+              "requiredDVNs": [
+                "0x282b3386571f7f794450d5789911a9804FA346b4",
+                "0x493626C5D852B9B187a9eb709D0b0978a3877238",
+                "0xaCDe1f22EEAb249d3ca6Ba8805C8fEe9f52a16e7",
+                "0xdCdd4628F858b45260C31D6ad076bD2C3D3c2f73"
+              ],
+              "optionalDVNs": [],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary",
+                "Nethermind",
+                "Horizen"
+              ],
+              "optionalProviders": []
+            },
+            "effectiveReceive": {
+              "confirmations": 15,
+              "requiredDVNCount": 4,
+              "optionalDVNCount": 0,
+              "optionalDVNThreshold": 0,
+              "requiredDVNs": [
+                "0x282b3386571f7f794450d5789911a9804FA346b4",
+                "0x493626C5D852B9B187a9eb709D0b0978a3877238",
+                "0xaCDe1f22EEAb249d3ca6Ba8805C8fEe9f52a16e7",
+                "0xdCdd4628F858b45260C31D6ad076bD2C3D3c2f73"
+              ],
+              "optionalDVNs": [],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary",
+                "Nethermind",
+                "Horizen"
+              ],
+              "optionalProviders": []
+            },
+            "effectiveSendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000004000000000000000000000000282b3386571f7f794450d5789911a9804fa346b4000000000000000000000000493626c5d852b9b187a9eb709d0b0978a3877238000000000000000000000000acde1f22eeab249d3ca6ba8805c8fee9f52a16e7000000000000000000000000dcdd4628f858b45260c31d6ad076bd2c3d3c2f730000000000000000000000000000000000000000000000000000000000000000",
+            "effectiveReceiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000004000000000000000000000000282b3386571f7f794450d5789911a9804fa346b4000000000000000000000000493626c5d852b9b187a9eb709d0b0978a3877238000000000000000000000000acde1f22eeab249d3ca6ba8805c8fee9f52a16e7000000000000000000000000dcdd4628f858b45260c31d6ad076bd2c3d3c2f730000000000000000000000000000000000000000000000000000000000000000",
+            "effectiveExecutorBytes": "0x00000000000000000000000000000000000000000000000000000000000027100000000000000000000000004208d6e27538189bb48e603d6123a94b8abe0a0b",
+            "peer": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "options": "0x",
+            "receiveTimeout": {
+              "library": "0x0000000000000000000000000000000000000000",
+              "expiryBlock": 0,
+              "active": false,
+              "observedBlock": 110781035
+            }
+          },
+          "desired": {
+            "send": {
+              "confirmations": 4,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x282b3386571f7f794450d5789911a9804FA346b4",
+                "0x493626C5D852B9B187a9eb709D0b0978a3877238"
+              ],
+              "optionalDVNs": [
+                "0x2c7185f5B0976397d9eB5c19d639d4005e6708f0",
+                "0xaCDe1f22EEAb249d3ca6Ba8805C8fEe9f52a16e7",
+                "0xdCdd4628F858b45260C31D6ad076bD2C3D3c2f73"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Nethermind",
+                "Horizen"
+              ]
+            },
+            "receive": {
+              "confirmations": 15,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x282b3386571f7f794450d5789911a9804FA346b4",
+                "0x493626C5D852B9B187a9eb709D0b0978a3877238"
+              ],
+              "optionalDVNs": [
+                "0x2c7185f5B0976397d9eB5c19d639d4005e6708f0",
+                "0xaCDe1f22EEAb249d3ca6Ba8805C8fEe9f52a16e7",
+                "0xdCdd4628F858b45260C31D6ad076bD2C3D3c2f73"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Nethermind",
+                "Horizen"
+              ]
+            },
+            "sendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000282b3386571f7f794450d5789911a9804fa346b4000000000000000000000000493626c5d852b9b187a9eb709d0b0978a387723800000000000000000000000000000000000000000000000000000000000000030000000000000000000000002c7185f5b0976397d9eb5c19d639d4005e6708f0000000000000000000000000acde1f22eeab249d3ca6ba8805c8fee9f52a16e7000000000000000000000000dcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+            "receiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000282b3386571f7f794450d5789911a9804fa346b4000000000000000000000000493626c5d852b9b187a9eb709d0b0978a387723800000000000000000000000000000000000000000000000000000000000000030000000000000000000000002c7185f5b0976397d9eb5c19d639d4005e6708f0000000000000000000000000acde1f22eeab249d3ca6ba8805c8fee9f52a16e7000000000000000000000000dcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+            "executorBytes": "0x00000000000000000000000000000000000000000000000000000000000027100000000000000000000000004208d6e27538189bb48e603d6123a94b8abe0a0b",
+            "peer": "0x0000000000000000000000005dd1a7a369e8273371d2dbf9d83356057088082c",
+            "options": "0x00030100110100000000000000000000000000013880"
+          },
+          "endpointOperations": 4,
+          "ownerOperations": 2,
+          "after": {
+            "remote": "ethereum",
+            "remoteEid": 30101,
+            "sendLibrary": "0xC39161c743D0307EB9BCc9FEF03eeb9Dc4802de7",
+            "isDefaultSendLibrary": false,
+            "receiveLibrary": "0xe1844c5D63a9543023008D332Bd3d2e6f1FE1043",
+            "isDefaultReceiveLibrary": false,
+            "rawSend": {
+              "confirmations": 4,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x282b3386571f7f794450d5789911a9804FA346b4",
+                "0x493626C5D852B9B187a9eb709D0b0978a3877238"
+              ],
+              "optionalDVNs": [
+                "0x2c7185f5B0976397d9eB5c19d639d4005e6708f0",
+                "0xaCDe1f22EEAb249d3ca6Ba8805C8fEe9f52a16e7",
+                "0xdCdd4628F858b45260C31D6ad076bD2C3D3c2f73"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Nethermind",
+                "Horizen"
+              ]
+            },
+            "rawReceive": {
+              "confirmations": 15,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x282b3386571f7f794450d5789911a9804FA346b4",
+                "0x493626C5D852B9B187a9eb709D0b0978a3877238"
+              ],
+              "optionalDVNs": [
+                "0x2c7185f5B0976397d9eB5c19d639d4005e6708f0",
+                "0xaCDe1f22EEAb249d3ca6Ba8805C8fEe9f52a16e7",
+                "0xdCdd4628F858b45260C31D6ad076bD2C3D3c2f73"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Nethermind",
+                "Horizen"
+              ]
+            },
+            "rawSendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000282b3386571f7f794450d5789911a9804fa346b4000000000000000000000000493626c5d852b9b187a9eb709d0b0978a387723800000000000000000000000000000000000000000000000000000000000000030000000000000000000000002c7185f5b0976397d9eb5c19d639d4005e6708f0000000000000000000000000acde1f22eeab249d3ca6ba8805c8fee9f52a16e7000000000000000000000000dcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+            "rawReceiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000282b3386571f7f794450d5789911a9804fa346b4000000000000000000000000493626c5d852b9b187a9eb709d0b0978a387723800000000000000000000000000000000000000000000000000000000000000030000000000000000000000002c7185f5b0976397d9eb5c19d639d4005e6708f0000000000000000000000000acde1f22eeab249d3ca6ba8805c8fee9f52a16e7000000000000000000000000dcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+            "rawExecutorBytes": "0x00000000000000000000000000000000000000000000000000000000000027100000000000000000000000004208d6e27538189bb48e603d6123a94b8abe0a0b",
+            "effectiveSend": {
+              "confirmations": 4,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x282b3386571f7f794450d5789911a9804FA346b4",
+                "0x493626C5D852B9B187a9eb709D0b0978a3877238"
+              ],
+              "optionalDVNs": [
+                "0x2c7185f5B0976397d9eB5c19d639d4005e6708f0",
+                "0xaCDe1f22EEAb249d3ca6Ba8805C8fEe9f52a16e7",
+                "0xdCdd4628F858b45260C31D6ad076bD2C3D3c2f73"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Nethermind",
+                "Horizen"
+              ]
+            },
+            "effectiveReceive": {
+              "confirmations": 15,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x282b3386571f7f794450d5789911a9804FA346b4",
+                "0x493626C5D852B9B187a9eb709D0b0978a3877238"
+              ],
+              "optionalDVNs": [
+                "0x2c7185f5B0976397d9eB5c19d639d4005e6708f0",
+                "0xaCDe1f22EEAb249d3ca6Ba8805C8fEe9f52a16e7",
+                "0xdCdd4628F858b45260C31D6ad076bD2C3D3c2f73"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Nethermind",
+                "Horizen"
+              ]
+            },
+            "effectiveSendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000282b3386571f7f794450d5789911a9804fa346b4000000000000000000000000493626c5d852b9b187a9eb709d0b0978a387723800000000000000000000000000000000000000000000000000000000000000030000000000000000000000002c7185f5b0976397d9eb5c19d639d4005e6708f0000000000000000000000000acde1f22eeab249d3ca6ba8805c8fee9f52a16e7000000000000000000000000dcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+            "effectiveReceiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000282b3386571f7f794450d5789911a9804fa346b4000000000000000000000000493626c5d852b9b187a9eb709d0b0978a387723800000000000000000000000000000000000000000000000000000000000000030000000000000000000000002c7185f5b0976397d9eb5c19d639d4005e6708f0000000000000000000000000acde1f22eeab249d3ca6ba8805c8fee9f52a16e7000000000000000000000000dcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+            "effectiveExecutorBytes": "0x00000000000000000000000000000000000000000000000000000000000027100000000000000000000000004208d6e27538189bb48e603d6123a94b8abe0a0b",
+            "peer": "0x0000000000000000000000005dd1a7a369e8273371d2dbf9d83356057088082c",
+            "options": "0x00030100110100000000000000000000000000013880",
+            "receiveTimeout": {
+              "library": "0x0000000000000000000000000000000000000000",
+              "expiryBlock": 0,
+              "active": false,
+              "observedBlock": 110781051
+            }
+          },
+          "messagingQuote": {
+            "sendParam": {
+              "dstEid": 30101,
+              "to": "0x0000000000000000000000001118e1c057211306a40a4d7006c040dbfe1370cb",
+              "amountLD": "1000000000000000000",
+              "minAmountLD": "1000000000000000000",
+              "extraOptions": "0x",
+              "composeMsg": "0x",
+              "oftCmd": "0x"
+            },
+            "payInLzToken": false,
+            "nativeFee": "87325318068078442663",
+            "lzTokenFee": "0",
+            "status": "passed"
+          }
+        }
+      ],
+      "forkBlock": 110781035,
+      "forkBlockHash": "0x6f96ef4eaf74014381b27d15e72a9c0be135480507ff190e30c9dfefc98ccf9c",
+      "forkTimestamp": 1791212004,
+      "localBootstrapBlocks": 0,
+      "wasDeployed": true,
+      "runtimeHash": "0x39657e228af4878f6158ab11671aa117c30fbd89262ab0f16ed3355391af0c7a",
+      "roles": {
+        "owner": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+        "delegate": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+        "configurator": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+        "desiredOwner": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+      },
+      "pausedBefore": true,
+      "needsOwnershipTransfer": true,
+      "totalSupplyBefore": "0",
+      "missingSafes": [],
+      "activationSimulatedSeparately": true
+    },
+    {
+      "chain": "ethereum",
+      "chainId": 1,
+      "status": "passed",
+      "batches": [
+        {
+          "file": "ethereum/01-delegate-endpoints.safe.json",
+          "safe": "0x22246a9183ce2ce6e2c2a9973f94aea91435017c",
+          "operations": 4,
+          "sha256": "2d03ebeea892b82b86650e601dfb69497b26b14a0d767eac29544cb260a487e8",
+          "simulation": {
+            "chainId": 1,
+            "forkBlockNumber": 26126888,
+            "safeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "version": "1.3.0",
+            "owners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10"
+            ],
+            "threshold": 3,
+            "guard": "0x0000000000000000000000000000000000000000",
+            "nonceBefore": "37",
+            "nonceAfter": "38",
+            "approvedOwners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8"
+            ],
+            "approvalTransactions": [
+              "0x7c5c6029c174c53abeab8372f431f71278de8f95c9a64bd62565b26270335649",
+              "0x56c54cd8822dff974d5a4207f94335e1288662ab3e325f932bb8b1e1014cb4ab",
+              "0x9eafb899b23835dede8645605f8819e675c6eb33c5538ff2fc06112e61eac5ef"
+            ],
+            "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+            "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+            "packedTransactionsHash": "0x9971726b780ae676e2998eda8da82fbf1e61eacd630792b7ddb353f633f84110",
+            "safeTxHash": "0x233ffb578beda631fff9a209ddf9fdd13775842aed6f963598d7b6df08d272ab",
+            "executionTransactionHash": "0x05a85d0d9e664de104b503d3bc0d93f3c140cdc92337ee73202b0865737bb379",
+            "gasUsed": "603901",
+            "transactionCount": 4,
+            "success": true,
+            "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+          },
+          "status": "passed"
+        },
+        {
+          "file": "ethereum/03-owner-peers.safe.json",
+          "safe": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "operations": 2,
+          "sha256": "2715b8e0443ea8b886a87be0f8e64132c4124191b458375b3d8f7b3901744156",
+          "simulation": {
+            "chainId": 1,
+            "forkBlockNumber": 26126888,
+            "safeAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "version": "1.3.0",
+            "owners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10"
+            ],
+            "threshold": 3,
+            "guard": "0x0000000000000000000000000000000000000000",
+            "nonceBefore": "357",
+            "nonceAfter": "358",
+            "approvedOwners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8"
+            ],
+            "approvalTransactions": [
+              "0xde8545388d23a11ccd8ffa42921d1a35b518bc7179043512b3f744890ad66f58",
+              "0x3319f5fb33025eca14fa42ca3c95c31809a08d1c9297f16e6eae0eaabfa1de57",
+              "0xf5060c930c12f85627871158fa669dc89f40bd74b2718d48e8fcecec5fea020e"
+            ],
+            "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+            "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+            "packedTransactionsHash": "0x635adfd7097ec845089b19f84094ed35006e3b240a06240d2e4d2d4d97565b84",
+            "safeTxHash": "0x4eed8732d2cbbf08bbb9ea4c397b75955cf3f2d0d86b621151d313fe6e188461",
+            "executionTransactionHash": "0xd1d9c47b4dd37a9bca77c17af164c75cef7f1c667eca2a4b745fc1d52dc41049",
+            "gasUsed": "135952",
+            "transactionCount": 2,
+            "success": true,
+            "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+          },
+          "status": "passed"
+        }
+      ],
+      "routes": [
+        {
+          "remote": "monad",
+          "before": {
+            "remote": "monad",
+            "remoteEid": 30390,
+            "sendLibrary": "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1",
+            "isDefaultSendLibrary": true,
+            "receiveLibrary": "0xc02Ab410f0734EFa3F14628780e6e695156024C2",
+            "isDefaultReceiveLibrary": true,
+            "rawSend": {
+              "confirmations": 0,
+              "requiredDVNCount": 0,
+              "optionalDVNCount": 0,
+              "optionalDVNThreshold": 0,
+              "requiredDVNs": [],
+              "optionalDVNs": [],
+              "requiredProviders": [],
+              "optionalProviders": []
+            },
+            "rawReceive": {
+              "confirmations": 0,
+              "requiredDVNCount": 0,
+              "optionalDVNCount": 0,
+              "optionalDVNThreshold": 0,
+              "requiredDVNs": [],
+              "optionalDVNs": [],
+              "requiredProviders": [],
+              "optionalProviders": []
+            },
+            "rawSendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "rawReceiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "rawExecutorBytes": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "effectiveSend": {
+              "confirmations": 15,
+              "requiredDVNCount": 4,
+              "optionalDVNCount": 0,
+              "optionalDVNThreshold": 0,
+              "requiredDVNs": [
+                "0x380275805876Ff19055EA900CDb2B46a94ecF20D",
+                "0x589dEDbD617e0CBcB916A9223F4d1300c294236b",
+                "0xa4fE5A5B9A846458a70Cd0748228aED3bF65c2cd",
+                "0xa59BA433ac34D2927232918Ef5B2eaAfcF130BA5"
+              ],
+              "optionalDVNs": [],
+              "requiredProviders": [
+                "Horizen",
+                "LayerZero Labs",
+                "Canary",
+                "Nethermind"
+              ],
+              "optionalProviders": []
+            },
+            "effectiveReceive": {
+              "confirmations": 4,
+              "requiredDVNCount": 4,
+              "optionalDVNCount": 0,
+              "optionalDVNThreshold": 0,
+              "requiredDVNs": [
+                "0x380275805876Ff19055EA900CDb2B46a94ecF20D",
+                "0x589dEDbD617e0CBcB916A9223F4d1300c294236b",
+                "0xa4fE5A5B9A846458a70Cd0748228aED3bF65c2cd",
+                "0xa59BA433ac34D2927232918Ef5B2eaAfcF130BA5"
+              ],
+              "optionalDVNs": [],
+              "requiredProviders": [
+                "Horizen",
+                "LayerZero Labs",
+                "Canary",
+                "Nethermind"
+              ],
+              "optionalProviders": []
+            },
+            "effectiveSendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000004000000000000000000000000380275805876ff19055ea900cdb2b46a94ecf20d000000000000000000000000589dedbd617e0cbcb916a9223f4d1300c294236b000000000000000000000000a4fe5a5b9a846458a70cd0748228aed3bf65c2cd000000000000000000000000a59ba433ac34d2927232918ef5b2eaafcf130ba50000000000000000000000000000000000000000000000000000000000000000",
+            "effectiveReceiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000004000000000000000000000000380275805876ff19055ea900cdb2b46a94ecf20d000000000000000000000000589dedbd617e0cbcb916a9223f4d1300c294236b000000000000000000000000a4fe5a5b9a846458a70cd0748228aed3bf65c2cd000000000000000000000000a59ba433ac34d2927232918ef5b2eaafcf130ba50000000000000000000000000000000000000000000000000000000000000000",
+            "effectiveExecutorBytes": "0x0000000000000000000000000000000000000000000000000000000000002710000000000000000000000000173272739bd7aa6e4e214714048a9fe699453059",
+            "peer": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "options": "0x",
+            "receiveTimeout": {
+              "library": "0x0000000000000000000000000000000000000000",
+              "expiryBlock": 0,
+              "active": false,
+              "observedBlock": 26126888
+            }
+          },
+          "desired": {
+            "send": {
+              "confirmations": 15,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x589dEDbD617e0CBcB916A9223F4d1300c294236b",
+                "0xa4fE5A5B9A846458a70Cd0748228aED3bF65c2cd"
+              ],
+              "optionalDVNs": [
+                "0x373a6E5c0C4E89E24819f00AA37ea370917AAfF4",
+                "0x380275805876Ff19055EA900CDb2B46a94ecF20D",
+                "0xa59BA433ac34D2927232918Ef5B2eaAfcF130BA5"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Horizen",
+                "Nethermind"
+              ]
+            },
+            "receive": {
+              "confirmations": 4,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x589dEDbD617e0CBcB916A9223F4d1300c294236b",
+                "0xa4fE5A5B9A846458a70Cd0748228aED3bF65c2cd"
+              ],
+              "optionalDVNs": [
+                "0x373a6E5c0C4E89E24819f00AA37ea370917AAfF4",
+                "0x380275805876Ff19055EA900CDb2B46a94ecF20D",
+                "0xa59BA433ac34D2927232918Ef5B2eaAfcF130BA5"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Horizen",
+                "Nethermind"
+              ]
+            },
+            "sendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000589dedbd617e0cbcb916a9223f4d1300c294236b000000000000000000000000a4fe5a5b9a846458a70cd0748228aed3bf65c2cd0000000000000000000000000000000000000000000000000000000000000003000000000000000000000000373a6e5c0c4e89e24819f00aa37ea370917aaff4000000000000000000000000380275805876ff19055ea900cdb2b46a94ecf20d000000000000000000000000a59ba433ac34d2927232918ef5b2eaafcf130ba5",
+            "receiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000589dedbd617e0cbcb916a9223f4d1300c294236b000000000000000000000000a4fe5a5b9a846458a70cd0748228aed3bf65c2cd0000000000000000000000000000000000000000000000000000000000000003000000000000000000000000373a6e5c0c4e89e24819f00aa37ea370917aaff4000000000000000000000000380275805876ff19055ea900cdb2b46a94ecf20d000000000000000000000000a59ba433ac34d2927232918ef5b2eaafcf130ba5",
+            "executorBytes": "0x0000000000000000000000000000000000000000000000000000000000002710000000000000000000000000173272739bd7aa6e4e214714048a9fe699453059",
+            "peer": "0x0000000000000000000000005dd1a7a369e8273371d2dbf9d83356057088082c",
+            "options": "0x00030100110100000000000000000000000000013880"
+          },
+          "endpointOperations": 4,
+          "ownerOperations": 2,
+          "after": {
+            "remote": "monad",
+            "remoteEid": 30390,
+            "sendLibrary": "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1",
+            "isDefaultSendLibrary": false,
+            "receiveLibrary": "0xc02Ab410f0734EFa3F14628780e6e695156024C2",
+            "isDefaultReceiveLibrary": false,
+            "rawSend": {
+              "confirmations": 15,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x589dEDbD617e0CBcB916A9223F4d1300c294236b",
+                "0xa4fE5A5B9A846458a70Cd0748228aED3bF65c2cd"
+              ],
+              "optionalDVNs": [
+                "0x373a6E5c0C4E89E24819f00AA37ea370917AAfF4",
+                "0x380275805876Ff19055EA900CDb2B46a94ecF20D",
+                "0xa59BA433ac34D2927232918Ef5B2eaAfcF130BA5"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Horizen",
+                "Nethermind"
+              ]
+            },
+            "rawReceive": {
+              "confirmations": 4,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x589dEDbD617e0CBcB916A9223F4d1300c294236b",
+                "0xa4fE5A5B9A846458a70Cd0748228aED3bF65c2cd"
+              ],
+              "optionalDVNs": [
+                "0x373a6E5c0C4E89E24819f00AA37ea370917AAfF4",
+                "0x380275805876Ff19055EA900CDb2B46a94ecF20D",
+                "0xa59BA433ac34D2927232918Ef5B2eaAfcF130BA5"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Horizen",
+                "Nethermind"
+              ]
+            },
+            "rawSendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000589dedbd617e0cbcb916a9223f4d1300c294236b000000000000000000000000a4fe5a5b9a846458a70cd0748228aed3bf65c2cd0000000000000000000000000000000000000000000000000000000000000003000000000000000000000000373a6e5c0c4e89e24819f00aa37ea370917aaff4000000000000000000000000380275805876ff19055ea900cdb2b46a94ecf20d000000000000000000000000a59ba433ac34d2927232918ef5b2eaafcf130ba5",
+            "rawReceiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000589dedbd617e0cbcb916a9223f4d1300c294236b000000000000000000000000a4fe5a5b9a846458a70cd0748228aed3bf65c2cd0000000000000000000000000000000000000000000000000000000000000003000000000000000000000000373a6e5c0c4e89e24819f00aa37ea370917aaff4000000000000000000000000380275805876ff19055ea900cdb2b46a94ecf20d000000000000000000000000a59ba433ac34d2927232918ef5b2eaafcf130ba5",
+            "rawExecutorBytes": "0x0000000000000000000000000000000000000000000000000000000000002710000000000000000000000000173272739bd7aa6e4e214714048a9fe699453059",
+            "effectiveSend": {
+              "confirmations": 15,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x589dEDbD617e0CBcB916A9223F4d1300c294236b",
+                "0xa4fE5A5B9A846458a70Cd0748228aED3bF65c2cd"
+              ],
+              "optionalDVNs": [
+                "0x373a6E5c0C4E89E24819f00AA37ea370917AAfF4",
+                "0x380275805876Ff19055EA900CDb2B46a94ecF20D",
+                "0xa59BA433ac34D2927232918Ef5B2eaAfcF130BA5"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Horizen",
+                "Nethermind"
+              ]
+            },
+            "effectiveReceive": {
+              "confirmations": 4,
+              "requiredDVNCount": 2,
+              "optionalDVNCount": 3,
+              "optionalDVNThreshold": 2,
+              "requiredDVNs": [
+                "0x589dEDbD617e0CBcB916A9223F4d1300c294236b",
+                "0xa4fE5A5B9A846458a70Cd0748228aED3bF65c2cd"
+              ],
+              "optionalDVNs": [
+                "0x373a6E5c0C4E89E24819f00AA37ea370917AAfF4",
+                "0x380275805876Ff19055EA900CDb2B46a94ecF20D",
+                "0xa59BA433ac34D2927232918Ef5B2eaAfcF130BA5"
+              ],
+              "requiredProviders": [
+                "LayerZero Labs",
+                "Canary"
+              ],
+              "optionalProviders": [
+                "Deutsche Telekom",
+                "Horizen",
+                "Nethermind"
+              ]
+            },
+            "effectiveSendBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000f00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000589dedbd617e0cbcb916a9223f4d1300c294236b000000000000000000000000a4fe5a5b9a846458a70cd0748228aed3bf65c2cd0000000000000000000000000000000000000000000000000000000000000003000000000000000000000000373a6e5c0c4e89e24819f00aa37ea370917aaff4000000000000000000000000380275805876ff19055ea900cdb2b46a94ecf20d000000000000000000000000a59ba433ac34d2927232918ef5b2eaafcf130ba5",
+            "effectiveReceiveBytes": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000589dedbd617e0cbcb916a9223f4d1300c294236b000000000000000000000000a4fe5a5b9a846458a70cd0748228aed3bf65c2cd0000000000000000000000000000000000000000000000000000000000000003000000000000000000000000373a6e5c0c4e89e24819f00aa37ea370917aaff4000000000000000000000000380275805876ff19055ea900cdb2b46a94ecf20d000000000000000000000000a59ba433ac34d2927232918ef5b2eaafcf130ba5",
+            "effectiveExecutorBytes": "0x0000000000000000000000000000000000000000000000000000000000002710000000000000000000000000173272739bd7aa6e4e214714048a9fe699453059",
+            "peer": "0x0000000000000000000000005dd1a7a369e8273371d2dbf9d83356057088082c",
+            "options": "0x00030100110100000000000000000000000000013880",
+            "receiveTimeout": {
+              "library": "0x0000000000000000000000000000000000000000",
+              "expiryBlock": 0,
+              "active": false,
+              "observedBlock": 26126896
+            }
+          },
+          "messagingQuote": {
+            "sendParam": {
+              "dstEid": 30390,
+              "to": "0x0000000000000000000000001118e1c057211306a40a4d7006c040dbfe1370cb",
+              "amountLD": "1000000000000000000",
+              "minAmountLD": "1000000000000000000",
+              "extraOptions": "0x",
+              "composeMsg": "0x",
+              "oftCmd": "0x"
+            },
+            "payInLzToken": false,
+            "nativeFee": "187716277717032",
+            "lzTokenFee": "0",
+            "status": "passed"
+          }
+        }
+      ],
+      "forkBlock": 26126888,
+      "forkBlockHash": "0xf3ef44364add3a355c78193c0c2d87d3ffbc7b72295756033a3068ca42ae9993",
+      "forkTimestamp": 1791212015,
+      "localBootstrapBlocks": 0,
+      "wasDeployed": true,
+      "runtimeHash": "0x8062c2d6646f1c459825821c9d1e582052bd2e7089367d7087545cf6bab8f4c3",
+      "roles": {
+        "owner": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+        "delegate": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+        "configurator": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+        "desiredOwner": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb"
+      },
+      "pausedBefore": false,
+      "needsOwnershipTransfer": false,
+      "totalSupplyBefore": "516897224676599557640937621",
+      "missingSafes": [],
+      "activationSimulatedSeparately": false
+    }
+  ],
+  "bytecode": {
+    "compiledCreationHash": "0xf21b9b8c3424c80407e54753f18def359ecd32cce707c18a1b4601b4a6d1259a",
+    "productionCreationHashes": {
+      "ethereum": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+      "sonic": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+      "bsc": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+      "avalanche": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+      "base": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3"
+    },
+    "deploymentUses": "Pinned production artifact, not the current compiler output"
+  },
+  "crossChainComparisons": [
+    {
+      "source": "monad",
+      "destination": "ethereum",
+      "desiredPoliciesMatch": true,
+      "bothForkStatesVerified": true
+    },
+    {
+      "source": "ethereum",
+      "destination": "monad",
+      "desiredPoliciesMatch": true,
+      "bothForkStatesVerified": true
+    }
+  ],
+  "completeDirectedRouteComparison": true,
+  "successfulMessagingQuotes": 2,
+  "allMessagingQuotesPassed": true,
+  "allConfigurationSimulationsPassed": true,
+  "executionBlockers": [],
+  "totalSafeFiles": 6,
+  "simulatedSafeFiles": 6,
+  "unchangedExistingRoutes": 0
+}

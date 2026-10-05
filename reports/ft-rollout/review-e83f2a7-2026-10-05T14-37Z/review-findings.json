@@ -1,0 +1,49 @@
+{
+  "baseCommit": "e83f2a7",
+  "reviewedAt": "2026-10-05T14:59:37.604Z",
+  "status": "Three operational findings fixed and verified; no remaining blocking code issue found in scope",
+  "findings": [
+    {
+      "id": "R1",
+      "file": "scripts/lib/arbitrum-safe-bootstrap.ts",
+      "problem": "A fresh rollout stopped once either Arbitrum Safe already existed, preventing review after executing the prescribed bootstrap.",
+      "resolution": "Validate canonical existing Safes and approved intermediate owner states; emit only remaining creations/owner additions; completed setup is a no-op.",
+      "validation": [
+        "14 new offline regression cases",
+        "Independent local fork: missing, partly created, original, partly rotated and completed Safes; stale and unexpected owner states rejected; FT nonce unchanged."
+      ],
+      "evidence": "arbitrum-bootstrap-rerun-check.json"
+    },
+    {
+      "id": "R2",
+      "file": "scripts/rollout-ft.ts",
+      "problem": "A fresh run after FT deployment expected the final owner immediately and omitted the still-required ownership/activation batches.",
+      "resolution": "Accept the constructor delegate on expansion chains; derive ownership transfer and optional activation from actual owner/pause state, independently of whether FT code already exists.",
+      "validation": [
+        "Nested local Monad fork: already deployed FT, no second deployment, remaining ownership and activation executed, supply preserved, complete messaging quotes passed."
+      ],
+      "evidence": "post-deployment-rerun/post-deployment-rerun-proof.json"
+    },
+    {
+      "id": "R3",
+      "file": "scripts/check-deployment.ts",
+      "problem": "The pinned deployment path tolerates missing local compiler artifacts, but the mandatory postcheck still required an FT artifact after broadcast.",
+      "resolution": "Construct the read-only contract from the saved deployment ABI and provider.",
+      "validation": [
+        "Works with saved ABI while artifact and signer access are forbidden",
+        "Rejects an incorrect initial non-mint supply"
+      ]
+    }
+  ],
+  "additionalVerification": "All-route FT.quoteSend checks added on configured forks to include DVN, executor, treasury and enforced-option pricing; no token transfer or off-chain delivery is claimed.",
+  "regression": {
+    "passing": 109,
+    "failing": 0
+  },
+  "typeChecking": {
+    "strictHelpers": "passed",
+    "changedFileDiagnostics": 0,
+    "repositoryBaselineDiagnosticsRemain": true
+  },
+  "liveTransactionsSent": 0
+}

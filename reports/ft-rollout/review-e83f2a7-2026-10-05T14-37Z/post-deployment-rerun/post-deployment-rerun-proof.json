@@ -1,0 +1,69 @@
+{
+  "sourceBlock": 110781034,
+  "sourceHash": "0x69a59acb608c4fedc43b7d31ef1131d26909c54365ef11e6c06cbaf2f1dde707",
+  "parentLocalDeployment": {
+    "address": "0x5DD1A7A369e8273371d2DBf9d83356057088082c",
+    "from": "0x44820497f8FE95A258A9522f0De2c04ab2bC3da3",
+    "nonce": 0,
+    "transactionHash": "0x6f4f93739d158586ff481c25c4109cafb7fdb691a0c073ed7498300db666af42",
+    "blockNumber": 110781035,
+    "gasEstimated": "4593065",
+    "gasUsed": "4593065",
+    "creationBytecodeHash": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+    "initCodeHash": "0xaeb36c5db598274a6ab78158fb1799a2b40aaab55a27b6ff28597429d46260dd",
+    "runtimeHash": "0x39657e228af4878f6158ab11671aa117c30fbd89262ab0f16ed3355391af0c7a",
+    "endpointEid": 30390,
+    "state": {
+      "name": "Flying Tulip",
+      "symbol": "FT",
+      "decimals": 18,
+      "totalSupply": "0",
+      "paused": true,
+      "owner": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+      "configurator": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+      "endpoint": "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
+      "delegate": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+      "eip712ChainId": 143,
+      "eip712VerifyingContract": "0x5DD1A7A369e8273371d2DBf9d83356057088082c"
+    }
+  },
+  "parentStateBeforeChild": {
+    "owner": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+    "paused": true,
+    "supply": "0"
+  },
+  "parentStateAfterChild": {
+    "owner": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+    "paused": true,
+    "supply": "0"
+  },
+  "readOnlyProxyUnavailableMethods": [
+    "anvil_nodeInfo",
+    "eth_getAccountInfo"
+  ],
+  "childResult": {
+    "status": "passed",
+    "wasDeployed": true,
+    "generatedNewDeployment": false,
+    "activationSimulatedSeparately": true,
+    "batches": [
+      {
+        "file": "monad/01-delegate-endpoints.safe.json",
+        "status": "passed"
+      },
+      {
+        "file": "monad/02-delegate-ownership.safe.json",
+        "status": "passed"
+      },
+      {
+        "file": "monad/03-owner-peers.safe.json",
+        "status": "passed"
+      },
+      {
+        "file": "monad/04-optional-activation.safe.json",
+        "status": "passed"
+      }
+    ]
+  },
+  "liveTransactionsSent": 0
+}

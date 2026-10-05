@@ -1,0 +1,17 @@
+{
+  "source": "Independent reconstruction from saved production artifacts",
+  "deployer": "0x44820497f8FE95A258A9522f0De2c04ab2bC3da3",
+  "nonce": 0,
+  "address": "0x5DD1A7A369e8273371d2DBf9d83356057088082c",
+  "creationBytecodeHash": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+  "currentCompiledCreationHash": "0xf21b9b8c3424c80407e54753f18def359ecd32cce707c18a1b4601b4a6d1259a",
+  "sonicGroupInitCodeHash": "0xaeb36c5db598274a6ab78158fb1799a2b40aaab55a27b6ff28597429d46260dd",
+  "ethereumGroupInitCodeHash": "0x1dfb0a45b5257a0530708ef3be0d8cb1355529330a47c2318118c4c1ddd8adbb",
+  "allFiveProductionCreationHashes": {
+    "ethereum": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+    "sonic": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+    "bsc": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+    "avalanche": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3",
+    "base": "0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3"
+  }
+}

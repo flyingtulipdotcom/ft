@@ -9,6 +9,7 @@ const FACTORY = "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC";
 const SINGLETON = "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA";
 const FALLBACK = "0xf48f2B2d2a534e402487b3ee7C18c33Aec0Fe5e4";
 const BOOTSTRAP_SENDER = "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E";
+const PROXY_CODE_HASH = "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000";
 const ADDITIONAL_OWNER = "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8";
 const OWNERS = [BOOTSTRAP_SENDER, "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
   "0x09E2B49280f1879172b2C3345d08896921707881", "0xD0CA88388d1732594D611535314e9B6745396f5A"];
@@ -40,6 +41,9 @@ const factoryInterface = new Interface(FACTORY_ABI);
 type OwnerState = { owners: string[]; threshold: number };
 type OwnerSnapshot = { chainId: number; blockNumber: number; safes: Record<string, OwnerState> };
 type BootstrapTransaction = { to: string; value: string; data: string; safeAddress: string };
+export type ExistingSafeState = { deployed: false } | {
+  deployed: true; owners: string[]; threshold: number; proxyCodeHash: string; singleton: string;
+};
 export interface SafeBootstrapPlan {
   chainId: 42161;
   status: string;
@@ -54,7 +58,8 @@ export interface SafeBootstrapPlan {
   };
   safes: Array<{
     address: string; setupData: string; saltNonce: string; originalOwners: string[]; originalThreshold: number;
-    targetOwners: string[]; targetThreshold: number; computedAddress: string; staticCallAddress: string;
+    targetOwners: string[]; targetThreshold: number; computedAddress: string; staticCallAddress: string | null;
+    existingState: ExistingSafeState;
     sourceUrl: string; originalEthereumTransaction: string;
   }>;
   bootstrapTransactions: BootstrapTransaction[];
@@ -91,30 +96,74 @@ async function ownersSnapshot(provider: JsonRpcProvider, chainId: number): Promi
   return { chainId, blockNumber, safes };
 }
 
-function rotationBatch(address: string, original: OwnerState, target: OwnerState): SafeBuilderBatch {
+function rotationBatch(address: string, current: OwnerState, target: OwnerState): SafeBuilderBatch | null {
   if (target.threshold !== 3 || target.owners.length !== 5 || !sameOwners(target.owners, [ADDITIONAL_OWNER, ...OWNERS])) {
     throw new Error("Ethereum Safe membership changed from the approved three-of-five target");
   }
+  const original = ORIGINALS.find((safe) => safe.address === address)!;
   const missing = target.owners.filter((owner) => !original.owners.some((value) => value.toLowerCase() === owner.toLowerCase())).reverse();
-  if (!missing.length) throw new Error("Expected canonical Safe bootstrap to require membership additions");
+  // Accept only the initial state, exact prefixes of the approved additions, or the final target.
+  // This permits recovery after a partially executed owner-add sequence without accepting a different policy.
+  const states: OwnerState[] = [{ owners: [...original.owners], threshold: original.threshold }];
+  for (let index = 0; index < missing.length; index++) {
+    states.push({ owners: [missing[index], ...states[index].owners],
+      threshold: index === missing.length - 1 ? target.threshold : original.threshold });
+  }
+  const completed = states.findIndex((state) => state.threshold === current.threshold && sameOwners(state.owners, current.owners));
+  if (completed < 0) throw new Error(`Unexpected existing Safe owners or threshold for ${address}`);
+  if (completed === missing.length) return null;
   return {
     version: "1.0", chainId: "42161", createdAt: Date.now(),
     meta: { name: "Match the captured Ethereum FT Safe owners", createdFromSafeAddress: address,
       createdFromOwnerAddress: "", txBuilderVersion: "1.18.0",
       description: "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5." },
-    transactions: missing.map((owner, index) => ({
+    transactions: missing.slice(completed).map((owner, remainingIndex) => ({
       to: address, value: "0", data: safeInterface.encodeFunctionData("addOwnerWithThreshold",
-        [owner, index === missing.length - 1 ? target.threshold : original.threshold]),
+        [owner, completed + remainingIndex === missing.length - 1 ? target.threshold : original.threshold]),
       contractMethod: null, contractInputsValues: null,
     })),
   };
 }
 
+function validateExistingSafe(state: ExistingSafeState, address: string) {
+  if (state.deployed && (state.proxyCodeHash !== PROXY_CODE_HASH || getAddress(state.singleton) !== SINGLETON)) {
+    throw new Error(`Existing Safe ${address} has unexpected proxy bytecode or singleton`);
+  }
+}
+
+async function readExistingSafe(provider: JsonRpcProvider, address: string, blockTag: number | "latest" = "latest"): Promise<ExistingSafeState> {
+  const code = await provider.getCode(address, blockTag);
+  if (code === "0x") return { deployed: false };
+  const singletonStorage = await provider.getStorage(address, 0, blockTag);
+  const singleton = getAddress(`0x${singletonStorage.slice(-40)}`);
+  const state = { deployed: true as const, proxyCodeHash: keccak256(code), singleton, owners: [] as string[], threshold: 0 };
+  validateExistingSafe(state, address);
+  const safe = new Contract(address, SAFE_ABI, provider);
+  const [owners, threshold] = await Promise.all([safe.getOwners({ blockTag }), safe.getThreshold({ blockTag })]);
+  return { ...state, owners: [...owners], threshold: Number(threshold) };
+}
+
+/** Derive only the remaining canonical creates and owner-add calls from captured Safe state. */
+export function deriveSafeBootstrapActions(states: Record<string, ExistingSafeState>, targets: Record<string, OwnerState>) {
+  const bootstrapTransactions: BootstrapTransaction[] = [];
+  const rotationBatches: SafeBuilderBatch[] = [];
+  for (const original of ORIGINALS) {
+    const state = states[original.address];
+    if (!state) throw new Error(`Missing captured Safe state for ${original.address}`);
+    validateExistingSafe(state, original.address);
+    if (!state.deployed) bootstrapTransactions.push({ to: FACTORY, value: "0", safeAddress: original.address,
+      data: factoryInterface.encodeFunctionData("createProxyWithNonce", [SINGLETON, originalSetup(original), original.saltNonce]) });
+    const rotation = rotationBatch(original.address, state.deployed ? state : original, targets[original.address]);
+    if (rotation) rotationBatches.push(rotation);
+  }
+  return { bootstrapTransactions, rotationBatches };
+}
+
 /** Read-only provenance and exact calldata; never creates a Safe or submits to a transaction service. */
-export async function buildSafeBootstrapPlan(): Promise<SafeBootstrapPlan> {
+export async function buildSafeBootstrapPlan(options: { arbitrumProvider?: JsonRpcProvider } = {}): Promise<SafeBootstrapPlan> {
   const rpc = { ethereum: "https://ethereum-rpc.publicnode.com", arbitrum: "https://arb1.arbitrum.io/rpc", robinhood: "https://rpc.mainnet.chain.robinhood.com" };
   const ethereum = new JsonRpcProvider(rpc.ethereum, 1, { staticNetwork: true });
-  const arbitrum = new JsonRpcProvider(rpc.arbitrum, 42161, { staticNetwork: true });
+  const arbitrum = options.arbitrumProvider || new JsonRpcProvider(rpc.arbitrum, 42161, { staticNetwork: true });
   const robinhood = new JsonRpcProvider(rpc.robinhood, 4663, { staticNetwork: true });
   try {
     const actualChainIds = await Promise.all([ethereum, arbitrum, robinhood].map(provider => provider.send("eth_chainId", [])));
@@ -137,7 +186,7 @@ export async function buildSafeBootstrapPlan(): Promise<SafeBootstrapPlan> {
       bootstrapSender: BOOTSTRAP_SENDER, arbitrumBlockNumber, ethereumSnapshot, robinhoodSnapshot,
       infrastructure: { factory: FACTORY, singleton: SINGLETON, fallbackHandler: FALLBACK, proxyCreationCode, codeHashes: HASHES },
       safes: [], bootstrapTransactions: [], rotationBatches: [],
-      provenance: { generatedAt: new Date().toISOString(), ethereumRpc: rpc.ethereum, arbitrumRpc: rpc.arbitrum, robinhoodRpc: rpc.robinhood },
+      provenance: { generatedAt: new Date().toISOString(), ethereumRpc: rpc.ethereum, arbitrumRpc: arbitrum._getConnection().url, robinhoodRpc: rpc.robinhood },
     };
     for (const original of ORIGINALS) {
       const sourceUrl = `https://safe-transaction-mainnet.safe.global/api/v1/safes/${original.address}/creation/`;
@@ -149,30 +198,31 @@ export async function buildSafeBootstrapPlan(): Promise<SafeBootstrapPlan> {
           record.transactionHash !== original.transactionHash || getAddress(record.factoryAddress) !== FACTORY || getAddress(record.masterCopy) !== SINGLETON) {
         throw new Error(`Original Safe creation evidence changed for ${original.address}`);
       }
-      if (await arbitrum.getCode(original.address, arbitrumBlockNumber) !== "0x") throw new Error(`Safe ${original.address} already exists on Arbitrum; refresh the rollout`);
+      const existingState = await readExistingSafe(arbitrum, original.address, arbitrumBlockNumber);
       const computedAddress = deriveAddress(proxyCreationCode, setupData, original.saltNonce);
-      const staticCallAddress = await factory.createProxyWithNonce.staticCall(SINGLETON, setupData, original.saltNonce, { blockTag: arbitrumBlockNumber });
-      if (computedAddress !== original.address || staticCallAddress !== original.address) throw new Error("Canonical Safe CREATE2 address mismatch");
+      const staticCallAddress = existingState.deployed ? null
+        : await factory.createProxyWithNonce.staticCall(SINGLETON, setupData, original.saltNonce, { blockTag: arbitrumBlockNumber });
+      if (computedAddress !== original.address || (staticCallAddress !== null && staticCallAddress !== original.address)) throw new Error("Canonical Safe CREATE2 address mismatch");
       const target = ethereumSnapshot.safes[original.address];
       plan.safes.push({ address: original.address, setupData, saltNonce: original.saltNonce,
         originalOwners: original.owners, originalThreshold: original.threshold,
-        targetOwners: target.owners, targetThreshold: target.threshold, computedAddress, staticCallAddress,
+        targetOwners: target.owners, targetThreshold: target.threshold, computedAddress, staticCallAddress, existingState,
         sourceUrl, originalEthereumTransaction: original.transactionHash });
-      plan.bootstrapTransactions.push({ to: FACTORY, value: "0", safeAddress: original.address,
-        data: factoryInterface.encodeFunctionData("createProxyWithNonce", [SINGLETON, setupData, original.saltNonce]) });
-      plan.rotationBatches.push(rotationBatch(original.address, { owners: original.owners, threshold: original.threshold }, target));
     }
+    const actions = deriveSafeBootstrapActions(Object.fromEntries(plan.safes.map((safe) => [safe.address, safe.existingState])), ethereumSnapshot.safes);
+    plan.bootstrapTransactions = actions.bootstrapTransactions;
+    plan.rotationBatches = actions.rotationBatches;
     return plan;
   } finally {
-    ethereum.destroy(); arbitrum.destroy(); robinhood.destroy();
+    ethereum.destroy(); if (!options.arbitrumProvider) arbitrum.destroy(); robinhood.destroy();
   }
 }
 
 /** Rehearse only the persisted, verified plan on a local fork; preserve FT deployer's nonce. */
 export async function simulateSafeBootstrap(provider: JsonRpcProvider, mode: "original" | "ethereum", plan: SafeBootstrapPlan) {
   await assertLocalAnvilFork(provider, 42161);
-  if (plan.chainId !== 42161 || plan.bootstrapSender !== BOOTSTRAP_SENDER || plan.safes.length !== 2 ||
-      plan.bootstrapTransactions.length !== 2 || plan.rotationBatches.length !== 2) throw new Error("Invalid persisted Safe bootstrap plan");
+  if (mode !== "original" && mode !== "ethereum") throw new Error("Invalid Safe bootstrap mode");
+  if (plan.chainId !== 42161 || plan.bootstrapSender !== BOOTSTRAP_SENDER || plan.safes.length !== 2) throw new Error("Invalid persisted Safe bootstrap plan");
   for (const [label, address] of [["factory", FACTORY], ["singleton", SINGLETON], ["fallbackHandler", FALLBACK]] as const) {
     if (keccak256(await provider.getCode(address)) !== HASHES[label]) throw new Error(`Fork Safe ${label} code hash mismatch`);
   }
@@ -180,40 +230,45 @@ export async function simulateSafeBootstrap(provider: JsonRpcProvider, mode: "or
   const actualProxyCreationCode = await factory.proxyCreationCode();
   if (actualProxyCreationCode !== plan.infrastructure.proxyCreationCode) throw new Error("Fork Safe proxy creation bytecode differs from the persisted plan");
   for (let index = 0; index < ORIGINALS.length; index++) {
-    const original = ORIGINALS[index], item = plan.safes[index], tx = plan.bootstrapTransactions[index];
-    const expectedData = factoryInterface.encodeFunctionData("createProxyWithNonce", [SINGLETON, originalSetup(original), original.saltNonce]);
+    const original = ORIGINALS[index], item = plan.safes[index];
     if (item.address !== original.address || item.setupData !== originalSetup(original) || item.saltNonce !== original.saltNonce ||
-        tx.to !== FACTORY || tx.value !== "0" || tx.safeAddress !== original.address || tx.data !== expectedData ||
         deriveAddress(actualProxyCreationCode, item.setupData, item.saltNonce) !== original.address) {
       throw new Error("Persisted Safe bootstrap calldata differs from the canonical original setup");
     }
-    const expectedRotation = rotationBatch(original.address, { owners: original.owners, threshold: original.threshold },
-      plan.ethereumSnapshot.safes[original.address]);
-    if (JSON.stringify(plan.rotationBatches[index].transactions) !== JSON.stringify(expectedRotation.transactions) ||
-        plan.rotationBatches[index].meta.createdFromSafeAddress !== original.address || Number(plan.rotationBatches[index].chainId) !== 42161) {
-      throw new Error("Persisted Safe rotation calldata differs from the captured Ethereum target");
+    const actual = await readExistingSafe(provider, original.address);
+    const captured = item.existingState;
+    if (!captured || actual.deployed !== captured.deployed || (actual.deployed && captured.deployed &&
+        (actual.proxyCodeHash !== captured.proxyCodeHash || actual.singleton !== captured.singleton ||
+         actual.threshold !== captured.threshold || !sameOwners(actual.owners, captured.owners)))) {
+      throw new Error(`Safe ${original.address} changed after the plan was captured; refresh the rollout`);
     }
-    if (await provider.getCode(original.address) !== "0x") throw new Error(`Safe ${original.address} already exists on this fork`);
   }
+  const actions = deriveSafeBootstrapActions(Object.fromEntries(plan.safes.map((safe) => [safe.address, safe.existingState])), plan.ethereumSnapshot.safes);
+  if (JSON.stringify(plan.bootstrapTransactions) !== JSON.stringify(actions.bootstrapTransactions)) throw new Error("Persisted Safe create transactions differ from the required canonical creates");
+  if (plan.rotationBatches.length !== actions.rotationBatches.length || actions.rotationBatches.some((expected, index) => {
+    const actual = plan.rotationBatches[index];
+    return JSON.stringify(actual.transactions) !== JSON.stringify(expected.transactions) || actual.meta.createdFromSafeAddress !== expected.meta.createdFromSafeAddress || Number(actual.chainId) !== 42161;
+  })) throw new Error("Persisted Safe rotation calldata differs from the captured Ethereum target");
   const ftNonceBefore = await provider.send("eth_getTransactionCount", [FT_DEPLOYER, "latest"]);
-  await provider.send("anvil_setBalance", [BOOTSTRAP_SENDER, toQuantity(parseEther("1000"))]);
-  await provider.send("anvil_impersonateAccount", [BOOTSTRAP_SENDER]);
   const creations = [];
-  try {
-    const signer = await provider.getSigner(BOOTSTRAP_SENDER);
-    for (const call of plan.bootstrapTransactions) {
-      const tx = await signer.sendTransaction({ to: call.to, data: call.data, value: BigInt(call.value) });
-      const receipt = await tx.wait();
-      if (!receipt || receipt.status !== 1 || await provider.getCode(call.safeAddress) === "0x") throw new Error("Safe bootstrap transaction failed");
-      const safe = new Contract(call.safeAddress, SAFE_ABI, provider);
-      const original = ORIGINALS.find((item) => item.address === call.safeAddress)!;
-      const [owners, threshold] = await Promise.all([safe.getOwners(), safe.getThreshold()]);
-      if (!sameOwners([...owners], original.owners) || Number(threshold) !== original.threshold) throw new Error("Canonical Safe initial ownership mismatch");
-      creations.push({ safeAddress: call.safeAddress, from: BOOTSTRAP_SENDER, transactionHash: tx.hash,
-        gasUsed: receipt.gasUsed.toString(), blockNumber: receipt.blockNumber, owners: [...owners], threshold: Number(threshold) });
+  if (plan.bootstrapTransactions.length) {
+    await provider.send("anvil_setBalance", [BOOTSTRAP_SENDER, toQuantity(parseEther("1000"))]);
+    await provider.send("anvil_impersonateAccount", [BOOTSTRAP_SENDER]);
+    try {
+      const signer = await provider.getSigner(BOOTSTRAP_SENDER);
+      for (const call of plan.bootstrapTransactions) {
+        const tx = await signer.sendTransaction({ to: call.to, data: call.data, value: BigInt(call.value) });
+        const receipt = await tx.wait();
+        if (!receipt || receipt.status !== 1) throw new Error("Safe bootstrap transaction failed");
+        const original = ORIGINALS.find((item) => item.address === call.safeAddress)!;
+        const initial = await readExistingSafe(provider, call.safeAddress);
+        if (!initial.deployed || !sameOwners(initial.owners, original.owners) || initial.threshold !== original.threshold) throw new Error("Canonical Safe initial ownership mismatch");
+        creations.push({ safeAddress: call.safeAddress, from: BOOTSTRAP_SENDER, transactionHash: tx.hash,
+          gasUsed: receipt.gasUsed.toString(), blockNumber: receipt.blockNumber, owners: initial.owners, threshold: initial.threshold });
+      }
+    } finally {
+      await provider.send("anvil_stopImpersonatingAccount", [BOOTSTRAP_SENDER]);
     }
-  } finally {
-    await provider.send("anvil_stopImpersonatingAccount", [BOOTSTRAP_SENDER]);
   }
   const rotations = [];
   if (mode === "ethereum") for (const batch of plan.rotationBatches) rotations.push(await executeSafeBuilderBatch(provider, batch));
@@ -221,7 +276,8 @@ export async function simulateSafeBootstrap(provider: JsonRpcProvider, mode: "or
   for (const original of ORIGINALS) {
     const safe = new Contract(original.address, SAFE_ABI, provider);
     const [owners, threshold] = await Promise.all([safe.getOwners(), safe.getThreshold()]);
-    const target = mode === "ethereum" ? plan.ethereumSnapshot.safes[original.address] : original;
+    const existing = plan.safes.find((safe) => safe.address === original.address)!.existingState;
+    const target = mode === "ethereum" ? plan.ethereumSnapshot.safes[original.address] : existing.deployed ? existing : original;
     if (!sameOwners([...owners], target.owners) || Number(threshold) !== target.threshold) throw new Error("Final Arbitrum Safe membership differs from the selected target");
     finalSafes.push({ address: original.address, owners: [...owners], threshold: Number(threshold) });
   }

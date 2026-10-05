@@ -1,0 +1,1671 @@
+{
+  "generatedAt": "2026-10-05T14:50:13.016Z",
+  "status": "passed",
+  "mode": "local Anvil fork only; no live transactions",
+  "sourceRpc": "https://arb1.arbitrum.io/rpc",
+  "forkBlockNumber": 511952598,
+  "forkBlockHash": "0x993f108cec84fbad9c5e5ebaf300eb5859839ce3d42e6eef7be3cd6f13c8c52a",
+  "helperSha256": "cce3acc77184b33f30c9a69fa3f8132667522b63d51858fb7abb7eed1c86d19a",
+  "steps": [
+    {
+      "label": "both Safes absent",
+      "arbitrumBlockNumber": 511952599,
+      "creates": 2,
+      "rotations": 2,
+      "rotationOperations": [
+        {
+          "safe": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "operations": 1
+        },
+        {
+          "safe": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "operations": 2
+        }
+      ],
+      "states": [
+        {
+          "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "deployed": false
+        },
+        {
+          "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "deployed": false
+        }
+      ],
+      "plan": {
+        "chainId": 42161,
+        "status": "Prepared proposal; not broadcast",
+        "targetPolicy": "Match captured Ethereum Safe owners: both three of five",
+        "bootstrapSender": "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+        "arbitrumBlockNumber": 511952599,
+        "ethereumSnapshot": {
+          "chainId": 1,
+          "blockNumber": 26126871,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            }
+          }
+        },
+        "robinhoodSnapshot": {
+          "chainId": 4663,
+          "blockNumber": 80868624,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 2
+            }
+          }
+        },
+        "infrastructure": {
+          "factory": "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "fallbackHandler": "0xf48f2B2d2a534e402487b3ee7C18c33Aec0Fe5e4",
+          "proxyCreationCode": "0x608060405234801561001057600080fd5b506040516101e63803806101e68339818101604052602081101561003357600080fd5b8101908080519060200190929190505050600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156100ca576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260228152602001806101c46022913960400191505060405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505060ab806101196000396000f3fe608060405273ffffffffffffffffffffffffffffffffffffffff600054167fa619486e0000000000000000000000000000000000000000000000000000000060003514156050578060005260206000f35b3660008037600080366000845af43d6000803e60008114156070573d6000fd5b3d6000f3fea2646970667358221220d1429297349653a4918076d650332de1a1068c5f3e07c5c82360c277770b955264736f6c63430007060033496e76616c69642073696e676c65746f6e20616464726573732070726f7669646564",
+          "codeHashes": {
+            "factory": "0x337d7f54be11b6ed55fef7b667ea5488db53db8320a05d1146aa4bd169a39a9b",
+            "singleton": "0x21842597390c4c6e3c1239e434a682b054bd9548eee5e9b1d6a4482731023c0f",
+            "fallbackHandler": "0x03e69f7ce809e81687c69b19a7d7cca45b6d551ffdec73d9bb87178476de1abf"
+          }
+        },
+        "safes": [
+          {
+            "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "setupData": "0xb63e800d00000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a0000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a1000000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "112488744633395248723173799332012111452630483371312680219271362406737339773194",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 3,
+            "targetOwners": [
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "staticCallAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "existingState": {
+              "deployed": false
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x1118e1c057211306a40A4d7006C040dbfE1370Cb/creation/",
+            "originalEthereumTransaction": "0x133631167cbf30a8c4e344f80e5967c743fe6bb9c1e1e84d4eaf5677bef1054d"
+          },
+          {
+            "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "setupData": "0xb63e800d0000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e00000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "106430251993975978589270074926773519088890969377155645149637629411328918818831",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 2,
+            "targetOwners": [
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "staticCallAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "existingState": {
+              "deployed": false
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x22246a9183cE2CE6e2c2a9973F94aEA91435017C/creation/",
+            "originalEthereumTransaction": "0x61a497aebaa1392ee05e59d4590ddbdbd8442ae1b1adfe4db5d8af7298afc220"
+          }
+        ],
+        "bootstrapTransactions": [
+          {
+            "to": "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC",
+            "value": "0",
+            "safeAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "data": "0x1688f0b9000000000000000000000000fb1bffc9d739b8d520daf37df666da4c687191ea0000000000000000000000000000000000000000000000000000000000000060f8b25f8ac5e0eaad5a7d10f2176ab8a9577bc36efa7cd3d603e44e9cb914710a00000000000000000000000000000000000000000000000000000000000001c4b63e800d00000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a0000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a1000000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+          },
+          {
+            "to": "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC",
+            "value": "0",
+            "safeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "data": "0x1688f0b9000000000000000000000000fb1bffc9d739b8d520daf37df666da4c687191ea0000000000000000000000000000000000000000000000000000000000000060eb4d634d2715f79006041ffdbac8f6600a8eedabc263d496fa55e38049c4100f00000000000000000000000000000000000000000000000000000000000001a4b63e800d0000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e00000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+          }
+        ],
+        "rotationBatches": [
+          {
+            "version": "1.0",
+            "chainId": "42161",
+            "createdAt": 1791211821569,
+            "meta": {
+              "name": "Match the captured Ethereum FT Safe owners",
+              "createdFromSafeAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+              "createdFromOwnerAddress": "",
+              "txBuilderVersion": "1.18.0",
+              "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+            },
+            "transactions": [
+              {
+                "to": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000b7b543337539219a5a1326acb71dba8bba408bc80000000000000000000000000000000000000000000000000000000000000003",
+                "contractMethod": null,
+                "contractInputsValues": null
+              }
+            ]
+          },
+          {
+            "version": "1.0",
+            "chainId": "42161",
+            "createdAt": 1791211821570,
+            "meta": {
+              "name": "Match the captured Ethereum FT Safe owners",
+              "createdFromSafeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+              "createdFromOwnerAddress": "",
+              "txBuilderVersion": "1.18.0",
+              "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+            },
+            "transactions": [
+              {
+                "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000b7b543337539219a5a1326acb71dba8bba408bc80000000000000000000000000000000000000000000000000000000000000002",
+                "contractMethod": null,
+                "contractInputsValues": null
+              },
+              {
+                "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a100000000000000000000000000000000000000000000000000000000000000003",
+                "contractMethod": null,
+                "contractInputsValues": null
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "generatedAt": "2026-10-05T14:50:20.599Z",
+          "ethereumRpc": "https://ethereum-rpc.publicnode.com",
+          "arbitrumRpc": "http://127.0.0.1:60226",
+          "robinhoodRpc": "https://rpc.mainnet.chain.robinhood.com"
+        }
+      }
+    },
+    {
+      "label": "first canonical factory creation only",
+      "safe": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+      "transactionHash": "0x963691a2332bcbffc23c237b9eb27a3cadb921d12d71c565cdffc25054c3bf2e",
+      "blockNumber": 511952600,
+      "gasUsed": "329381"
+    },
+    {
+      "label": "one original Safe deployed; one absent",
+      "arbitrumBlockNumber": 511952600,
+      "creates": 1,
+      "rotations": 2,
+      "rotationOperations": [
+        {
+          "safe": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "operations": 1
+        },
+        {
+          "safe": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "operations": 2
+        }
+      ],
+      "states": [
+        {
+          "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "deployed": true,
+          "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "owners": [
+            "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+            "0x09E2B49280f1879172b2C3345d08896921707881",
+            "0xD0CA88388d1732594D611535314e9B6745396f5A"
+          ],
+          "threshold": 3
+        },
+        {
+          "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "deployed": false
+        }
+      ],
+      "plan": {
+        "chainId": 42161,
+        "status": "Prepared proposal; not broadcast",
+        "targetPolicy": "Match captured Ethereum Safe owners: both three of five",
+        "bootstrapSender": "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+        "arbitrumBlockNumber": 511952600,
+        "ethereumSnapshot": {
+          "chainId": 1,
+          "blockNumber": 26126872,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            }
+          }
+        },
+        "robinhoodSnapshot": {
+          "chainId": 4663,
+          "blockNumber": 80868699,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 2
+            }
+          }
+        },
+        "infrastructure": {
+          "factory": "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "fallbackHandler": "0xf48f2B2d2a534e402487b3ee7C18c33Aec0Fe5e4",
+          "proxyCreationCode": "0x608060405234801561001057600080fd5b506040516101e63803806101e68339818101604052602081101561003357600080fd5b8101908080519060200190929190505050600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156100ca576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260228152602001806101c46022913960400191505060405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505060ab806101196000396000f3fe608060405273ffffffffffffffffffffffffffffffffffffffff600054167fa619486e0000000000000000000000000000000000000000000000000000000060003514156050578060005260206000f35b3660008037600080366000845af43d6000803e60008114156070573d6000fd5b3d6000f3fea2646970667358221220d1429297349653a4918076d650332de1a1068c5f3e07c5c82360c277770b955264736f6c63430007060033496e76616c69642073696e676c65746f6e20616464726573732070726f7669646564",
+          "codeHashes": {
+            "factory": "0x337d7f54be11b6ed55fef7b667ea5488db53db8320a05d1146aa4bd169a39a9b",
+            "singleton": "0x21842597390c4c6e3c1239e434a682b054bd9548eee5e9b1d6a4482731023c0f",
+            "fallbackHandler": "0x03e69f7ce809e81687c69b19a7d7cca45b6d551ffdec73d9bb87178476de1abf"
+          }
+        },
+        "safes": [
+          {
+            "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "setupData": "0xb63e800d00000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a0000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a1000000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "112488744633395248723173799332012111452630483371312680219271362406737339773194",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 3,
+            "targetOwners": [
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "staticCallAddress": null,
+            "existingState": {
+              "deployed": true,
+              "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+              "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x1118e1c057211306a40A4d7006C040dbfE1370Cb/creation/",
+            "originalEthereumTransaction": "0x133631167cbf30a8c4e344f80e5967c743fe6bb9c1e1e84d4eaf5677bef1054d"
+          },
+          {
+            "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "setupData": "0xb63e800d0000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e00000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "106430251993975978589270074926773519088890969377155645149637629411328918818831",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 2,
+            "targetOwners": [
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "staticCallAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "existingState": {
+              "deployed": false
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x22246a9183cE2CE6e2c2a9973F94aEA91435017C/creation/",
+            "originalEthereumTransaction": "0x61a497aebaa1392ee05e59d4590ddbdbd8442ae1b1adfe4db5d8af7298afc220"
+          }
+        ],
+        "bootstrapTransactions": [
+          {
+            "to": "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC",
+            "value": "0",
+            "safeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "data": "0x1688f0b9000000000000000000000000fb1bffc9d739b8d520daf37df666da4c687191ea0000000000000000000000000000000000000000000000000000000000000060eb4d634d2715f79006041ffdbac8f6600a8eedabc263d496fa55e38049c4100f00000000000000000000000000000000000000000000000000000000000001a4b63e800d0000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e00000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+          }
+        ],
+        "rotationBatches": [
+          {
+            "version": "1.0",
+            "chainId": "42161",
+            "createdAt": 1791211829367,
+            "meta": {
+              "name": "Match the captured Ethereum FT Safe owners",
+              "createdFromSafeAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+              "createdFromOwnerAddress": "",
+              "txBuilderVersion": "1.18.0",
+              "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+            },
+            "transactions": [
+              {
+                "to": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000b7b543337539219a5a1326acb71dba8bba408bc80000000000000000000000000000000000000000000000000000000000000003",
+                "contractMethod": null,
+                "contractInputsValues": null
+              }
+            ]
+          },
+          {
+            "version": "1.0",
+            "chainId": "42161",
+            "createdAt": 1791211829369,
+            "meta": {
+              "name": "Match the captured Ethereum FT Safe owners",
+              "createdFromSafeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+              "createdFromOwnerAddress": "",
+              "txBuilderVersion": "1.18.0",
+              "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+            },
+            "transactions": [
+              {
+                "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000b7b543337539219a5a1326acb71dba8bba408bc80000000000000000000000000000000000000000000000000000000000000002",
+                "contractMethod": null,
+                "contractInputsValues": null
+              },
+              {
+                "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a100000000000000000000000000000000000000000000000000000000000000003",
+                "contractMethod": null,
+                "contractInputsValues": null
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "generatedAt": "2026-10-05T14:50:28.609Z",
+          "ethereumRpc": "https://ethereum-rpc.publicnode.com",
+          "arbitrumRpc": "http://127.0.0.1:60226",
+          "robinhoodRpc": "https://rpc.mainnet.chain.robinhood.com"
+        }
+      }
+    },
+    {
+      "label": "resume only remaining factory creation",
+      "simulation": {
+        "mode": "original",
+        "creations": [
+          {
+            "safeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "from": "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "transactionHash": "0x440a48d96810cf5231aa2b01ea756ab1fda00629f2a85b3ce9f6089f6e9dfb18",
+            "gasUsed": "305904",
+            "blockNumber": 511952601,
+            "owners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 2
+          }
+        ],
+        "rotations": [],
+        "finalSafes": [
+          {
+            "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "owners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 3
+          },
+          {
+            "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "owners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 2
+          }
+        ],
+        "ftDeployerNonceBefore": "0x0",
+        "ftDeployerNonceAfter": "0x0",
+        "authorization": "Local Anvil only; original-owner impersonation for CREATE2 and threshold-approved Safe rotations; no live transactions"
+      }
+    },
+    {
+      "label": "both original Safes deployed; rotations pending",
+      "arbitrumBlockNumber": 511952601,
+      "creates": 0,
+      "rotations": 2,
+      "rotationOperations": [
+        {
+          "safe": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "operations": 1
+        },
+        {
+          "safe": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "operations": 2
+        }
+      ],
+      "states": [
+        {
+          "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "deployed": true,
+          "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "owners": [
+            "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+            "0x09E2B49280f1879172b2C3345d08896921707881",
+            "0xD0CA88388d1732594D611535314e9B6745396f5A"
+          ],
+          "threshold": 3
+        },
+        {
+          "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "deployed": true,
+          "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "owners": [
+            "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "0x09E2B49280f1879172b2C3345d08896921707881",
+            "0xD0CA88388d1732594D611535314e9B6745396f5A"
+          ],
+          "threshold": 2
+        }
+      ],
+      "plan": {
+        "chainId": 42161,
+        "status": "Prepared proposal; not broadcast",
+        "targetPolicy": "Match captured Ethereum Safe owners: both three of five",
+        "bootstrapSender": "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+        "arbitrumBlockNumber": 511952601,
+        "ethereumSnapshot": {
+          "chainId": 1,
+          "blockNumber": 26126872,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            }
+          }
+        },
+        "robinhoodSnapshot": {
+          "chainId": 4663,
+          "blockNumber": 80868784,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 2
+            }
+          }
+        },
+        "infrastructure": {
+          "factory": "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "fallbackHandler": "0xf48f2B2d2a534e402487b3ee7C18c33Aec0Fe5e4",
+          "proxyCreationCode": "0x608060405234801561001057600080fd5b506040516101e63803806101e68339818101604052602081101561003357600080fd5b8101908080519060200190929190505050600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156100ca576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260228152602001806101c46022913960400191505060405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505060ab806101196000396000f3fe608060405273ffffffffffffffffffffffffffffffffffffffff600054167fa619486e0000000000000000000000000000000000000000000000000000000060003514156050578060005260206000f35b3660008037600080366000845af43d6000803e60008114156070573d6000fd5b3d6000f3fea2646970667358221220d1429297349653a4918076d650332de1a1068c5f3e07c5c82360c277770b955264736f6c63430007060033496e76616c69642073696e676c65746f6e20616464726573732070726f7669646564",
+          "codeHashes": {
+            "factory": "0x337d7f54be11b6ed55fef7b667ea5488db53db8320a05d1146aa4bd169a39a9b",
+            "singleton": "0x21842597390c4c6e3c1239e434a682b054bd9548eee5e9b1d6a4482731023c0f",
+            "fallbackHandler": "0x03e69f7ce809e81687c69b19a7d7cca45b6d551ffdec73d9bb87178476de1abf"
+          }
+        },
+        "safes": [
+          {
+            "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "setupData": "0xb63e800d00000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a0000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a1000000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "112488744633395248723173799332012111452630483371312680219271362406737339773194",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 3,
+            "targetOwners": [
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "staticCallAddress": null,
+            "existingState": {
+              "deployed": true,
+              "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+              "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x1118e1c057211306a40A4d7006C040dbfE1370Cb/creation/",
+            "originalEthereumTransaction": "0x133631167cbf30a8c4e344f80e5967c743fe6bb9c1e1e84d4eaf5677bef1054d"
+          },
+          {
+            "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "setupData": "0xb63e800d0000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e00000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "106430251993975978589270074926773519088890969377155645149637629411328918818831",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 2,
+            "targetOwners": [
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "staticCallAddress": null,
+            "existingState": {
+              "deployed": true,
+              "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+              "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 2
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x22246a9183cE2CE6e2c2a9973F94aEA91435017C/creation/",
+            "originalEthereumTransaction": "0x61a497aebaa1392ee05e59d4590ddbdbd8442ae1b1adfe4db5d8af7298afc220"
+          }
+        ],
+        "bootstrapTransactions": [],
+        "rotationBatches": [
+          {
+            "version": "1.0",
+            "chainId": "42161",
+            "createdAt": 1791211837742,
+            "meta": {
+              "name": "Match the captured Ethereum FT Safe owners",
+              "createdFromSafeAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+              "createdFromOwnerAddress": "",
+              "txBuilderVersion": "1.18.0",
+              "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+            },
+            "transactions": [
+              {
+                "to": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000b7b543337539219a5a1326acb71dba8bba408bc80000000000000000000000000000000000000000000000000000000000000003",
+                "contractMethod": null,
+                "contractInputsValues": null
+              }
+            ]
+          },
+          {
+            "version": "1.0",
+            "chainId": "42161",
+            "createdAt": 1791211837742,
+            "meta": {
+              "name": "Match the captured Ethereum FT Safe owners",
+              "createdFromSafeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+              "createdFromOwnerAddress": "",
+              "txBuilderVersion": "1.18.0",
+              "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+            },
+            "transactions": [
+              {
+                "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000b7b543337539219a5a1326acb71dba8bba408bc80000000000000000000000000000000000000000000000000000000000000002",
+                "contractMethod": null,
+                "contractInputsValues": null
+              },
+              {
+                "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a100000000000000000000000000000000000000000000000000000000000000003",
+                "contractMethod": null,
+                "contractInputsValues": null
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "generatedAt": "2026-10-05T14:50:36.954Z",
+          "ethereumRpc": "https://ethereum-rpc.publicnode.com",
+          "arbitrumRpc": "http://127.0.0.1:60226",
+          "robinhoodRpc": "https://rpc.mainnet.chain.robinhood.com"
+        }
+      }
+    },
+    {
+      "label": "execute first delegate-owner addition via real Safe",
+      "simulation": {
+        "chainId": 42161,
+        "forkBlockNumber": 511952598,
+        "safeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+        "version": "1.3.0",
+        "owners": [
+          "0x09E2B49280f1879172b2C3345d08896921707881",
+          "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+          "0xD0CA88388d1732594D611535314e9B6745396f5A"
+        ],
+        "threshold": 2,
+        "guard": "0x0000000000000000000000000000000000000000",
+        "nonceBefore": "0",
+        "nonceAfter": "1",
+        "approvedOwners": [
+          "0x09E2B49280f1879172b2C3345d08896921707881",
+          "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E"
+        ],
+        "approvalTransactions": [
+          "0xb27209f959337b402aaff5be766b08af6f599974b1d4602f4eeae5cb4eca6390",
+          "0xeaa51033f8f8038c48178df3e36c8e83391ce8c43aac03ee3f41707e69fb6855"
+        ],
+        "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+        "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+        "packedTransactionsHash": "0x90df398bb3d3faa803338213c0071774074222de2dbf86b343b384ae5cb328d3",
+        "safeTxHash": "0x09dedee0f73b12886dfdc09ba0b8b058ebdef61e98a8121d304be4250d551162",
+        "executionTransactionHash": "0xde301729ac29074e0c20f8ab9befb23e66aa0854dd2bdf3b7a451096caccc04f",
+        "gasUsed": "118775",
+        "transactionCount": 1,
+        "success": true,
+        "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+      },
+      "batch": {
+        "version": "1.0",
+        "chainId": "42161",
+        "createdAt": 1791211837742,
+        "meta": {
+          "name": "Match the captured Ethereum FT Safe owners",
+          "createdFromSafeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "createdFromOwnerAddress": "",
+          "txBuilderVersion": "1.18.0",
+          "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+        },
+        "transactions": [
+          {
+            "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "value": "0",
+            "data": "0x0d582f13000000000000000000000000b7b543337539219a5a1326acb71dba8bba408bc80000000000000000000000000000000000000000000000000000000000000002",
+            "contractMethod": null,
+            "contractInputsValues": null
+          }
+        ]
+      }
+    },
+    {
+      "label": "delegate partial rotation; owner original",
+      "arbitrumBlockNumber": 511952604,
+      "creates": 0,
+      "rotations": 2,
+      "rotationOperations": [
+        {
+          "safe": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "operations": 1
+        },
+        {
+          "safe": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "operations": 1
+        }
+      ],
+      "states": [
+        {
+          "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "deployed": true,
+          "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "owners": [
+            "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+            "0x09E2B49280f1879172b2C3345d08896921707881",
+            "0xD0CA88388d1732594D611535314e9B6745396f5A"
+          ],
+          "threshold": 3
+        },
+        {
+          "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "deployed": true,
+          "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "owners": [
+            "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+            "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "0x09E2B49280f1879172b2C3345d08896921707881",
+            "0xD0CA88388d1732594D611535314e9B6745396f5A"
+          ],
+          "threshold": 2
+        }
+      ],
+      "plan": {
+        "chainId": 42161,
+        "status": "Prepared proposal; not broadcast",
+        "targetPolicy": "Match captured Ethereum Safe owners: both three of five",
+        "bootstrapSender": "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+        "arbitrumBlockNumber": 511952604,
+        "ethereumSnapshot": {
+          "chainId": 1,
+          "blockNumber": 26126873,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            }
+          }
+        },
+        "robinhoodSnapshot": {
+          "chainId": 4663,
+          "blockNumber": 80868863,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 2
+            }
+          }
+        },
+        "infrastructure": {
+          "factory": "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "fallbackHandler": "0xf48f2B2d2a534e402487b3ee7C18c33Aec0Fe5e4",
+          "proxyCreationCode": "0x608060405234801561001057600080fd5b506040516101e63803806101e68339818101604052602081101561003357600080fd5b8101908080519060200190929190505050600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156100ca576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260228152602001806101c46022913960400191505060405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505060ab806101196000396000f3fe608060405273ffffffffffffffffffffffffffffffffffffffff600054167fa619486e0000000000000000000000000000000000000000000000000000000060003514156050578060005260206000f35b3660008037600080366000845af43d6000803e60008114156070573d6000fd5b3d6000f3fea2646970667358221220d1429297349653a4918076d650332de1a1068c5f3e07c5c82360c277770b955264736f6c63430007060033496e76616c69642073696e676c65746f6e20616464726573732070726f7669646564",
+          "codeHashes": {
+            "factory": "0x337d7f54be11b6ed55fef7b667ea5488db53db8320a05d1146aa4bd169a39a9b",
+            "singleton": "0x21842597390c4c6e3c1239e434a682b054bd9548eee5e9b1d6a4482731023c0f",
+            "fallbackHandler": "0x03e69f7ce809e81687c69b19a7d7cca45b6d551ffdec73d9bb87178476de1abf"
+          }
+        },
+        "safes": [
+          {
+            "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "setupData": "0xb63e800d00000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a0000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a1000000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "112488744633395248723173799332012111452630483371312680219271362406737339773194",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 3,
+            "targetOwners": [
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "staticCallAddress": null,
+            "existingState": {
+              "deployed": true,
+              "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+              "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x1118e1c057211306a40A4d7006C040dbfE1370Cb/creation/",
+            "originalEthereumTransaction": "0x133631167cbf30a8c4e344f80e5967c743fe6bb9c1e1e84d4eaf5677bef1054d"
+          },
+          {
+            "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "setupData": "0xb63e800d0000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e00000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "106430251993975978589270074926773519088890969377155645149637629411328918818831",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 2,
+            "targetOwners": [
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "staticCallAddress": null,
+            "existingState": {
+              "deployed": true,
+              "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+              "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 2
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x22246a9183cE2CE6e2c2a9973F94aEA91435017C/creation/",
+            "originalEthereumTransaction": "0x61a497aebaa1392ee05e59d4590ddbdbd8442ae1b1adfe4db5d8af7298afc220"
+          }
+        ],
+        "bootstrapTransactions": [],
+        "rotationBatches": [
+          {
+            "version": "1.0",
+            "chainId": "42161",
+            "createdAt": 1791211845448,
+            "meta": {
+              "name": "Match the captured Ethereum FT Safe owners",
+              "createdFromSafeAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+              "createdFromOwnerAddress": "",
+              "txBuilderVersion": "1.18.0",
+              "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+            },
+            "transactions": [
+              {
+                "to": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000b7b543337539219a5a1326acb71dba8bba408bc80000000000000000000000000000000000000000000000000000000000000003",
+                "contractMethod": null,
+                "contractInputsValues": null
+              }
+            ]
+          },
+          {
+            "version": "1.0",
+            "chainId": "42161",
+            "createdAt": 1791211845448,
+            "meta": {
+              "name": "Match the captured Ethereum FT Safe owners",
+              "createdFromSafeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+              "createdFromOwnerAddress": "",
+              "txBuilderVersion": "1.18.0",
+              "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+            },
+            "transactions": [
+              {
+                "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a100000000000000000000000000000000000000000000000000000000000000003",
+                "contractMethod": null,
+                "contractInputsValues": null
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "generatedAt": "2026-10-05T14:50:44.662Z",
+          "ethereumRpc": "https://ethereum-rpc.publicnode.com",
+          "arbitrumRpc": "http://127.0.0.1:60226",
+          "robinhoodRpc": "https://rpc.mainnet.chain.robinhood.com"
+        }
+      }
+    },
+    {
+      "label": "stale original-state plan rejected without mutation",
+      "error": "Safe 0x22246a9183cE2CE6e2c2a9973F94aEA91435017C changed after the plan was captured; refresh the rollout"
+    },
+    {
+      "label": "owner Safe fully aligned; delegate still partial",
+      "simulation": {
+        "chainId": 42161,
+        "forkBlockNumber": 511952598,
+        "safeAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+        "version": "1.3.0",
+        "owners": [
+          "0x09E2B49280f1879172b2C3345d08896921707881",
+          "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+          "0xD0CA88388d1732594D611535314e9B6745396f5A",
+          "0xf9E5aF16243041cE3141284D225CAfC0fC749a10"
+        ],
+        "threshold": 3,
+        "guard": "0x0000000000000000000000000000000000000000",
+        "nonceBefore": "0",
+        "nonceAfter": "1",
+        "approvedOwners": [
+          "0x09E2B49280f1879172b2C3345d08896921707881",
+          "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+          "0xD0CA88388d1732594D611535314e9B6745396f5A"
+        ],
+        "approvalTransactions": [
+          "0x0445bcc6f0eca3045142e399a13832561ad4371dd2cfde70756110b9b51d0697",
+          "0xec45a6a40bfbddcd845008fb3f8c3828a8f72c04a7b7f972f0e8051370ec4d30",
+          "0xae2fe4e8df6cbb72af915f1671dd261bfaa386e28a9cce75a87255adfea83923"
+        ],
+        "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+        "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+        "packedTransactionsHash": "0xa511ee742c65836c7f9a24b3236114def3e974011336de9807e2c701ddf937f8",
+        "safeTxHash": "0xfb84b55b6e1148041341a2dc2cfe5e541983a53d2248a9bb064540e56263f4ec",
+        "executionTransactionHash": "0x5fd92def9372fbe7605b1f766fd0b55cfa15713a563b51a32aaf9b24fdefc75b",
+        "gasUsed": "124983",
+        "transactionCount": 1,
+        "success": true,
+        "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+      }
+    },
+    {
+      "label": "one aligned Safe; one partial Safe",
+      "arbitrumBlockNumber": 511952608,
+      "creates": 0,
+      "rotations": 1,
+      "rotationOperations": [
+        {
+          "safe": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "operations": 1
+        }
+      ],
+      "states": [
+        {
+          "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "deployed": true,
+          "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "owners": [
+            "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+            "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+            "0x09E2B49280f1879172b2C3345d08896921707881",
+            "0xD0CA88388d1732594D611535314e9B6745396f5A"
+          ],
+          "threshold": 3
+        },
+        {
+          "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "deployed": true,
+          "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "owners": [
+            "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+            "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "0x09E2B49280f1879172b2C3345d08896921707881",
+            "0xD0CA88388d1732594D611535314e9B6745396f5A"
+          ],
+          "threshold": 2
+        }
+      ],
+      "plan": {
+        "chainId": 42161,
+        "status": "Prepared proposal; not broadcast",
+        "targetPolicy": "Match captured Ethereum Safe owners: both three of five",
+        "bootstrapSender": "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+        "arbitrumBlockNumber": 511952608,
+        "ethereumSnapshot": {
+          "chainId": 1,
+          "blockNumber": 26126874,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            }
+          }
+        },
+        "robinhoodSnapshot": {
+          "chainId": 4663,
+          "blockNumber": 80868943,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 2
+            }
+          }
+        },
+        "infrastructure": {
+          "factory": "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "fallbackHandler": "0xf48f2B2d2a534e402487b3ee7C18c33Aec0Fe5e4",
+          "proxyCreationCode": "0x608060405234801561001057600080fd5b506040516101e63803806101e68339818101604052602081101561003357600080fd5b8101908080519060200190929190505050600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156100ca576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260228152602001806101c46022913960400191505060405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505060ab806101196000396000f3fe608060405273ffffffffffffffffffffffffffffffffffffffff600054167fa619486e0000000000000000000000000000000000000000000000000000000060003514156050578060005260206000f35b3660008037600080366000845af43d6000803e60008114156070573d6000fd5b3d6000f3fea2646970667358221220d1429297349653a4918076d650332de1a1068c5f3e07c5c82360c277770b955264736f6c63430007060033496e76616c69642073696e676c65746f6e20616464726573732070726f7669646564",
+          "codeHashes": {
+            "factory": "0x337d7f54be11b6ed55fef7b667ea5488db53db8320a05d1146aa4bd169a39a9b",
+            "singleton": "0x21842597390c4c6e3c1239e434a682b054bd9548eee5e9b1d6a4482731023c0f",
+            "fallbackHandler": "0x03e69f7ce809e81687c69b19a7d7cca45b6d551ffdec73d9bb87178476de1abf"
+          }
+        },
+        "safes": [
+          {
+            "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "setupData": "0xb63e800d00000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a0000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a1000000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "112488744633395248723173799332012111452630483371312680219271362406737339773194",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 3,
+            "targetOwners": [
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "staticCallAddress": null,
+            "existingState": {
+              "deployed": true,
+              "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+              "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x1118e1c057211306a40A4d7006C040dbfE1370Cb/creation/",
+            "originalEthereumTransaction": "0x133631167cbf30a8c4e344f80e5967c743fe6bb9c1e1e84d4eaf5677bef1054d"
+          },
+          {
+            "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "setupData": "0xb63e800d0000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e00000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "106430251993975978589270074926773519088890969377155645149637629411328918818831",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 2,
+            "targetOwners": [
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "staticCallAddress": null,
+            "existingState": {
+              "deployed": true,
+              "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+              "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 2
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x22246a9183cE2CE6e2c2a9973F94aEA91435017C/creation/",
+            "originalEthereumTransaction": "0x61a497aebaa1392ee05e59d4590ddbdbd8442ae1b1adfe4db5d8af7298afc220"
+          }
+        ],
+        "bootstrapTransactions": [],
+        "rotationBatches": [
+          {
+            "version": "1.0",
+            "chainId": "42161",
+            "createdAt": 1791211853577,
+            "meta": {
+              "name": "Match the captured Ethereum FT Safe owners",
+              "createdFromSafeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+              "createdFromOwnerAddress": "",
+              "txBuilderVersion": "1.18.0",
+              "description": "Execute after canonical Safe creation and before FT configuration. Add the missing Ethereum owners and set the threshold to 3 of 5."
+            },
+            "transactions": [
+              {
+                "to": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+                "value": "0",
+                "data": "0x0d582f13000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a100000000000000000000000000000000000000000000000000000000000000003",
+                "contractMethod": null,
+                "contractInputsValues": null
+              }
+            ]
+          }
+        ],
+        "provenance": {
+          "generatedAt": "2026-10-05T14:50:52.801Z",
+          "ethereumRpc": "https://ethereum-rpc.publicnode.com",
+          "arbitrumRpc": "http://127.0.0.1:60226",
+          "robinhoodRpc": "https://rpc.mainnet.chain.robinhood.com"
+        }
+      }
+    },
+    {
+      "label": "resume last pending rotation",
+      "simulation": {
+        "mode": "ethereum",
+        "creations": [],
+        "rotations": [
+          {
+            "chainId": 42161,
+            "forkBlockNumber": 511952598,
+            "safeAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "version": "1.3.0",
+            "owners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 2,
+            "guard": "0x0000000000000000000000000000000000000000",
+            "nonceBefore": "1",
+            "nonceAfter": "2",
+            "approvedOwners": [
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E"
+            ],
+            "approvalTransactions": [
+              "0x3fc608c30ff1d09828eeb56479ae5d9240df44c213f987a80518ff13e9623ba8",
+              "0x7a48269e95652de28eaf31e220c0e8f36d037401b093aa857deba4d99c48a4c4"
+            ],
+            "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+            "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+            "packedTransactionsHash": "0xea29aa58c7c5c944abaf2e272ffba435b49dd5c0a51d83e80ee771551a151d0a",
+            "safeTxHash": "0x01852147b88e39f937b17c4a6ab471e76dabc98e7762c0f1992d07cae9149aee",
+            "executionTransactionHash": "0x00f0ce642da2abf9fe1869c3d03ad687699efbab6e2e66423be82a92c7df6e18",
+            "gasUsed": "105988",
+            "transactionCount": 1,
+            "success": true,
+            "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+          }
+        ],
+        "finalSafes": [
+          {
+            "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "owners": [
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 3
+          },
+          {
+            "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "owners": [
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 3
+          }
+        ],
+        "ftDeployerNonceBefore": "0x0",
+        "ftDeployerNonceAfter": "0x0",
+        "authorization": "Local Anvil only; original-owner impersonation for CREATE2 and threshold-approved Safe rotations; no live transactions"
+      }
+    },
+    {
+      "label": "both aligned: no actions remain",
+      "arbitrumBlockNumber": 511952611,
+      "creates": 0,
+      "rotations": 0,
+      "rotationOperations": [],
+      "states": [
+        {
+          "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+          "deployed": true,
+          "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "owners": [
+            "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+            "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+            "0x09E2B49280f1879172b2C3345d08896921707881",
+            "0xD0CA88388d1732594D611535314e9B6745396f5A"
+          ],
+          "threshold": 3
+        },
+        {
+          "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+          "deployed": true,
+          "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "owners": [
+            "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+            "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+            "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+            "0x09E2B49280f1879172b2C3345d08896921707881",
+            "0xD0CA88388d1732594D611535314e9B6745396f5A"
+          ],
+          "threshold": 3
+        }
+      ],
+      "plan": {
+        "chainId": 42161,
+        "status": "Prepared proposal; not broadcast",
+        "targetPolicy": "Match captured Ethereum Safe owners: both three of five",
+        "bootstrapSender": "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+        "arbitrumBlockNumber": 511952611,
+        "ethereumSnapshot": {
+          "chainId": 1,
+          "blockNumber": 26126874,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            }
+          }
+        },
+        "robinhoodSnapshot": {
+          "chainId": 4663,
+          "blockNumber": 80869022,
+          "safes": {
+            "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C": {
+              "owners": [
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 2
+            }
+          }
+        },
+        "infrastructure": {
+          "factory": "0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC",
+          "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+          "fallbackHandler": "0xf48f2B2d2a534e402487b3ee7C18c33Aec0Fe5e4",
+          "proxyCreationCode": "0x608060405234801561001057600080fd5b506040516101e63803806101e68339818101604052602081101561003357600080fd5b8101908080519060200190929190505050600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614156100ca576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260228152602001806101c46022913960400191505060405180910390fd5b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505060ab806101196000396000f3fe608060405273ffffffffffffffffffffffffffffffffffffffff600054167fa619486e0000000000000000000000000000000000000000000000000000000060003514156050578060005260206000f35b3660008037600080366000845af43d6000803e60008114156070573d6000fd5b3d6000f3fea2646970667358221220d1429297349653a4918076d650332de1a1068c5f3e07c5c82360c277770b955264736f6c63430007060033496e76616c69642073696e676c65746f6e20616464726573732070726f7669646564",
+          "codeHashes": {
+            "factory": "0x337d7f54be11b6ed55fef7b667ea5488db53db8320a05d1146aa4bd169a39a9b",
+            "singleton": "0x21842597390c4c6e3c1239e434a682b054bd9548eee5e9b1d6a4482731023c0f",
+            "fallbackHandler": "0x03e69f7ce809e81687c69b19a7d7cca45b6d551ffdec73d9bb87178476de1abf"
+          }
+        },
+        "safes": [
+          {
+            "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "setupData": "0xb63e800d00000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001a0000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e000000000000000000000000f9e5af16243041ce3141284d225cafc0fc749a1000000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "112488744633395248723173799332012111452630483371312680219271362406737339773194",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 3,
+            "targetOwners": [
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "staticCallAddress": null,
+            "existingState": {
+              "deployed": true,
+              "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+              "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+              "owners": [
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x1118e1c057211306a40A4d7006C040dbfE1370Cb/creation/",
+            "originalEthereumTransaction": "0x133631167cbf30a8c4e344f80e5967c743fe6bb9c1e1e84d4eaf5677bef1054d"
+          },
+          {
+            "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "setupData": "0xb63e800d0000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000180000000000000000000000000f48f2b2d2a534e402487b3ee7c18c33aec0fe5e400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000030000000000000000000000003c42749709bf354b3ae0db29fd2dd88089b21b4e00000000000000000000000009e2b49280f1879172b2c3345d08896921707881000000000000000000000000d0ca88388d1732594d611535314e9b6745396f5a0000000000000000000000000000000000000000000000000000000000000000",
+            "saltNonce": "106430251993975978589270074926773519088890969377155645149637629411328918818831",
+            "originalOwners": [
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "originalThreshold": 2,
+            "targetOwners": [
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "targetThreshold": 3,
+            "computedAddress": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "staticCallAddress": null,
+            "existingState": {
+              "deployed": true,
+              "proxyCodeHash": "0xb89c1b3bdf2cf8827818646bce9a8f6e372885f8c55e5c07acbd307cb133b000",
+              "singleton": "0xfb1bffC9d739B8D520DaF37dF666da4C687191EA",
+              "owners": [
+                "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+                "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+                "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+                "0x09E2B49280f1879172b2C3345d08896921707881",
+                "0xD0CA88388d1732594D611535314e9B6745396f5A"
+              ],
+              "threshold": 3
+            },
+            "sourceUrl": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0x22246a9183cE2CE6e2c2a9973F94aEA91435017C/creation/",
+            "originalEthereumTransaction": "0x61a497aebaa1392ee05e59d4590ddbdbd8442ae1b1adfe4db5d8af7298afc220"
+          }
+        ],
+        "bootstrapTransactions": [],
+        "rotationBatches": [],
+        "provenance": {
+          "generatedAt": "2026-10-05T14:51:00.571Z",
+          "ethereumRpc": "https://ethereum-rpc.publicnode.com",
+          "arbitrumRpc": "http://127.0.0.1:60226",
+          "robinhoodRpc": "https://rpc.mainnet.chain.robinhood.com"
+        }
+      }
+    },
+    {
+      "label": "aligned rerun performs zero transactions",
+      "blockBefore": "0x1e83c6e3",
+      "blockAfter": "0x1e83c6e3",
+      "safeNonces": [
+        "1",
+        "2"
+      ],
+      "simulation": {
+        "mode": "ethereum",
+        "creations": [],
+        "rotations": [],
+        "finalSafes": [
+          {
+            "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+            "owners": [
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 3
+          },
+          {
+            "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+            "owners": [
+              "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+              "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+              "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+              "0x09E2B49280f1879172b2C3345d08896921707881",
+              "0xD0CA88388d1732594D611535314e9B6745396f5A"
+            ],
+            "threshold": 3
+          }
+        ],
+        "ftDeployerNonceBefore": "0x0",
+        "ftDeployerNonceAfter": "0x0",
+        "authorization": "Local Anvil only; original-owner impersonation for CREATE2 and threshold-approved Safe rotations; no live transactions"
+      }
+    },
+    {
+      "label": "unexpected extra owner rejected; fork snapshot restored",
+      "error": "Unexpected existing Safe owners or threshold for 0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+      "simulation": {
+        "chainId": 42161,
+        "forkBlockNumber": 511952598,
+        "safeAddress": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+        "version": "1.3.0",
+        "owners": [
+          "0x09E2B49280f1879172b2C3345d08896921707881",
+          "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+          "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+          "0xD0CA88388d1732594D611535314e9B6745396f5A",
+          "0xf9E5aF16243041cE3141284D225CAfC0fC749a10"
+        ],
+        "threshold": 3,
+        "guard": "0x0000000000000000000000000000000000000000",
+        "nonceBefore": "1",
+        "nonceAfter": "2",
+        "approvedOwners": [
+          "0x09E2B49280f1879172b2C3345d08896921707881",
+          "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+          "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8"
+        ],
+        "approvalTransactions": [
+          "0xdca32fa02a5fc8ccdb96933e90a432948344682b831f13177114de60ec91eef1",
+          "0xe6ecf4b22ec28fe7cbd9b9ac4faba7b14c1584d333b21289dd1867c4e4116f61",
+          "0xd2ec8bcb37e37dd317de12207174ec6bbc2b22ad50d51f85f8533b5b0ea72ddf"
+        ],
+        "multiSend": "0x40A2aCCbd92BCA938b02010E17A5b8929b49130D",
+        "multiSendCodeHash": "0xa9865ac2d9c7a1591619b188c4d88167b50df6cc0c5327fcbd1c8c75f7c066ad",
+        "packedTransactionsHash": "0x7d1d56ec31e6672e8e7f8b01abc3a19200a23ba37dc62f1285a6b368d7a8d210",
+        "safeTxHash": "0x7730766d5c0a50f3718218e43f478265045232478c14cbcefedf1d665e282bfa",
+        "executionTransactionHash": "0x9edb04ff04988f3782ac4a0836870c5af2a2f01096089f0cad34d1961e579e05",
+        "gasUsed": "107667",
+        "transactionCount": 1,
+        "success": true,
+        "authorization": "Local-fork impersonated owner approvals; real Safe threshold and guard execution; no production signatures"
+      }
+    }
+  ],
+  "fork": {
+    "chainId": 42161,
+    "clientVersion": "anvil/v1.8.1",
+    "forkBlockNumber": 511952598
+  },
+  "localBootstrapBlocks": 1,
+  "ftDeployerNonceBefore": "0x0",
+  "ftDeployerNonceAfter": "0x0",
+  "finalSafes": [
+    {
+      "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+      "owners": [
+        "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+        "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+        "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+        "0x09E2B49280f1879172b2C3345d08896921707881",
+        "0xD0CA88388d1732594D611535314e9B6745396f5A"
+      ],
+      "threshold": 3,
+      "safeNonce": "1"
+    },
+    {
+      "address": "0x22246a9183cE2CE6e2c2a9973F94aEA91435017C",
+      "owners": [
+        "0xf9E5aF16243041cE3141284D225CAfC0fC749a10",
+        "0xB7B543337539219A5a1326aCB71dBa8Bba408bc8",
+        "0x3c42749709BF354B3aE0Db29Fd2dd88089b21B4E",
+        "0x09E2B49280f1879172b2C3345d08896921707881",
+        "0xD0CA88388d1732594D611535314e9B6745396f5A"
+      ],
+      "threshold": 3,
+      "safeNonce": "2"
+    }
+  ],
+  "completedAt": "2026-10-05T14:51:09.981Z"
+}
