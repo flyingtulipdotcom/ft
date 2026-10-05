@@ -11,6 +11,7 @@
     "lint:js": "eslint '**/*.{js,ts,json}' && prettier --check .",
     "lint:sol": "solhint 'contracts/**/*.sol'",
     "test": "hardhat test",
+    "test:fork": "FORK_TESTS=true hardhat test test/fork/FT.deterministic.fork.spec.ts",
     "coverage": "hardhat coverage"
   },
   "devDependencies": {

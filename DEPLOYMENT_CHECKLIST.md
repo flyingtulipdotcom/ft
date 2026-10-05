@@ -2,6 +2,8 @@
 
 Quick reference checklist for deploying FT token to production.
 
+> Adding Monad / Robinhood Chain (or another chain at the same address)? Follow [DEPLOY_MONAD_ROBINHOOD.md](./DEPLOY_MONAD_ROBINHOOD.md).
+
 ## Pre-Deployment
 
 - [ ] Create encrypted keystore: `cast wallet new ~/.foundry/keystores`

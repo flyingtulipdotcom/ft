@@ -61,6 +61,8 @@ Supported mainnet chains:
 | Avalanche        | avalanche     |
 | BSC              | bsc           |
 | Ethereum         | ethereum      |
+| Monad            | monad         |
+| Robinhood Chain  | robinhood     |
 
 Supported testnet chains:  
 | Network          | Name          |
@@ -92,6 +94,16 @@ npx hardhat lz:ft:set-delegate --account 0x22246a9183ce2ce6e2c2a9973f94aea914350
 ```
 > You can get the address of your OFT on Sonic  from the file at `./deployments/sonic/FT.json`
 
+Mainnet FT has the same address on every chain (`0x5DD1A7A369e8273371d2DBf9d83356057088082c`): plain CREATE from
+`0x44820497f8FE95A258A9522f0De2c04ab2bC3da3` at nonce 0. See [DEPLOY_MONAD_ROBINHOOD.md](./DEPLOY_MONAD_ROBINHOOD.md)
+for the Monad / Robinhood Chain runbook.
+
+Dry run a deployment before doing it. This forks the chain with anvil, deploys and replays the post-deploy Safe
+steps, then writes the expected final state to `dry-runs/<network>.md`:
+```bash
+npx hardhat ft:dry-run --network monad
+```
+
 # For a new chain
 1 - Add details to the CHAINS variable in utils/constants.ts
 2 - Update support chains above in README.md
@@ -109,6 +121,8 @@ npx hardhat lz:ft:set-delegate --account 0x22246a9183ce2ce6e2c2a9973f94aea914350
 | Avalanche      | 30106       |
 | BSC            | 30102       |
 | Ethereum       | 30101       |
+| Monad          | 30390       |
+| Robinhood      | 30416       |
 | Base Sepolia   | 40245       |
 | Fuji           | 40106       |
 | BSC Testnet    | 40102       |
@@ -118,6 +132,12 @@ npx hardhat lz:ft:set-delegate --account 0x22246a9183ce2ce6e2c2a9973f94aea914350
 
 ```bash
 pnpm test
+```
+
+Fork tests (anvil forks of Monad and Robinhood Chain that check the deterministic deployment; needs Foundry):
+
+```bash
+pnpm test:fork
 ```
 
 ## Token Behavior & Controls

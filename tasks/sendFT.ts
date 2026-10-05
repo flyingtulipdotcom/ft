@@ -4,6 +4,11 @@ import { Options } from "@layerzerolabs/lz-v2-utilities";
 import { FT, MessagingFeeStruct, SendParamStruct } from "../typechain-types/contracts/FT";
 import { ChainType, endpointIdToChainType, endpointIdToNetwork } from "@layerzerolabs/lz-definitions";
 
+// The installed lz-definitions predates some chains (e.g. Monad, Robinhood) and throws on their EIDs.
+// Every network in hardhat.config.ts is EVM, so fall back instead of failing after the send.
+const chainTypeOf = (eid: number) => { try { return endpointIdToChainType(eid) } catch { return ChainType.EVM } }
+const networkOf = (eid: number) => { try { return endpointIdToNetwork(eid) } catch { return `eid ${eid}` } }
+
 interface MasterArgs {
   dstEid: number;
   amount: string;
@@ -17,7 +22,7 @@ task("ft:send", "Sends FT tokens cross‐chain from EVM chains")
   .setAction(async (args: MasterArgs, hre: HardhatRuntimeEnvironment) => {
     const srcEid = (hre.config.networks[hre.network.name] as any).eid;
 
-    const chainType = endpointIdToChainType(srcEid);
+    const chainType = chainTypeOf(srcEid);
 
     // Only support EVM chains in this example
     if (chainType === ChainType.EVM) {
@@ -57,6 +62,6 @@ task("ft:send", "Sends FT tokens cross‐chain from EVM chains")
     }
 
     console.log(
-      `Successfully sent ${args.amount} tokens from ${endpointIdToNetwork(srcEid)} to ${endpointIdToNetwork(args.dstEid)}`
+      `Successfully sent ${args.amount} tokens from ${networkOf(srcEid)} to ${networkOf(args.dstEid)}`
     );
   });

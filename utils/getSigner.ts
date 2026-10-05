@@ -24,6 +24,9 @@ export async function getSigner(hre: HardhatRuntimeEnvironment): Promise<Wallet>
 
     // Priority 2 & 3: Mnemonic or Private Key (via Hardhat config)
     const [signer] = await hre.ethers.getSigners()
+    if (!signer) {
+        throw new Error('No deployer account configured: set KEYSTORE_PATH (or MNEMONIC / PRIVATE_KEY) in .env')
+    }
     console.log(`Using signer: ${signer.address}`)
     return signer as unknown as Wallet
 }

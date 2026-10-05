@@ -41,13 +41,15 @@ const MNEMONIC = process.env.MNEMONIC
 // Option 3 (ONLY for Testing, NOT RECOMMENDED FOR PRODUCTION): Use a private key
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 
-// Load keystore synchronously if provided, otherwise fall back to mnemonic or private key
-let accounts: HttpNetworkAccountsUserConfig | undefined = undefined
+// Load keystore synchronously if provided, otherwise fall back to mnemonic or private key.
+// Default to an empty list (not undefined): Hardhat then answers eth_accounts locally instead of forwarding
+// it to the RPC, which some providers reject (Alchemy on Monad: "Unsupported method: eth_accounts").
+let accounts: HttpNetworkAccountsUserConfig = []
 
 if (KEYSTORE_PATH) {
     // For keystore, we need to load it at runtime in tasks/scripts
     // But for hardhat-deploy compatibility, we can use a custom provider
-    // Leave accounts undefined and handle in deploy script
+    // Leave accounts empty and handle in deploy script
     console.log('Using keystore authentication. Password will be requested when needed.')
 } else if (MNEMONIC) {
     accounts = { mnemonic: MNEMONIC }
@@ -55,7 +57,7 @@ if (KEYSTORE_PATH) {
     accounts = [PRIVATE_KEY]
 }
 
-if (accounts == null && !KEYSTORE_PATH) {
+if (!KEYSTORE_PATH && !MNEMONIC && !PRIVATE_KEY) {
     console.warn(
         'Could not find KEYSTORE_PATH, MNEMONIC, or PRIVATE_KEY environment variables. It will not be possible to execute transactions.'
     )
@@ -130,6 +132,21 @@ const config: HardhatUserConfig = {
             isTestnet: false,
             accounts,
         },
+        // EIDs are not in the installed @layerzerolabs/lz-definitions yet (MONAD_V2_MAINNET / ROBINHOOD_V2_MAINNET)
+        'monad': {
+            chainId: 143, // Hardhat rejects an RPC that reports a different chain
+            eid: 30390 as EndpointId,
+            url: process.env.RPC_URL_MONAD || process.env.MONAD_RPC_URL || 'https://rpc.monad.xyz',
+            isTestnet: false,
+            accounts,
+        },
+        'robinhood': {
+            chainId: 4663, // Hardhat rejects an RPC that reports a different chain
+            eid: 30416 as EndpointId,
+            url: process.env.RPC_URL_ROBINHOOD || process.env.RH_RPC_URL || 'https://rpc.mainnet.chain.robinhood.com',
+            isTestnet: false,
+            accounts,
+        },
         'bsc-testnet': {
             eid: EndpointId.BSC_V2_TESTNET,
             url: process.env.RPC_URL_BSC_TESTNET || 'https://bsc-testnet.drpc.org',
@@ -164,6 +181,22 @@ const config: HardhatUserConfig = {
             urls: {
                 apiURL: "https://api.etherscan.io/v2/api",
                 browserURL: "https://sonicscan.org"
+            }
+        },
+        {
+            network: "monad",
+            chainId: 143,
+            urls: {
+                apiURL: "https://api.etherscan.io/v2/api",
+                browserURL: "https://monadscan.com"
+            }
+        },
+        {
+            network: "robinhood",
+            chainId: 4663,
+            urls: {
+                apiURL: "https://api.etherscan.io/v2/api",
+                browserURL: "https://robin.etherscan.io"
             }
         },
         ],

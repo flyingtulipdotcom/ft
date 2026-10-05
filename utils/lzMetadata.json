@@ -28307,5 +28307,2961 @@
       }
     },
     "chainKey": "sepolia"
+  },
+  "monad": {
+    "chainKey": "monad",
+    "chainDetails": {
+      "nativeChainId": 143,
+      "chainKey": "monad",
+      "chainType": "evm",
+      "chainLayer": "L1",
+      "chainStatus": "ACTIVE",
+      "nativeCurrency": {
+        "name": "MONAD",
+        "symbol": "MON Monad",
+        "decimals": 18,
+        "cgId": "monad",
+        "cmcId": 30495
+      },
+      "averageBlockTime": 300
+    },
+    "deployments": [
+      {
+        "version": 1,
+        "eid": "390",
+        "stage": "mainnet",
+        "chainKey": "monad",
+        "endpoint": {
+          "address": "0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7"
+        },
+        "fPValidator": {
+          "address": "0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36"
+        },
+        "mPTValidator01": {
+          "address": "0x2d61dcdd36f10b22176e0433b86f74567d529aaa"
+        },
+        "nonceContract": {
+          "address": "0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675"
+        },
+        "receiveUln301": {
+          "address": "0x15e51701f245f6d5bd0fee87bcaf55b0841451b3"
+        },
+        "relayerV2": {
+          "address": "0xa658742d33ebd2ce2f0bdff73515aa797fd161d9"
+        },
+        "sendUln301": {
+          "address": "0x37aaaf95887624a363effb7762d489e3c05c2a02"
+        },
+        "treasuryV2": {
+          "address": "0x980205d352f198748b626f6f7c38a8a5663ec981"
+        },
+        "ultraLightNodeV2": {
+          "address": "0x38de71124f7a447a01d67945a51edce9ff491251"
+        }
+      },
+      {
+        "version": 2,
+        "eid": "30390",
+        "stage": "mainnet",
+        "chainKey": "monad",
+        "blockedMessageLib": {
+          "address": "0xc1ce56b2099ca68720592583c7984cab4b6d7e7a"
+        },
+        "deadDVN": {
+          "address": "0x6788f52439aca6bff597d3eec2dc9a44b8fee842"
+        },
+        "endpointV2": {
+          "address": "0x6f475642a6e85809b1c36fa62763669b1b48dd5b"
+        },
+        "endpointV2View": {
+          "address": "0xaab5a48cfc03efa9cc34a2c1aacccb84b4b770e4"
+        },
+        "executor": {
+          "address": "0x4208d6e27538189bb48e603d6123a94b8abe0a0b"
+        },
+        "lzExecutor": {
+          "address": "0x41bdb4aa4a63a5b2efc531858d3118392b1a1c3d"
+        },
+        "receiveUln302": {
+          "address": "0xe1844c5d63a9543023008d332bd3d2e6f1fe1043"
+        },
+        "sendUln302": {
+          "address": "0xc39161c743d0307eb9bcc9fef03eeb9dc4802de7"
+        }
+      }
+    ],
+    "blockExplorers": [
+      {
+        "url": "https://monadscan.com"
+      }
+    ],
+    "chainName": "monad",
+    "environment": "mainnet",
+    "rpcs": [
+      {
+        "url": "https://monad-mainnet.drpc.org",
+        "rank": 0
+      },
+      {
+        "url": "https://rpc.monad.xyz",
+        "rank": 0
+      },
+      {
+        "url": "https://monad-mainnet-rpc.spidernode.net",
+        "rank": 0
+      },
+      {
+        "url": "https://rpc-mainnet.monadinfra.com",
+        "rank": 0
+      },
+      {
+        "url": "https://rpc1.monad.xyz",
+        "rank": 0
+      },
+      {
+        "url": "https://rpc2.monad.xyz",
+        "rank": 0
+      },
+      {
+        "url": "https://rpc3.monad.xyz",
+        "rank": 0
+      },
+      {
+        "url": "https://monad-mainnet.api.onfinality.io/public",
+        "rank": 1
+      },
+      {
+        "url": "https://rpc4.monad.xyz",
+        "rank": 1
+      },
+      {
+        "url": "https://infra.originstake.com/monad/evm",
+        "rank": 1
+      },
+      {
+        "url": "https://monad.rpc.blxrbdn.com",
+        "rank": 1
+      }
+    ],
+    "tokens": {
+      "0xf7cf282ec810fded974f99c0163e792f432892bc": {
+        "symbol": "mHyperBTC",
+        "decimals": 18,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0xc8495eaff71d3a563b906295fcf2f685b1783085",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "8f7daf5b-740a-4578-a380-acb137c8264e",
+        "proxyAddresses": [
+          "0xe9977b9b22ed2c19dcd68d0403163efcd45bf874"
+        ]
+      },
+      "0xd90f6bfed23ffde40106fc4498dd2e9edb95e4e7": {
+        "symbol": "mHYPER",
+        "decimals": 18,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0x9b5528528656dbc094765e2abb79f293c21191b9",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "mHYPER"
+        },
+        "tokenMeshId": "d86191d9-0545-596f-958d-850045ca0439",
+        "proxyAddresses": [
+          "0x08bc5ef2e2afe697614bf3a9eaa71dcbb577f2df"
+        ]
+      },
+      "0x09d4214c03d01f49544c0448dbe3a27f768f2b34": {
+        "symbol": "rUSD",
+        "decimals": 18,
+        "stablecoin": true,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x09d4214c03d01f49544c0448dbe3a27f768f2b34",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "rUSD"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "e362bd3f-b342-59ff-959f-495cefe09acf",
+        "endpointVersion": 2
+      },
+      "0x4809010926aec940b550d34a46a52739f996d75d": {
+        "symbol": "wsrUSD",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xd3fd63209fa2d55b07a0f6db36c2f43900be3094",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "wsrUSD"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "ce79419d-d910-5efd-b3c6-537f9abc3de3",
+        "endpointVersion": 2
+      },
+      "0x044e874f23f9a7e5dad696554a116c4bb62fecb7": {
+        "symbol": "GMI",
+        "decimals": 18,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0x044e874f23f9a7e5dad696554a116c4bb62fecb7",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "GMI"
+        },
+        "tokenMeshId": "730b2517-4ff1-587f-a918-d79883bae7ab",
+        "proxyAddresses": [
+          "0xc827828ad46f01f85aa1fa6c6bdcb83dde06e271"
+        ]
+      },
+      "0xf59d81cd43f620e722e07f9cb3f6e41b031017a3": {
+        "symbol": "CAKE",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82",
+          "chainName": "bsc",
+          "programaticallyPegged": true,
+          "symbol": "CAKE"
+        },
+        "sharedDecimals": 8,
+        "tokenMeshId": "e2044015-5ce8-52e2-a35c-e9feb336eca5"
+      },
+      "0x371c7ec6d8039ff7933a2aa28eb827ffe1f52f07": {
+        "symbol": "JOE",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd",
+          "chainName": "avalanche",
+          "programaticallyPegged": true,
+          "symbol": "JOE"
+        },
+        "sharedDecimals": 8,
+        "tokenMeshId": "42647e5a-ce2c-59e7-8076-05027e562ea5"
+      },
+      "0x103222f020e98bba0ad9809a011fdf8e6f067496": {
+        "symbol": "earnAUSD",
+        "decimals": 6,
+        "cgId": "earnausd",
+        "type": "ERC20",
+        "tokenMeshId": "4dc5eed7-cfa7-550a-97bf-5a659f9b86fa",
+        "proxyAddresses": [
+          "0x9549fa3df579cca9f3e328695382675f7f1f0f34"
+        ]
+      },
+      "0xe7cd86e13ac4309349f30b3435a9d337750fc82d": {
+        "name": "USD₮0",
+        "symbol": "USDT0",
+        "decimals": 6,
+        "stablecoin": true,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "USDT"
+        },
+        "tokenMeshId": "4273253d-4d8f-50a0-bfcd-48048c727b70",
+        "proxyAddresses": [
+          "0x9151434b16b9763660705744891fa906f660ecc5"
+        ]
+      },
+      "0xdef72af3fc69e1dd5a094f7dda08ba203cd0438b": {
+        "symbol": "EUL",
+        "decimals": 18,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0xd9fcd98c322942075a5c3860693e9f4f03aae07b",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "EUL"
+        },
+        "tokenMeshId": "e66828c4-4eca-5fd0-b6f1-eeadb1a0dc69",
+        "proxyAddresses": [
+          "0x831257bfa5478111d2327e08c4068ec37ac14b81"
+        ]
+      },
+      "0x6a7e3f839382fbb6a6131d4aae864aaeb362292d": {
+        "symbol": "APE",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "chainName": "ape",
+          "programaticallyPegged": true,
+          "symbol": "APE"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "3924f16c-aa29-569b-9707-e8b95ec78f11",
+        "endpointVersion": 2
+      },
+      "0x9efdfc72c1bc90b36f8aae35247e62310c58eacf": {
+        "symbol": "SLAY",
+        "decimals": 6,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x51477a3002ee04b7542adfe63ccdb50c00ee5147",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "SLAY"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "38de4793-4aef-5173-91d3-d0caa9d632b0",
+        "endpointVersion": 2
+      },
+      "0x01bff41798a0bcf287b996046ca68b395dbc1071": {
+        "symbol": "XAUT0",
+        "decimals": 6,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0x68749665ff8d2d112fa859aa293f07a622782f38",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "XAUT0"
+        },
+        "tokenMeshId": "104c7a3d-6f15-5c39-8e15-fe697c084eeb",
+        "proxyAddresses": [
+          "0x21caef8a43163eea865baee23b9c2e327696a3bf"
+        ]
+      },
+      "0xfdd22ce6d1f66bc0ec89b20bf16ccb6670f55a5a": {
+        "symbol": "thBILL",
+        "decimals": 6,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x5fa487bca6158c64046b2813623e20755091da0b",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "thBILL"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "55df729b-af7b-5513-823c-5ecef9f374e9",
+        "endpointVersion": 2
+      },
+      "0x0000000000000000000000000000000000000000": {
+        "symbol": "MON",
+        "decimals": 18,
+        "cgId": "monad",
+        "cmcId": 30495,
+        "type": "NativeToken",
+        "tokenMeshId": "78982298-9cae-440f-9e36-b46c76202eb1"
+      },
+      "0x0555e30da8f98308edb960aa94c0db47230d2b9c": {
+        "symbol": "WBTC",
+        "decimals": 8,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "WBTC"
+        },
+        "sharedDecimals": 8,
+        "canonicalAsset": true,
+        "tokenMeshId": "ece00d4d-0407-505a-afa4-cbaac5fb06a0",
+        "endpointVersion": 2
+      },
+      "0xa3d68b74bf0528fdd07263c60d6488749044914b": {
+        "symbol": "weETH",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "weETH"
+        },
+        "sharedDecimals": 6,
+        "canonicalAsset": true,
+        "tokenMeshId": "f6e84973-b047-512e-b605-a6718bc2624f",
+        "endpointVersion": 2,
+        "eid": 30390
+      },
+      "0x00000000efe302beaa2b3e6e1b18d08d69a9012a": {
+        "symbol": "AUSD",
+        "decimals": 6,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0x00000000efe302beaa2b3e6e1b18d08d69a9012a",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "AUSD0"
+        },
+        "tokenMeshId": "e4214b45-b4ee-58df-b711-924ebaee0efe",
+        "proxyAddresses": [
+          "0x9cab7ede13dc56652e44d2404e969c212f22689b"
+        ]
+      },
+      "0x37d6382b6889ccef8d6871a8b60e667115eddbcf": {
+        "symbol": "pufETH",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xd9a442856c234a39a81a089c06451ebaa4306a72",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "pufETH"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "02aa0c20-f44e-5b87-8d96-b8a3b7db4513",
+        "endpointVersion": 2
+      },
+      "0x0a332311633c0625f63cfc51ee33fc49826e0a3c": {
+        "symbol": "APR",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x5a9610919f5e81183823a2be4bd1beb2b4da2a20",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "APR"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "fd083b9a-f3f2-5fb3-b73a-a5f8338a058b",
+        "endpointVersion": 2
+      },
+      "0x74db7a52773a52699dbc0c01b1254e5301e3e119": {
+        "symbol": "AVLT",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x74db7a52773a52699dbc0c01b1254e5301e3e119",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "a7f39d05-a394-477d-8d3c-0f727e095938",
+        "oftVersion": 3,
+        "eid": 30390
+      },
+      "0xce6170ea245dc8d1f275a710a062b70f125f0110": {
+        "symbol": "FXRP",
+        "decimals": 6,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xad552a648c74d49e10027ab8a618a3ad4901c5be",
+          "chainName": "flare",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "ab06106c-00f6-5e5d-8e21-6e8da37fd353",
+        "oftVersion": 3,
+        "eid": 30390
+      },
+      "0xc53ac24320e3a54c7211e4993c8095078a0cb3cf": {
+        "symbol": "WGC",
+        "decimals": 6,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "8aB8hdzyqjCJdtP1rfdLNX8bGDjjM8S42BZ3j4zNVtRN",
+          "chainName": "solana",
+          "programaticallyPegged": true,
+          "symbol": "WGC"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "4e97d593-ef2e-55c3-9b20-589b92140659",
+        "endpointVersion": 2
+      },
+      "0x5e49e1f85813f2b65858860a3fa231b4186f2e0e": {
+        "symbol": "PENDLE",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x808507121b80c02388fad14726482e061b8da827",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "1e127675-8afc-5bed-bb84-eb9430600abf",
+        "oftVersion": 3,
+        "eid": 30390
+      },
+      "0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2": {
+        "symbol": "sUSDe",
+        "decimals": 18,
+        "stablecoin": true,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x9d39a5de30e57443bff2a8307a4256c8797a3497",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "99791a1b-49df-549c-93a6-5772d12e1feb",
+        "eid": 30390
+      },
+      "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34": {
+        "symbol": "USDe",
+        "decimals": 18,
+        "stablecoin": true,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "8c5ea9ad-7424-50b7-9d2e-7a315b8f0226",
+        "eid": 30390
+      },
+      "0x58538e6a46e07434d7e7375bc268d3cb839c0133": {
+        "symbol": "ENA",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x57e114b691db790c35207b2e685d4a43181e6061",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "ba50ab42-e9f2-56c2-a316-99cf1f00ef42",
+        "eid": 30390
+      },
+      "0x754704bc059f8c67012fed69bc8a327a5aafb603": {
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "stablecoin": true,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "USDC"
+        },
+        "tokenMeshId": "d8a72d3f-4bda-53ec-be59-ae6508d82644"
+      },
+      "0x484be0540ad49f351eaa04eeb35df0f937d4e73f": {
+        "symbol": "syzUSD",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xc8a8df9b210243c55d31c73090f06787ad0a1bf6",
+          "chainName": "plasma",
+          "programaticallyPegged": true,
+          "symbol": "syzUSD"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "8ea6f65b-3b50-5aa2-9366-04f2373a2c09",
+        "endpointVersion": 2
+      },
+      "0x9dcb0d17edde04d27f387c89fecb78654c373858": {
+        "symbol": "yzUSD",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x6695c0f8706c5ace3bdf8995073179cca47926dc",
+          "chainName": "plasma",
+          "programaticallyPegged": true,
+          "symbol": "yzUSD"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "c3418be1-05f2-5e6c-a2e7-c772e289d30f",
+        "endpointVersion": 2
+      },
+      "0xb37476cb1f6111cc682b107b747b8652f90b0984": {
+        "symbol": "yzPP",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xebfc8c2fe73c431ef2a371aea9132110aab50dca",
+          "chainName": "plasma",
+          "programaticallyPegged": true,
+          "symbol": "yzPP"
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "8e5bffc6-98ac-5e9d-b3cd-263b87314db9",
+        "endpointVersion": 2
+      },
+      "0xba554f7a47f0792b9fa41a1256d4cf628bb1d028": {
+        "symbol": "FPI",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x5ca135cb8527d76e932f34b5145575f9d8cbe08e",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "20468a2a-a26c-5e06-86a7-b21e774914f6",
+        "eid": 30390
+      },
+      "0x5ec32e3f2cc925296dc37edf3b2388868d5525c5": {
+        "symbol": "jrUSDat",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x011e55d2b28306458e37ca7e997c879bb25a455d",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "fb305a5e-273d-4d05-a82d-13cb9aec62ce",
+        "oftVersion": 3,
+        "eid": 30390
+      },
+      "0x17b8f7373ecd556192abfc85be314e5d4fb6b3fa": {
+        "symbol": "srUSDat",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xfaa9a0e1db9e22ae3a20b2b58a68dc24d053d066",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "ebaa468f-1ffa-4ef4-b8c2-30cd30744a33",
+        "oftVersion": 3,
+        "eid": 30390
+      },
+      "0x2abc42250154752273a4560e875c858623f83ecc": {
+        "symbol": "aguaUSDCgc",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xa98b4a70e17e55045cde4972b95bc2e8cec22a0f",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "444d42c5-1e87-4702-b1da-f1c3f1490f07",
+        "oftVersion": 3,
+        "eid": 30390
+      },
+      "0x1bda21a39f4976ceebd01a49916a73dcdb56ea58": {
+        "symbol": "rsETH",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xa1290d69c65a6fe4df752f95823fae25cb99e5a7",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "995af2b8-ebc0-5211-b79f-565349389a8c",
+        "oftVersion": 3,
+        "eid": 30390
+      },
+      "0x2f2f2f74ab5db61ae8bd3c13ccd4dc8c9e8a2f2f": {
+        "symbol": "ZF",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x31c2c031fdc9d33e974f327ab0d9883eae06ca4a",
+          "chainName": "zksync",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "a0ad23aa-8571-472a-b2ef-3f786568215d",
+        "eid": 30390
+      },
+      "0x223c0d94dbc8c0e5df1f6b2c75f06c0229c91950": {
+        "symbol": "TOKE",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x2e9d63788249371f1dfc918a52f8d799f4a38c94",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "7014cf99-6f55-45f1-9f8f-a7a051cb5455",
+        "eid": 30390
+      },
+      "0x9c0e3165b44aa9b5d3569a8f31ce754fcb98f2b8": {
+        "symbol": "DROP",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x9c0e3165b44aa9b5d3569a8f31ce754fcb98f2b8",
+          "chainName": "arbitrum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "6537d4e7-86de-43a3-b397-1c1daa5e8222",
+        "eid": 30390
+      },
+      "0xe9977b9b22ed2c19dcd68d0403163efcd45bf874": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 9,
+        "erc20TokenAddress": "0xf7cf282ec810fded974f99c0163e792f432892bc",
+        "decimals": 18,
+        "symbol": "mHyperBTC",
+        "oftVersion": 3,
+        "eid": 30390,
+        "mintAndBurn": true,
+        "peggedTo": {
+          "address": "0xc8495eaff71d3a563b906295fcf2f685b1783085",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "8f7daf5b-740a-4578-a380-acb137c8264e"
+      },
+      "0x08bc5ef2e2afe697614bf3a9eaa71dcbb577f2df": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 9,
+        "erc20TokenAddress": "0xd90f6bfed23ffde40106fc4498dd2e9edb95e4e7",
+        "decimals": 18,
+        "symbol": "mHYPER",
+        "oftVersion": 3,
+        "endpointVersion": 2,
+        "mintAndBurn": true,
+        "peggedTo": {
+          "address": "0x9b5528528656dbc094765e2abb79f293c21191b9",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "mHYPER"
+        },
+        "tokenMeshId": "d86191d9-0545-596f-958d-850045ca0439"
+      },
+      "0x9151434b16b9763660705744891fa906f660ecc5": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xe7cd86e13ac4309349f30b3435a9d337750fc82d",
+        "decimals": 6,
+        "stablecoin": true,
+        "symbol": "USDT0",
+        "oftVersion": 3,
+        "endpointVersion": 2,
+        "mintAndBurn": true,
+        "peggedTo": {
+          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "USDT"
+        },
+        "tokenMeshId": "4273253d-4d8f-50a0-bfcd-48048c727b70"
+      },
+      "0x831257bfa5478111d2327e08c4068ec37ac14b81": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xdef72af3fc69e1dd5a094f7dda08ba203cd0438b",
+        "decimals": 18,
+        "symbol": "EUL",
+        "oftVersion": 3,
+        "endpointVersion": 2,
+        "peggedTo": {
+          "address": "0xd9fcd98c322942075a5c3860693e9f4f03aae07b",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "EUL"
+        },
+        "tokenMeshId": "e66828c4-4eca-5fd0-b6f1-eeadb1a0dc69"
+      },
+      "0x9549fa3df579cca9f3e328695382675f7f1f0f34": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x103222f020e98bba0ad9809a011fdf8e6f067496",
+        "decimals": 6,
+        "cgId": "earnausd",
+        "symbol": "earnAUSD",
+        "oftVersion": 3,
+        "endpointVersion": 2,
+        "peggedTo": {
+          "address": "0x103222f020e98bba0ad9809a011fdf8e6f067496",
+          "chainName": "monad",
+          "programaticallyPegged": true,
+          "symbol": "earnAUSD"
+        },
+        "tokenMeshId": "4dc5eed7-cfa7-550a-97bf-5a659f9b86fa"
+      },
+      "0x21caef8a43163eea865baee23b9c2e327696a3bf": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x01bff41798a0bcf287b996046ca68b395dbc1071",
+        "decimals": 6,
+        "symbol": "XAUt0",
+        "oftVersion": 3,
+        "endpointVersion": 2,
+        "mintAndBurn": true,
+        "peggedTo": {
+          "address": "0x68749665ff8d2d112fa859aa293f07a622782f38",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "XAUT0"
+        },
+        "tokenMeshId": "104c7a3d-6f15-5c39-8e15-fe697c084eeb"
+      },
+      "0xc827828ad46f01f85aa1fa6c6bdcb83dde06e271": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x044e874f23f9a7e5dad696554a116c4bb62fecb7",
+        "decimals": 18,
+        "symbol": "GMI",
+        "oftVersion": 3,
+        "endpointVersion": 2,
+        "peggedTo": {
+          "address": "0x044e874f23f9a7e5dad696554a116c4bb62fecb7",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "GMI"
+        },
+        "tokenMeshId": "730b2517-4ff1-587f-a918-d79883bae7ab"
+      },
+      "0x9cab7ede13dc56652e44d2404e969c212f22689b": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x00000000efe302beaa2b3e6e1b18d08d69a9012a",
+        "decimals": 6,
+        "symbol": "AUSD",
+        "oftVersion": 3,
+        "endpointVersion": 2,
+        "mintAndBurn": true,
+        "peggedTo": {
+          "address": "0x00000000efe302beaa2b3e6e1b18d08d69a9012a",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "AUSD0"
+        },
+        "tokenMeshId": "e4214b45-b4ee-58df-b711-924ebaee0efe"
+      }
+    },
+    "addressToOApp": {
+      "0xec901da9c68e90798bbbb74c11406a32a70652c3": {
+        "id": "stakestone",
+        "canonicalName": "StakeStone"
+      },
+      "0xe9977b9b22ed2c19dcd68d0403163efcd45bf874": {
+        "id": "midas",
+        "canonicalName": "Midas"
+      },
+      "0x1c2af06b5d35c81cd1be31311a09dd7901a7aeb2": {
+        "id": "xstar",
+        "canonicalName": "XStar"
+      },
+      "0x09d4214c03d01f49544c0448dbe3a27f768f2b34": {
+        "id": "reservoir",
+        "canonicalName": "Reservoir"
+      },
+      "0x08bc5ef2e2afe697614bf3a9eaa71dcbb577f2df": {
+        "id": "midas",
+        "canonicalName": "Midas"
+      },
+      "0x4809010926aec940b550d34a46a52739f996d75d": {
+        "id": "reservoir",
+        "canonicalName": "Reservoir"
+      },
+      "0x170c15cb9887e6adb097518104b174df212bb190": {
+        "id": "dexalot",
+        "canonicalName": "Dexalot"
+      },
+      "0x461c12fba639303da045255dd32eea7e38ac69b0": {
+        "id": "orderly-network",
+        "canonicalName": "Orderly Network"
+      },
+      "0x137643f7b2c189173867b3391f6629cab46f0f1a": {
+        "id": "frax-finance",
+        "canonicalName": "Frax Finance"
+      },
+      "0x288f9d76019469bfeb56bb77d86afa2bf563b75b": {
+        "id": "frax-finance",
+        "canonicalName": "Frax Finance"
+      },
+      "0x29acc7c504665a5ea95344796f784095f0cfcc58": {
+        "id": "frax-finance",
+        "canonicalName": "Frax Finance"
+      },
+      "0x3b4cf37a3335f21c945a40088404c715525fcb29": {
+        "id": "frax-finance",
+        "canonicalName": "Frax Finance"
+      },
+      "0x58e3ee6accd124642ddb5d3f91928816be8d8ed3": {
+        "id": "frax-finance",
+        "canonicalName": "Frax Finance"
+      },
+      "0x46080f31351a6568f44575e3effde7f0c86867f9": {
+        "id": "etherfuse",
+        "canonicalName": "etherfuse"
+      },
+      "0x7a9990ffe3057edc18558ca4c8804430fe917456": {
+        "id": "etherfuse",
+        "canonicalName": "etherfuse"
+      },
+      "0x7cee47e7b7cd04cf984e8dd86c42595b5771a9b2": {
+        "id": "etherfuse",
+        "canonicalName": "etherfuse"
+      },
+      "0x834df4c1d8f51be24322e39e4766697be015512f": {
+        "id": "etherfuse",
+        "canonicalName": "etherfuse"
+      },
+      "0xc6221856e45ed806f8325a084bed3d69d32c526d": {
+        "id": "etherfuse",
+        "canonicalName": "etherfuse"
+      },
+      "0xffe691a6ddb5d2645321e0a920c2e7bdd00dd3d8": {
+        "id": "aori",
+        "canonicalName": "Aori"
+      },
+      "0xf59d81cd43f620e722e07f9cb3f6e41b031017a3": {
+        "id": "pancakeswap",
+        "canonicalName": "PancakeSwap"
+      },
+      "0x371c7ec6d8039ff7933a2aa28eb827ffe1f52f07": {
+        "id": "lfj",
+        "canonicalName": "LFJ"
+      },
+      "0x9151434b16b9763660705744891fa906f660ecc5": {
+        "id": "usdt0",
+        "canonicalName": "USDT0"
+      },
+      "0x831257bfa5478111d2327e08c4068ec37ac14b81": {
+        "id": "euler",
+        "canonicalName": "Euler"
+      },
+      "0x474ed38c256a7fa0f3b8c48496ce1102ab0ea91e": {
+        "id": "47eagle",
+        "canonicalName": "47 Eagle"
+      },
+      "0x6a7e3f839382fbb6a6131d4aae864aaeb362292d": {
+        "id": "apecoin",
+        "canonicalName": "ApeCoin"
+      },
+      "0x9efdfc72c1bc90b36f8aae35247e62310c58eacf": {
+        "id": "satlayer",
+        "canonicalName": "SatLayer"
+      },
+      "0x21caef8a43163eea865baee23b9c2e327696a3bf": {
+        "id": "usdt0",
+        "canonicalName": "USDT0"
+      },
+      "0xfdd22ce6d1f66bc0ec89b20bf16ccb6670f55a5a": {
+        "id": "theo",
+        "canonicalName": "Theo"
+      },
+      "0xc827828ad46f01f85aa1fa6c6bdcb83dde06e271": {
+        "id": "gonnamakeit",
+        "canonicalName": "GonnaMakeIt"
+      },
+      "0x0555e30da8f98308edb960aa94c0db47230d2b9c": {
+        "id": "wbtc",
+        "canonicalName": "wBTC"
+      },
+      "0xa3d68b74bf0528fdd07263c60d6488749044914b": {
+        "id": "etherfi",
+        "canonicalName": "Ether.Fi"
+      },
+      "0x9cab7ede13dc56652e44d2404e969c212f22689b": {
+        "id": "agora",
+        "canonicalName": "Agora"
+      },
+      "0x37d6382b6889ccef8d6871a8b60e667115eddbcf": {
+        "id": "puffer",
+        "canonicalName": "Puffer"
+      },
+      "0x0a332311633c0625f63cfc51ee33fc49826e0a3c": {
+        "id": "apriori",
+        "canonicalName": "aPriori"
+      },
+      "0x74dB7a52773A52699dbC0c01b1254E5301E3e119": {
+        "id": "altura",
+        "canonicalName": "Altura"
+      },
+      "0xce6170ea245dc8d1f275a710a062b70f125f0110": {
+        "id": "flare",
+        "canonicalName": "Flare"
+      },
+      "0xc53ac24320e3a54c7211e4993c8095078a0cb3cf": {
+        "id": "wildgoatcoin",
+        "canonicalName": "Wild Goat Coin"
+      },
+      "0x5e49e1f85813f2b65858860a3fa231b4186f2e0e": {
+        "id": "pendle",
+        "canonicalName": "Pendle"
+      },
+      "0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2": {
+        "id": "ethena",
+        "canonicalName": "Ethena"
+      },
+      "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34": {
+        "id": "ethena",
+        "canonicalName": "Ethena"
+      },
+      "0x58538e6a46e07434d7e7375bc268d3cb839c0133": {
+        "id": "ethena",
+        "canonicalName": "Ethena"
+      },
+      "0xc9086278b317d6316151945d720ce7b602fbe463": {
+        "id": "ample",
+        "canonicalName": "Ample"
+      },
+      "0xfacefeed69e0eb9db6ad8cb0883fc45df7561dc2": {
+        "id": "curve-finance",
+        "canonicalName": "Curve Finance"
+      },
+      "0x484be0540ad49f351eaa04eeb35df0f937d4e73f": {
+        "id": "yuzu-money",
+        "canonicalName": "Yuzu Money"
+      },
+      "0x9dcb0d17edde04d27f387c89fecb78654c373858": {
+        "id": "yuzu-money",
+        "canonicalName": "Yuzu Money"
+      },
+      "0xb37476cb1f6111cc682b107b747b8652f90b0984": {
+        "id": "yuzu-money",
+        "canonicalName": "Yuzu Money"
+      },
+      "0xba554f7a47f0792b9fa41a1256d4cf628bb1d028": {
+        "id": "frax-finance",
+        "canonicalName": "Frax Finance"
+      },
+      "0x5ec32e3f2cc925296dc37edf3b2388868d5525c5": {
+        "id": "jrUSDat OApp",
+        "canonicalName": "jrUSDat"
+      },
+      "0x17b8f7373ecd556192abfc85be314e5d4fb6b3fa": {
+        "id": "srUSDat OApp",
+        "canonicalName": "srUSDat"
+      },
+      "0x2abc42250154752273a4560e875c858623f83ecc": {
+        "id": "aguaUSDCgc OApp",
+        "canonicalName": "Agua Global Carry Vault"
+      },
+      "0x1bda21a39f4976ceebd01a49916a73dcdb56ea58": {
+        "id": "kelpdao",
+        "canonicalName": "Kelp DAO"
+      },
+      "0xa914c44e960cc95d996969bdf0ab5d6f4f2b5870": {
+        "id": "pendle",
+        "canonicalName": "Pendle"
+      },
+      "0x2f2f2f74ab5db61ae8bd3c13ccd4dc8c9e8a2f2f": {
+        "id": "zkswap-finance",
+        "canonicalName": "zkSwap Finance"
+      },
+      "0x223c0d94dbc8c0e5df1f6b2c75f06c0229c91950": {
+        "id": "auto-finance",
+        "canonicalName": "Auto Finance"
+      },
+      "0x9c0e3165b44aa9b5d3569a8f31ce754fcb98f2b8": {
+        "id": "dropswap",
+        "canonicalName": "DropSwap"
+      },
+      "0x7d55a2bd88ed4e886ba8a95871df823db70acddf": {
+        "id": "Blend Roles Messaging",
+        "canonicalName": "Blend"
+      },
+      "0xe5a3832f39686cefbc2e762615a6e723dfbbd1e0": {
+        "id": "Symphony Callback Adapter OApp",
+        "canonicalName": "Symphony"
+      }
+    },
+    "dvns": {
+      "0x282b3386571f7f794450d5789911a9804fa346b4": {
+        "canonicalName": "LayerZero Labs",
+        "id": "layerzero-labs",
+        "version": 2
+      },
+      "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7": {
+        "canonicalName": "Nethermind",
+        "id": "nethermind",
+        "version": 2
+      },
+      "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73": {
+        "canonicalName": "Horizen",
+        "id": "horizen-labs",
+        "version": 2
+      },
+      "0x05ef739dde35407a421ef1b3011283f92c2b30dc": {
+        "canonicalName": "P2P",
+        "id": "p2p",
+        "version": 2
+      },
+      "0xdd107f9b5209670840f9cd58e241f460651c16c4": {
+        "canonicalName": "BitGo",
+        "id": "bitgo",
+        "version": 2
+      },
+      "0x493626c5d852b9b187a9eb709d0b0978a3877238": {
+        "canonicalName": "Canary",
+        "id": "canary",
+        "version": 2
+      },
+      "0x2dcbd79f38d6871232422db88ec29e8d97135ac7": {
+        "canonicalName": "USDT0",
+        "id": "usdt0",
+        "version": 2
+      },
+      "0xd2750419b4a663c8ff8f7b6067885d82f299ace9": {
+        "canonicalName": "Nansen",
+        "id": "nansen",
+        "version": 2
+      },
+      "0xe00ff3ebb0cd942d846fb27e4739d2da66989b4f": {
+        "canonicalName": "Mantle Bank",
+        "id": "mantle-bank",
+        "version": 2
+      },
+      "0x2c7185f5b0976397d9eb5c19d639d4005e6708f0": {
+        "canonicalName": "Deutsche Telekom",
+        "id": "deutsche-telekom",
+        "version": 2
+      },
+      "0x5ec52fb644072247c3264f0ac3db981cdebe3eca": {
+        "canonicalName": "Frax",
+        "id": "frax",
+        "version": 2
+      },
+      "0x6398e91001cc1682bba103e6b2489fa5675a5a64": {
+        "canonicalName": "WBTC Canary",
+        "id": "canary-wbtc",
+        "version": 2
+      },
+      "0x6788f52439aca6bff597d3eec2dc9a44b8fee842": {
+        "canonicalName": "LZDeadDVN",
+        "id": "lz-dead-dvn",
+        "version": 2,
+        "deprecated": true
+      },
+      "0x0e4e83077c09cf194ac6080d7dc699e82c7ea29b": {
+        "canonicalName": "Luganodes",
+        "id": "luganodes",
+        "version": 2
+      },
+      "0x4d09c99ed8788b191144d6cdd129014fde70326f": {
+        "canonicalName": "StablecoinX",
+        "id": "stablecoinx",
+        "version": 2
+      },
+      "0xefa6237fd9bc99e0cfaec9bddac9a2e55fa336b9": {
+        "canonicalName": "ApeDVN",
+        "id": "apedvn",
+        "version": 2
+      },
+      "0xb9cf787a811649d157a1ca4aef1a2bf071776040": {
+        "canonicalName": "Canary Sponsored",
+        "id": "canary-sponsored",
+        "version": 2
+      },
+      "0x3b3c3ad540829d57af7b22c6cdff83fe7d43a8b6": {
+        "canonicalName": "Canary Subsidized",
+        "id": "canary-subsidized",
+        "version": 2
+      }
+    }
+  },
+  "robinhood": {
+    "chainKey": "robinhood",
+    "chainDetails": {
+      "chainStack": "ARB_STACK",
+      "nativeChainId": 4663,
+      "chainKey": "robinhood",
+      "chainType": "evm",
+      "chainLayer": "L2",
+      "chainStatus": "ACTIVE",
+      "nativeCurrency": {
+        "name": "ETH TOKEN",
+        "symbol": "ETH",
+        "decimals": 18,
+        "cgId": "ethereum",
+        "cmcId": 1027
+      },
+      "averageBlockTime": 366400
+    },
+    "deployments": [
+      {
+        "version": 1,
+        "eid": "416",
+        "stage": "mainnet",
+        "chainKey": "robinhood",
+        "endpoint": {
+          "address": "0xb6319cc6c8c27a8f5daf0dd3df91ea35c4720dd7"
+        },
+        "fPValidator": {
+          "address": "0xc1b15d3b262beec0e3565c11c9e0f6134bdacb36"
+        },
+        "mPTValidator01": {
+          "address": "0x2d61dcdd36f10b22176e0433b86f74567d529aaa"
+        },
+        "nonceContract": {
+          "address": "0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675"
+        },
+        "receiveUln301": {
+          "address": "0x15e51701f245f6d5bd0fee87bcaf55b0841451b3"
+        },
+        "relayerV2": {
+          "address": "0xa658742d33ebd2ce2f0bdff73515aa797fd161d9"
+        },
+        "sendUln301": {
+          "address": "0x37aaaf95887624a363effb7762d489e3c05c2a02"
+        },
+        "treasuryV2": {
+          "address": "0x980205d352f198748b626f6f7c38a8a5663ec981"
+        },
+        "ultraLightNodeV2": {
+          "address": "0x38de71124f7a447a01d67945a51edce9ff491251"
+        }
+      },
+      {
+        "version": 2,
+        "eid": "30416",
+        "stage": "mainnet",
+        "chainKey": "robinhood",
+        "blockedMessageLib": {
+          "address": "0xc1ce56b2099ca68720592583c7984cab4b6d7e7a"
+        },
+        "deadDVN": {
+          "address": "0x6788f52439aca6bff597d3eec2dc9a44b8fee842"
+        },
+        "endpointV2": {
+          "address": "0x6f475642a6e85809b1c36fa62763669b1b48dd5b"
+        },
+        "endpointV2View": {
+          "address": "0xaab5a48cfc03efa9cc34a2c1aacccb84b4b770e4"
+        },
+        "executor": {
+          "address": "0x4208d6e27538189bb48e603d6123a94b8abe0a0b"
+        },
+        "lzExecutor": {
+          "address": "0x41bdb4aa4a63a5b2efc531858d3118392b1a1c3d"
+        },
+        "receiveUln302": {
+          "address": "0xe1844c5d63a9543023008d332bd3d2e6f1fe1043"
+        },
+        "sendUln302": {
+          "address": "0xc39161c743d0307eb9bcc9fef03eeb9dc4802de7"
+        }
+      }
+    ],
+    "blockExplorers": [
+      {
+        "url": "https://robin.etherscan.io"
+      }
+    ],
+    "chainName": "robinhood",
+    "environment": "mainnet",
+    "rpcs": [
+      {
+        "url": "https://rpc.mainnet.chain.robinhood.com",
+        "rank": 0
+      }
+    ],
+    "tokens": {
+      "0x0000000000000000000000000000000000000000": {
+        "symbol": "ETH",
+        "decimals": 18,
+        "type": "NativeToken",
+        "peggedTo": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "chainName": "ethereum",
+          "programaticallyPegged": true,
+          "symbol": "ETH"
+        },
+        "tokenMeshId": "527ce5cb-c9c9-542f-9587-1fe58fcce343"
+      },
+      "0x5173d45a1191ee33cbb7d8c7e65f21b04ed54802": {
+        "symbol": "RAM",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x555570a286f15ebdfe42b66ede2f724aa1ab5555",
+          "chainName": "hyperliquid",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "35ff1341-337e-46ae-8ae7-26fb1ce89a52",
+        "eid": 30416
+      },
+      "0x4e5195469a0360f5dfe811730c9ccacff0a0feee": {
+        "symbol": "r33",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x5555c2542836e7a6c8d3e133d5aa9773b65d5555",
+          "chainName": "hyperliquid",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "03123c87-4f5c-437d-a80b-151cf4c7b2c3",
+        "eid": 30416
+      },
+      "0x0aa0b791f870d8c6f7dd310639c61991bb3e5d41": {
+        "symbol": "FROTH",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xb73bf8e6a4477a952e0338e6cc00cc0ce5ad04ba",
+          "chainName": "flow",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "fc2faea4-5b48-431f-931c-2275d1cc54ba",
+        "eid": 30416
+      },
+      "0x178e54df3d091ee4d0b2534742ef9e3692b76526": {
+        "symbol": "BNKR",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x22af33fe49fd1fa80c7149773dde5890d3c76f3b",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "6e8f0c52-0e4e-4e92-bb13-bb845195d0ef",
+        "eid": 30416
+      },
+      "0xd1b0d44e4f6ed940fcc7a9f59bf30daf62ccfe3d": {
+        "symbol": "GITLAWB",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x5f980dcfc4c0fa3911554cf5ab288ed0eb13dba3",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "7073183a-80fd-4462-a097-475d074bd0c4",
+        "eid": 30416
+      },
+      "0x50832d74a7160e2f7d361f5e678e107d228b9aa6": {
+        "symbol": "ARENA",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xb8d7710f7d8349a506b75dd184f05777c82dad0c",
+          "chainName": "avalanche",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "1dfb3b2c-f55e-4dca-8e75-8accded64848",
+        "eid": 30416
+      },
+      "0x5f7bb59365ce557c26dbcaa4ee9d39a4b95b7127": {
+        "symbol": "IMD",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xff0c532fdb8cd566ae169c1cb157ff2bdc83e105",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "8bf32d34-35d1-4951-a214-28377a3421ec",
+        "eid": 30416
+      },
+      "0xbaabcb1800c539a58a46035d3982403a37fd6d5d": {
+        "symbol": "MRDN",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xe57e601c06689d3e2bf7db7bebb14b4ff28400c6",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "e3617bd9-b207-4bd3-9a0b-056b7c2ee8f1",
+        "eid": 30416
+      },
+      "0x9a73d60b9c8c2d330eb6d885e69fcc1399c33c18": {
+        "symbol": "VIBES",
+        "decimals": 18,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0xeffc8815487084a97edfdff968b56ea123421acb",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "d8bf3e62-e782-4373-9c8a-8d8aa6f50b17",
+        "proxyAddresses": [
+          "0x37f26e3025b3dc50e0ee9f610d386803b42d0685"
+        ]
+      },
+      "0x87946d696c37a22a3002d71f8abe867fa8ee23b0": {
+        "symbol": "ANYONE",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xfeac2eae96899709a43e252b6b92971d32f9c0f9",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "33dc322a-c520-5046-ab26-6e5d02eec4b3",
+        "oftVersion": 3,
+        "eid": 30416
+      },
+      "0xa3d68b74bf0528fdd07263c60d6488749044914b": {
+        "symbol": "weETH",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "f6e84973-b047-512e-b605-a6718bc2624f",
+        "oftVersion": 3,
+        "eid": 30416
+      },
+      "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34": {
+        "symbol": "USDe",
+        "decimals": 18,
+        "stablecoin": true,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x4c9edd5852cd905f086c759e8383e09bff1e68b3",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "8c5ea9ad-7424-50b7-9d2e-7a315b8f0226",
+        "oftVersion": 3,
+        "eid": 30416
+      },
+      "0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2": {
+        "symbol": "sUSDe",
+        "decimals": 18,
+        "stablecoin": true,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x9d39a5de30e57443bff2a8307a4256c8797a3497",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "99791a1b-49df-549c-93a6-5772d12e1feb",
+        "eid": 30416
+      },
+      "0x58538e6a46e07434d7e7375bc268d3cb839c0133": {
+        "symbol": "ENA",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x57e114b691db790c35207b2e685d4a43181e6061",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "ba50ab42-e9f2-56c2-a316-99cf1f00ef42",
+        "oftVersion": 3,
+        "eid": 30416
+      },
+      "0x5fc5360d0400a0fd4f2af552add042d716f1d168": {
+        "symbol": "USDG",
+        "decimals": 6,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0xe343167631d89b6ffc58b88d6b7fb0228795491d",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "5bb7aabf-78cf-59bb-9da7-95d917eda950",
+        "proxyAddresses": [
+          "0x0d54755f5106bfdb43f7a35f5d49a23f940628d1"
+        ]
+      },
+      "0x020bfc650a365f8bb26819deaabf3e21291018b4": {
+        "symbol": "CASHCAT",
+        "decimals": 18,
+        "cgId": "cash-cat",
+        "type": "ERC20",
+        "tokenMeshId": "f5e47997-f4c3-4944-921f-16906436fb55",
+        "proxyAddresses": [
+          "0xc69183690b42d6a51631dcb34f2f26cea7f6a273"
+        ]
+      },
+      "0x6fc1fa7ef337a3d59ab999ab445677f1682c8f9c": {
+        "symbol": "PEPPER",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x60f397acbcfb8f4e3234c659a3e10867e6fa6b67",
+          "chainName": "chiliz",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 3,
+        "tokenMeshId": "5b949eef-ded9-41bf-98c9-abbabb7cc4b6",
+        "eid": 30416
+      },
+      "0xdadcc903a92d2c1a97b2a5465faa12c1ebb9c7ef": {
+        "symbol": "CHZ",
+        "decimals": 18,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "chainName": "chiliz",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "d18fddb3-5276-557e-97a4-286535f3eeb1",
+        "proxyAddresses": [
+          "0xc1a81188c9f95359de3c8d4cf93ad680691a3298"
+        ]
+      },
+      "0xf2915d1e3c1b0c769d0c756ec43f1c1f6c99cd03": {
+        "symbol": "ARROW",
+        "decimals": 18,
+        "cmcId": 40812,
+        "type": "ERC20",
+        "tokenMeshId": "aacedbee-7376-4de7-8edf-f7a423405b67",
+        "proxyAddresses": [
+          "0x89c05edddc64d3845cd7e690e324ec94a5d3731b"
+        ]
+      },
+      "0x0830a9dd26a04e959657ab6788d45f5725590c32": {
+        "symbol": "DEGEN",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "chainName": "degen",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "c4883869-0a97-52bb-888d-1699d8f8aaba",
+        "oftVersion": 3,
+        "eid": 30416
+      },
+      "0xe68c11244e186085cd12c767dc4c8f75f0c852bf": {
+        "symbol": "CRPTK",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xc3080d0e456822d924e32d3439bcf2be81c993cd",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "ab6188e8-0127-4ac2-add0-02e71c30bf7a",
+        "eid": 30416
+      },
+      "0x8f86a15ec17cb3369d8b3e666dadbc11daa82b79": {
+        "symbol": "APE",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "chainName": "ape",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "3924f16c-aa29-569b-9707-e8b95ec78f11",
+        "oftVersion": 3,
+        "eid": 30416
+      },
+      "0x74be72affafbc8de30f0c11247814036314d625f": {
+        "symbol": "PENGU",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv",
+          "chainName": "solana",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "0ecaa5af-1844-59c6-a6de-76f8f8c3b4d7",
+        "oftVersion": 3,
+        "eid": 30416
+      },
+      "0xfed493f38c1aacb4ea4e6a11f8b9287849ee0096": {
+        "symbol": "mGLO",
+        "decimals": 18,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0x1dd91a111606382b77a917633ed90feaf25e0f76",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "5fccc4ab-9def-481b-bf86-f052217c2477",
+        "proxyAddresses": [
+          "0xc7d9168e70faf282aa6b0ecbef7af2c9c5c146f9"
+        ]
+      },
+      "0x79bbf4508b1391af3a0f4b30bb5fc4aa9ab0e07c": {
+        "symbol": "Anon",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "9McvH6w97oewLmPxqQEoHUAv3u5iYMyQ9AeZZhguYf1T",
+          "chainName": "solana",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "6d7f03bd-45eb-50c1-aa1d-5af05f9c681e",
+        "eid": 30416
+      },
+      "0x727701f88f09fed71eb217bcea88b3f314cf7079": {
+        "symbol": "GRID",
+        "decimals": 18,
+        "cgId": "grid-by-virtuals",
+        "type": "ERC20",
+        "tokenMeshId": "cd4bbbdb-fb02-4d4f-b2b0-b05dcc710622",
+        "proxyAddresses": [
+          "0x15090798a22388aae8f57a8d64560fbffad77f6f"
+        ]
+      },
+      "0x5e49e1f85813f2b65858860a3fa231b4186f2e0e": {
+        "symbol": "PENDLE",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x808507121b80c02388fad14726482e061b8da827",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "1e127675-8afc-5bed-bb84-eb9430600abf",
+        "eid": 30416
+      },
+      "0x2e8e2dbf58b5f141f9a3d04dba0812b416574e83": {
+        "symbol": "DOPAMEME",
+        "decimals": 6,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "Ab1sTFNv2tV5DX1XpriwNehXgiJhdq2RQ5LtD5BXpump",
+          "chainName": "solana",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "e0c34eeb-b6fa-4202-80bf-a80aa8419bca",
+        "oftVersion": 3,
+        "eid": 30416
+      },
+      "0x044e874f23f9a7e5dad696554a116c4bb62fecb7": {
+        "symbol": "GMI",
+        "decimals": 18,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0x044e874f23f9a7e5dad696554a116c4bb62fecb7",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "730b2517-4ff1-587f-a918-d79883bae7ab",
+        "proxyAddresses": [
+          "0xc827828ad46f01f85aa1fa6c6bdcb83dde06e271"
+        ]
+      },
+      "0xa85abef37c7e812aca761b2bec62fff7f3728f1e": {
+        "symbol": "UP",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x1d926bbe67425c9f507b9a0e8030eedc7880bf33",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "13372a5b-adf1-5206-a179-c80adb1eea7a",
+        "eid": 30416
+      },
+      "0x88c4c42ed68584ff02f5a00d5d3d985108a3961c": {
+        "symbol": "EDEL",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xfb31f85a8367210b2e4ed2360d2da9dc2d2ccc95",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "b5f19a5a-30ad-5d26-bb34-3fac5e4f078b",
+        "eid": 30416
+      },
+      "0x45242320dbb855eea8fd36804c6487e10e97fcf9": {
+        "symbol": "TENDIES",
+        "decimals": 18,
+        "cgId": "tendies-2",
+        "type": "ERC20",
+        "tokenMeshId": "1852223f-64e7-40c0-9d68-84886019fbe7",
+        "proxyAddresses": [
+          "0x2e5469d501633f0f3151e6e185c2828abc810c95"
+        ]
+      },
+      "0xaf3d76f1834a1d425780943c99ea8a608f8a93f9": {
+        "symbol": "AAPL",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "2f05dc49-a34a-4975-9630-4485511624cc",
+        "proxyAddresses": [
+          "0xd6e5fecaa4e3505c3844074634622ba9f1739fa5"
+        ]
+      },
+      "0x232b8ed6377be97813853b0ac104c4cda8378d1b": {
+        "symbol": "ADBE",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "a3b8d28e-d04a-42b5-b2b2-5d074539ef2e",
+        "proxyAddresses": [
+          "0xc713af275c54304847863b653c83a0d0847d8fd1"
+        ]
+      },
+      "0x86923f96303d656e4aa86d9d42d1e57ad2023fdc": {
+        "symbol": "AMD",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "3eaa16e0-bc6a-4918-947d-bc35c69cae3e",
+        "proxyAddresses": [
+          "0x83f33dc7294b62ab62fd613adbc68a127aeacbe7"
+        ]
+      },
+      "0x12f190a9f9d7d37a250758b26824b97ce941bf54": {
+        "symbol": "AMZN",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "3d671ae6-3411-47e8-9c47-5370904a98e5",
+        "proxyAddresses": [
+          "0xcf03f585db0d5f190cf9570f026c980b319e3177"
+        ]
+      },
+      "0xad25ac6c84d497db898fa1e8387bf6af3532a1c4": {
+        "symbol": "BABA",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "1fcfbb45-ac90-43a7-b039-0892e09224c2",
+        "proxyAddresses": [
+          "0x0628714db354cb579a88f68bcf46f3889c07a626"
+        ]
+      },
+      "0x6330d8c3178a418788df01a47479c0ce7ccf450b": {
+        "symbol": "COIN",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "a0424887-cdd3-4b00-beda-cd0b37de9958",
+        "proxyAddresses": [
+          "0x7caee5eb5df382adc7810198fc3e9ab57adfd0d4"
+        ]
+      },
+      "0xdf0992e440dd0be65bd8439b609d6d4366bf1cb5": {
+        "symbol": "CRCL",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "eb003ed2-06d8-47e6-b8fa-36777f63efd5",
+        "proxyAddresses": [
+          "0x661e831f5b2292cde0b7258023f571f678ee5168"
+        ]
+      },
+      "0x2e0847e8910a9732eb3fb1bb4b70a580adad4fe3": {
+        "symbol": "GOOGL",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "789cbd90-9c8a-4097-a759-65d9a98803a3",
+        "proxyAddresses": [
+          "0xdd8bfd53abc8abda92d3a03d1fb846addb77d7a2"
+        ]
+      },
+      "0xc72b96e0e48ecd4dc75e1e45396e26300bc39681": {
+        "symbol": "INTC",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "bd08e4e4-2059-4fc9-9a9c-ffaa02413e61",
+        "proxyAddresses": [
+          "0x46126b19f402c3455728cfab5c7c5f7f1b386719"
+        ]
+      },
+      "0xc0d6457c16cc70d6790dd43521c899c87ce02f35": {
+        "symbol": "META",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "f4256c58-b42e-48c0-bd46-d5cb00f7fb9c",
+        "proxyAddresses": [
+          "0xec92ca673d8249c35a5e6ba6f8cf16cdab117a10"
+        ]
+      },
+      "0xe93237c50d904957cf27e7b1133b510c669c2e74": {
+        "symbol": "MSFT",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "96713d64-4417-411d-a4a8-84132968d82b",
+        "proxyAddresses": [
+          "0x1bb124289035709f1dae9f33842c3ef195688c61"
+        ]
+      },
+      "0xff080c8ce2e5feadaca0da81314ae59d232d4afd": {
+        "symbol": "MU",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "19acaeb8-1171-4fb2-bdd9-e106cfb0570f",
+        "proxyAddresses": [
+          "0x6af2abd793494ed9554abc41a4f287570ea196c0"
+        ]
+      },
+      "0xe0444ef8bf4ed74f74fd73686e2ddf4c1c5591e8": {
+        "symbol": "NFLX",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "85ad9075-1214-4b27-9eb6-18ad59dcdd05",
+        "proxyAddresses": [
+          "0x88669e5065ca9dc685877f1e4af21d18592c2373"
+        ]
+      },
+      "0xd0601ce157db5bdc3162bbac2a2c8af5320d9eec": {
+        "symbol": "NVDA",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "fafa9144-3cb5-447a-9043-07f9032dc546",
+        "proxyAddresses": [
+          "0xa02b34421a3e282d6e8bb858b4c6a606b5e20eea"
+        ]
+      },
+      "0x894e1ec2d74ffe5aef8dc8a9e84686accb964f2a": {
+        "symbol": "PLTR",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "6bc17a93-fab1-4203-844d-89ef1a273933",
+        "proxyAddresses": [
+          "0x4d78106c67bd94c5b4af4c651e7f6d8d9123e983"
+        ]
+      },
+      "0xd5f3879160bc7c32ebb4dc785f8a4f505888de68": {
+        "symbol": "QQQ",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "9ea3c2d5-aa16-4ca6-a356-86f52e25f71d",
+        "proxyAddresses": [
+          "0x94bd230068639d6b4b640059383bdea81f77752d"
+        ]
+      },
+      "0xb90a19ff0af67f7779aff50a882a9cff42446400": {
+        "symbol": "SNDK",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "21249579-a4d9-4436-9a0d-087128ced4e5",
+        "proxyAddresses": [
+          "0x22237f72edfcf61eac8af05fb045f2a0b7173cd0"
+        ]
+      },
+      "0x4a0e65a3eccec6dbe60ae065f2e7bb85fae35eea": {
+        "symbol": "SPCX",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "2a9480fb-c7a4-42af-b4eb-a55c7c36bdc7",
+        "proxyAddresses": [
+          "0x972a89c9db59978e8b137476a60bfa824c061804"
+        ]
+      },
+      "0x117cc2133c37b721f49de2a7a74833232b3b4c0c": {
+        "symbol": "SPY",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "17be349d-b536-48c4-a566-a84621e0d520",
+        "proxyAddresses": [
+          "0xd9970074af1b5b5a7ac8fa42b9a5b54a56cbe866"
+        ]
+      },
+      "0x322f0929c4625ed5bad873c95208d54e1c003b2d": {
+        "symbol": "TSLA",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "e572d7b4-5254-479e-a162-c18002653556",
+        "proxyAddresses": [
+          "0x1200850ebe12fd581f3869ff93c9e790913b1cdc"
+        ]
+      },
+      "0xa30fa36db767ad9ed3f7a60fc79526fb4d56d344": {
+        "symbol": "USO",
+        "decimals": 18,
+        "type": "ERC20",
+        "tokenMeshId": "6a9a096b-7882-49a6-84d1-e036965d895c",
+        "proxyAddresses": [
+          "0xb0d02d4682c8c5736cf23cc673b1d90ebad05782"
+        ]
+      },
+      "0x1aa89c4ab9884cb65b759a3cc3a1690744d687a6": {
+        "symbol": "xTOPAZ",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xf7adffe50d6369ef19df3af8d4ddbc15ace175fd",
+          "chainName": "bsc",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "c5fdab90-4706-4530-b2c7-f1e1210406b4",
+        "eid": 30416
+      },
+      "0x741bd193b6b40f8703d2e116fd1965421f290f58": {
+        "symbol": "evaUSDC",
+        "decimals": 6,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x741bd193b6b40f8703d2e116fd1965421f290f58",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "e1fc45e6-ff10-415b-a234-d4bec5be5f0d",
+        "eid": 30416
+      },
+      "0x501ebf66d76a96d4fb26ccead42957653e16b8b8": {
+        "symbol": "evaUSDT",
+        "decimals": 6,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x501ebf66d76a96d4fb26ccead42957653e16b8b8",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "1e710633-708d-4d88-93f5-d00b721b8ca1",
+        "eid": 30416
+      },
+      "0x9c0e3165b44aa9b5d3569a8f31ce754fcb98f2b8": {
+        "symbol": "DROP",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x9c0e3165b44aa9b5d3569a8f31ce754fcb98f2b8",
+          "chainName": "arbitrum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "6537d4e7-86de-43a3-b397-1c1daa5e8222",
+        "eid": 30416
+      },
+      "0x803925daceccc32343cdac0c731db07a1a384bfb": {
+        "symbol": "MARCO",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x963556de0eb8138e97a85f0a86ee0acd159d210b",
+          "chainName": "bsc",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "55099b2d-ec36-4cef-805e-efe94d9c2278",
+        "eid": 30416
+      },
+      "0x058e7b30200d001130232e8fbfdf900590e0baa9": {
+        "symbol": "E280",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x058e7b30200d001130232e8fbfdf900590e0baa9",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "e85bcca8-7630-4961-91db-79f3dd072cf2",
+        "eid": 30416
+      },
+      "0x65b445518b1ad0d9c597731494f5bd2991b7ec08": {
+        "symbol": "ClawBank",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x16332535e2c27da578bc2e82beb09ce9d3c8eb07",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "34f51d30-3228-4fba-8599-109959c906d7",
+        "eid": 30416
+      },
+      "0xecd3029c5d22c8cdadb0799d05a2bb142e13b549": {
+        "symbol": "RAONI",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xcc1c421767a6d9a9efa99e81259f4b41d9eb8d40",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "aa8bf27b-4d6b-4e85-bafd-e2c7308486ed",
+        "eid": 30416
+      },
+      "0x7ac87d8fdb45200fdd51e4aca225244485c984c5": {
+        "symbol": "SSR",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "BpdHpqznEgYPXZNrJVRZvBhdWoafYLVVuLxTQo34pump",
+          "chainName": "solana",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "3eb20e66-4692-41ec-9597-9de88edd0275",
+        "eid": 30416
+      },
+      "0x0000198c940d8cd70cb9acec5e3af8216ac57d2f": {
+        "symbol": "IMDSTR",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x0000198c940d8cd70cb9acec5e3af8216ac57d2f",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "b550c98f-200b-4139-95f5-4b02e40b68f6",
+        "eid": 30416
+      },
+      "0x89bbeadd5e23f498e470409cc140c4a614e11c23": {
+        "symbol": "SQUEEZE",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "hgmHgEHBXTpMmwE2jzA6CFEEx8n829jT988TiVbyLDK",
+          "chainName": "solana",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "217a358b-d896-4983-9873-5eaacdf14ac6",
+        "oftVersion": 3,
+        "eid": 30416
+      },
+      "0x08fc21cb676ac7288f0a0b2397ca1b05d467de80": {
+        "symbol": "PEPEWOJAK",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "sharedDecimals": 6,
+        "tokenMeshId": "b9b63ddf-2a08-45e1-bbb3-0309037385af",
+        "eid": 30416
+      },
+      "0xe0f3c3186bf321de45e936e684994f5cc6039acb": {
+        "symbol": "SOLD",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x2a7a8c69a7462a2737a3b41188bc7a36d5555f2f",
+          "chainName": "arc",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "f43ed1eb-6a53-4844-8046-69a24d30a45a",
+        "eid": 30416
+      },
+      "0xa8219d665c831ab5caadb14b24de9605383f2119": {
+        "symbol": "Surplus",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0xc52aedec3374422d7510e294cfaa90799595cba3",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "f6244466-f33d-402a-a68d-5a142d107560",
+        "eid": 30416
+      },
+      "0x41ea4286ce7b56ce26ddab287c66ffb965f9561e": {
+        "symbol": "ACAT",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "sharedDecimals": 6,
+        "tokenMeshId": "a938c059-e309-4a73-a7c9-039ea667f83a",
+        "eid": 30416
+      },
+      "0xe4cd25213df8419b33387006c9f4c0648b788489": {
+        "symbol": "MUSEBOX",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "sharedDecimals": 6,
+        "tokenMeshId": "b1d522a6-9fa7-4ec9-be88-b95d64270282",
+        "eid": 30416
+      },
+      "0xac9ef66dc75e5340304d5cc48e185ff5262ae3ac": {
+        "symbol": "FUEGO",
+        "decimals": 18,
+        "type": "NativeOFT",
+        "peggedTo": {
+          "address": "0x36912b5cf63e509f18e53ac98b3012fa79e77bf5",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "sharedDecimals": 6,
+        "tokenMeshId": "0c6a5416-870c-5bf2-bf2c-e3943fe4ffe7",
+        "eid": 30416
+      },
+      "0x121bbe58fe4684057fb66d2dd535a19e16b4f66f": {
+        "symbol": "PAXG",
+        "decimals": 18,
+        "type": "ERC20",
+        "peggedTo": {
+          "address": "0x45804880de22913dafe09f4980848ece6ecbaf78",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "6d737438-fccf-5725-b395-b4eba81196da",
+        "proxyAddresses": [
+          "0x9795f78b7c549508506b572f5afacbadc5241e60"
+        ]
+      },
+      "0x37f26e3025b3dc50e0ee9f610d386803b42d0685": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x9a73d60b9c8c2d330eb6d885e69fcc1399c33c18",
+        "decimals": 18,
+        "symbol": "VIBES",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xeffc8815487084a97edfdff968b56ea123421acb",
+          "chainName": "base",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "d8bf3e62-e782-4373-9c8a-8d8aa6f50b17"
+      },
+      "0x0d54755f5106bfdb43f7a35f5d49a23f940628d1": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x5fc5360d0400a0fd4f2af552add042d716f1d168",
+        "decimals": 6,
+        "symbol": "USDG",
+        "oftVersion": 3,
+        "eid": 30416,
+        "mintAndBurn": true,
+        "peggedTo": {
+          "address": "0xe343167631d89b6ffc58b88d6b7fb0228795491d",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "5bb7aabf-78cf-59bb-9da7-95d917eda950"
+      },
+      "0xc69183690b42d6a51631dcb34f2f26cea7f6a273": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x020bfc650a365f8bb26819deaabf3e21291018b4",
+        "decimals": 18,
+        "cgId": "cash-cat",
+        "symbol": "CASHCAT",
+        "oftVersion": 3,
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x020bfc650a365f8bb26819deaabf3e21291018b4",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "CASHCAT"
+        },
+        "tokenMeshId": "f5e47997-f4c3-4944-921f-16906436fb55"
+      },
+      "0xc1a81188c9f95359de3c8d4cf93ad680691a3298": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 8,
+        "erc20TokenAddress": "0xdadcc903a92d2c1a97b2a5465faa12c1ebb9c7ef",
+        "decimals": 18,
+        "symbol": "CHZ",
+        "oftVersion": 3,
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "chainName": "chiliz",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "d18fddb3-5276-557e-97a4-286535f3eeb1"
+      },
+      "0x89c05edddc64d3845cd7e690e324ec94a5d3731b": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xf2915d1e3c1b0c769d0c756ec43f1c1f6c99cd03",
+        "decimals": 18,
+        "cmcId": 40812,
+        "symbol": "ARROW",
+        "oftVersion": 3,
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xf2915d1e3c1b0c769d0c756ec43f1c1f6c99cd03",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "ARROW"
+        },
+        "tokenMeshId": "aacedbee-7376-4de7-8edf-f7a423405b67"
+      },
+      "0xc7d9168e70faf282aa6b0ecbef7af2c9c5c146f9": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 9,
+        "erc20TokenAddress": "0xfed493f38c1aacb4ea4e6a11f8b9287849ee0096",
+        "decimals": 18,
+        "symbol": "mGLO",
+        "oftVersion": 3,
+        "eid": 30416,
+        "mintAndBurn": true,
+        "peggedTo": {
+          "address": "0x1dd91a111606382b77a917633ed90feaf25e0f76",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "5fccc4ab-9def-481b-bf86-f052217c2477"
+      },
+      "0x15090798a22388aae8f57a8d64560fbffad77f6f": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x727701f88f09fed71eb217bcea88b3f314cf7079",
+        "decimals": 18,
+        "cgId": "grid-by-virtuals",
+        "symbol": "GRID",
+        "oftVersion": 3,
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x727701f88f09fed71eb217bcea88b3f314cf7079",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "GRID"
+        },
+        "tokenMeshId": "cd4bbbdb-fb02-4d4f-b2b0-b05dcc710622"
+      },
+      "0xc827828ad46f01f85aa1fa6c6bdcb83dde06e271": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x044e874f23f9a7e5dad696554a116c4bb62fecb7",
+        "decimals": 18,
+        "symbol": "GMI",
+        "eid": 30416,
+        "mintAndBurn": true,
+        "peggedTo": {
+          "address": "0x044e874f23f9a7e5dad696554a116c4bb62fecb7",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "730b2517-4ff1-587f-a918-d79883bae7ab"
+      },
+      "0x2e5469d501633f0f3151e6e185c2828abc810c95": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x45242320dbb855eea8fd36804c6487e10e97fcf9",
+        "decimals": 18,
+        "cgId": "tendies-2",
+        "symbol": "TENDIES",
+        "oftVersion": 3,
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x45242320dbb855eea8fd36804c6487e10e97fcf9",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "TENDIES"
+        },
+        "tokenMeshId": "1852223f-64e7-40c0-9d68-84886019fbe7"
+      },
+      "0xd6e5fecaa4e3505c3844074634622ba9f1739fa5": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xaf3d76f1834a1d425780943c99ea8a608f8a93f9",
+        "decimals": 18,
+        "symbol": "AAPL",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xaf3d76f1834a1d425780943c99ea8a608f8a93f9",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "AAPL"
+        },
+        "tokenMeshId": "2f05dc49-a34a-4975-9630-4485511624cc"
+      },
+      "0xc713af275c54304847863b653c83a0d0847d8fd1": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x232b8ed6377be97813853b0ac104c4cda8378d1b",
+        "decimals": 18,
+        "symbol": "ADBE",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x232b8ed6377be97813853b0ac104c4cda8378d1b",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "ADBE"
+        },
+        "tokenMeshId": "a3b8d28e-d04a-42b5-b2b2-5d074539ef2e"
+      },
+      "0x83f33dc7294b62ab62fd613adbc68a127aeacbe7": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x86923f96303d656e4aa86d9d42d1e57ad2023fdc",
+        "decimals": 18,
+        "symbol": "AMD",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x86923f96303d656e4aa86d9d42d1e57ad2023fdc",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "AMD"
+        },
+        "tokenMeshId": "3eaa16e0-bc6a-4918-947d-bc35c69cae3e"
+      },
+      "0xcf03f585db0d5f190cf9570f026c980b319e3177": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x12f190a9f9d7d37a250758b26824b97ce941bf54",
+        "decimals": 18,
+        "symbol": "AMZN",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x12f190a9f9d7d37a250758b26824b97ce941bf54",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "AMZN"
+        },
+        "tokenMeshId": "3d671ae6-3411-47e8-9c47-5370904a98e5"
+      },
+      "0x0628714db354cb579a88f68bcf46f3889c07a626": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xad25ac6c84d497db898fa1e8387bf6af3532a1c4",
+        "decimals": 18,
+        "symbol": "BABA",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xad25ac6c84d497db898fa1e8387bf6af3532a1c4",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "BABA"
+        },
+        "tokenMeshId": "1fcfbb45-ac90-43a7-b039-0892e09224c2"
+      },
+      "0x7caee5eb5df382adc7810198fc3e9ab57adfd0d4": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x6330d8c3178a418788df01a47479c0ce7ccf450b",
+        "decimals": 18,
+        "symbol": "COIN",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x6330d8c3178a418788df01a47479c0ce7ccf450b",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "COIN"
+        },
+        "tokenMeshId": "a0424887-cdd3-4b00-beda-cd0b37de9958"
+      },
+      "0x661e831f5b2292cde0b7258023f571f678ee5168": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xdf0992e440dd0be65bd8439b609d6d4366bf1cb5",
+        "decimals": 18,
+        "symbol": "CRCL",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xdf0992e440dd0be65bd8439b609d6d4366bf1cb5",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "CRCL"
+        },
+        "tokenMeshId": "eb003ed2-06d8-47e6-b8fa-36777f63efd5"
+      },
+      "0xdd8bfd53abc8abda92d3a03d1fb846addb77d7a2": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x2e0847e8910a9732eb3fb1bb4b70a580adad4fe3",
+        "decimals": 18,
+        "symbol": "GOOGL",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x2e0847e8910a9732eb3fb1bb4b70a580adad4fe3",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "GOOGL"
+        },
+        "tokenMeshId": "789cbd90-9c8a-4097-a759-65d9a98803a3"
+      },
+      "0x46126b19f402c3455728cfab5c7c5f7f1b386719": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xc72b96e0e48ecd4dc75e1e45396e26300bc39681",
+        "decimals": 18,
+        "symbol": "INTC",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xc72b96e0e48ecd4dc75e1e45396e26300bc39681",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "INTC"
+        },
+        "tokenMeshId": "bd08e4e4-2059-4fc9-9a9c-ffaa02413e61"
+      },
+      "0xec92ca673d8249c35a5e6ba6f8cf16cdab117a10": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xc0d6457c16cc70d6790dd43521c899c87ce02f35",
+        "decimals": 18,
+        "symbol": "META",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xc0d6457c16cc70d6790dd43521c899c87ce02f35",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "META"
+        },
+        "tokenMeshId": "f4256c58-b42e-48c0-bd46-d5cb00f7fb9c"
+      },
+      "0x1bb124289035709f1dae9f33842c3ef195688c61": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xe93237c50d904957cf27e7b1133b510c669c2e74",
+        "decimals": 18,
+        "symbol": "MSFT",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xe93237c50d904957cf27e7b1133b510c669c2e74",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "MSFT"
+        },
+        "tokenMeshId": "96713d64-4417-411d-a4a8-84132968d82b"
+      },
+      "0x6af2abd793494ed9554abc41a4f287570ea196c0": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xff080c8ce2e5feadaca0da81314ae59d232d4afd",
+        "decimals": 18,
+        "symbol": "MU",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xff080c8ce2e5feadaca0da81314ae59d232d4afd",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "MU"
+        },
+        "tokenMeshId": "19acaeb8-1171-4fb2-bdd9-e106cfb0570f"
+      },
+      "0x88669e5065ca9dc685877f1e4af21d18592c2373": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xe0444ef8bf4ed74f74fd73686e2ddf4c1c5591e8",
+        "decimals": 18,
+        "symbol": "NFLX",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xe0444ef8bf4ed74f74fd73686e2ddf4c1c5591e8",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "NFLX"
+        },
+        "tokenMeshId": "85ad9075-1214-4b27-9eb6-18ad59dcdd05"
+      },
+      "0xa02b34421a3e282d6e8bb858b4c6a606b5e20eea": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xd0601ce157db5bdc3162bbac2a2c8af5320d9eec",
+        "decimals": 18,
+        "symbol": "NVDA",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xd0601ce157db5bdc3162bbac2a2c8af5320d9eec",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "NVDA"
+        },
+        "tokenMeshId": "fafa9144-3cb5-447a-9043-07f9032dc546"
+      },
+      "0x4d78106c67bd94c5b4af4c651e7f6d8d9123e983": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x894e1ec2d74ffe5aef8dc8a9e84686accb964f2a",
+        "decimals": 18,
+        "symbol": "PLTR",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x894e1ec2d74ffe5aef8dc8a9e84686accb964f2a",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "PLTR"
+        },
+        "tokenMeshId": "6bc17a93-fab1-4203-844d-89ef1a273933"
+      },
+      "0x94bd230068639d6b4b640059383bdea81f77752d": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xd5f3879160bc7c32ebb4dc785f8a4f505888de68",
+        "decimals": 18,
+        "symbol": "QQQ",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xd5f3879160bc7c32ebb4dc785f8a4f505888de68",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "QQQ"
+        },
+        "tokenMeshId": "9ea3c2d5-aa16-4ca6-a356-86f52e25f71d"
+      },
+      "0x22237f72edfcf61eac8af05fb045f2a0b7173cd0": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xb90a19ff0af67f7779aff50a882a9cff42446400",
+        "decimals": 18,
+        "symbol": "SNDK",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xb90a19ff0af67f7779aff50a882a9cff42446400",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "SNDK"
+        },
+        "tokenMeshId": "21249579-a4d9-4436-9a0d-087128ced4e5"
+      },
+      "0x972a89c9db59978e8b137476a60bfa824c061804": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x4a0e65a3eccec6dbe60ae065f2e7bb85fae35eea",
+        "decimals": 18,
+        "symbol": "SPCX",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x4a0e65a3eccec6dbe60ae065f2e7bb85fae35eea",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "SPCX"
+        },
+        "tokenMeshId": "2a9480fb-c7a4-42af-b4eb-a55c7c36bdc7"
+      },
+      "0xd9970074af1b5b5a7ac8fa42b9a5b54a56cbe866": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x117cc2133c37b721f49de2a7a74833232b3b4c0c",
+        "decimals": 18,
+        "symbol": "SPY",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x117cc2133c37b721f49de2a7a74833232b3b4c0c",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "SPY"
+        },
+        "tokenMeshId": "17be349d-b536-48c4-a566-a84621e0d520"
+      },
+      "0x1200850ebe12fd581f3869ff93c9e790913b1cdc": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x322f0929c4625ed5bad873c95208d54e1c003b2d",
+        "decimals": 18,
+        "symbol": "TSLA",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0x322f0929c4625ed5bad873c95208d54e1c003b2d",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "TSLA"
+        },
+        "tokenMeshId": "e572d7b4-5254-479e-a162-c18002653556"
+      },
+      "0xb0d02d4682c8c5736cf23cc673b1d90ebad05782": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0xa30fa36db767ad9ed3f7a60fc79526fb4d56d344",
+        "decimals": 18,
+        "symbol": "USO",
+        "eid": 30416,
+        "peggedTo": {
+          "address": "0xa30fa36db767ad9ed3f7a60fc79526fb4d56d344",
+          "chainName": "robinhood",
+          "programaticallyPegged": true,
+          "symbol": "USO"
+        },
+        "tokenMeshId": "6a9a096b-7882-49a6-84d1-e036965d895c"
+      },
+      "0x9795f78b7c549508506b572f5afacbadc5241e60": {
+        "type": "ProxyOFT",
+        "sharedDecimals": 6,
+        "erc20TokenAddress": "0x121bbe58fe4684057fb66d2dd535a19e16b4f66f",
+        "decimals": 18,
+        "symbol": "PAXG",
+        "oftVersion": 3,
+        "eid": 30416,
+        "mintAndBurn": true,
+        "peggedTo": {
+          "address": "0x45804880de22913dafe09f4980848ece6ecbaf78",
+          "chainName": "ethereum",
+          "programaticallyPegged": true
+        },
+        "tokenMeshId": "6d737438-fccf-5725-b395-b4eba81196da"
+      }
+    },
+    "addressToOApp": {
+      "0x5173d45a1191ee33cbb7d8c7e65f21b04ed54802": {
+        "id": "ramses",
+        "canonicalName": "Ramses"
+      },
+      "0x4e5195469a0360f5dfe811730c9ccacff0a0feee": {
+        "id": "ramses",
+        "canonicalName": "Ramses"
+      },
+      "0x0aa0b791f870d8c6f7dd310639c61991bb3e5d41": {
+        "id": "froth",
+        "canonicalName": "Froth"
+      },
+      "0x178e54df3d091ee4d0b2534742ef9e3692b76526": {
+        "id": "bankr",
+        "canonicalName": "Bankr"
+      },
+      "0xd1b0d44e4f6ed940fcc7a9f59bf30daf62ccfe3d": {
+        "id": "gitlawb",
+        "canonicalName": "gitlawb"
+      },
+      "0x50832d74a7160e2f7d361f5e678e107d228b9aa6": {
+        "id": "arena",
+        "canonicalName": "The Arena"
+      },
+      "0x5f7bb59365ce557c26dbcaa4ee9d39a4b95b7127": {
+        "id": "frenpet",
+        "canonicalName": "Fren Pet / Identity.md"
+      },
+      "0x2bab80c0a0754c478fb7e9ba2a60ffdd21968580": {
+        "id": "ample",
+        "canonicalName": "Ample"
+      },
+      "0xbaabcb1800c539a58a46035d3982403a37fd6d5d": {
+        "id": "meridian-mrdn",
+        "canonicalName": "Meridian"
+      },
+      "0x37f26e3025b3dc50e0ee9f610d386803b42d0685": {
+        "id": "vibestarter",
+        "canonicalName": "Vibestarter"
+      },
+      "0x87946d696c37a22a3002d71f8abe867fa8ee23b0": {
+        "id": "anyone-protocol",
+        "canonicalName": "ANyONe Protocol"
+      },
+      "0xa3d68b74bf0528fdd07263c60d6488749044914b": {
+        "id": "etherfi",
+        "canonicalName": "Ether.Fi"
+      },
+      "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34": {
+        "id": "ethena",
+        "canonicalName": "Ethena"
+      },
+      "0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2": {
+        "id": "ethena",
+        "canonicalName": "Ethena"
+      },
+      "0x58538e6a46e07434d7e7375bc268d3cb839c0133": {
+        "id": "ethena",
+        "canonicalName": "Ethena"
+      },
+      "0x0d54755f5106bfdb43f7a35f5d49a23f940628d1": {
+        "id": "paxos",
+        "canonicalName": "Paxos"
+      },
+      "0xc69183690b42d6a51631dcb34f2f26cea7f6a273": {
+        "id": "CASHCAT OApp",
+        "canonicalName": "Cash Cat"
+      },
+      "0x6fc1fa7ef337a3d59ab999ab445677f1682c8f9c": {
+        "id": "chiliz",
+        "canonicalName": "Chiliz"
+      },
+      "0xc1a81188c9f95359de3c8d4cf93ad680691a3298": {
+        "id": "chiliz",
+        "canonicalName": "Chiliz"
+      },
+      "0x89c05edddc64d3845cd7e690e324ec94a5d3731b": {
+        "id": "ARROW OApp",
+        "canonicalName": "Arrow"
+      },
+      "0x0830a9dd26a04e959657ab6788d45f5725590c32": {
+        "id": "degen",
+        "canonicalName": "Degen"
+      },
+      "0x49aaa987b1a7e9e4ae091dcd8332c39f322d7d28": {
+        "id": "paxos-labs",
+        "canonicalName": "Paxos Labs"
+      },
+      "0xe68c11244e186085cd12c767dc4c8f75f0c852bf": {
+        "id": "CRPTK OApp",
+        "canonicalName": "Cryptik"
+      },
+      "0x8f86a15ec17cb3369d8b3e666dadbc11daa82b79": {
+        "id": "apecoin",
+        "canonicalName": "ApeCoin"
+      },
+      "0x74be72affafbc8de30f0c11247814036314d625f": {
+        "id": "pudgy-penguins",
+        "canonicalName": "Pudgy Penguins"
+      },
+      "0xc7d9168e70faf282aa6b0ecbef7af2c9c5c146f9": {
+        "id": "midas",
+        "canonicalName": "Midas"
+      },
+      "0x79bbf4508b1391af3a0f4b30bb5fc4aa9ab0e07c": {
+        "id": "heyanon",
+        "canonicalName": "HeyAnon"
+      },
+      "0x15090798a22388aae8f57a8d64560fbffad77f6f": {
+        "id": "grid",
+        "canonicalName": "GRID"
+      },
+      "0x5e49e1f85813f2b65858860a3fa231b4186f2e0e": {
+        "id": "pendle",
+        "canonicalName": "Pendle"
+      },
+      "0x2e8e2dbf58b5f141f9a3d04dba0812b416574e83": {
+        "id": "dopameme",
+        "canonicalName": "dopameme"
+      },
+      "0xc827828ad46f01f85aa1fa6c6bdcb83dde06e271": {
+        "id": "gonnamakeit",
+        "canonicalName": "GonnaMakeIt"
+      },
+      "0xa85abef37c7e812aca761b2bec62fff7f3728f1e": {
+        "id": "superform",
+        "canonicalName": "Superform"
+      },
+      "0x88c4c42ed68584ff02f5a00d5d3d985108a3961c": {
+        "id": "edel-finance",
+        "canonicalName": "Edel Finance"
+      },
+      "0x2e5469d501633f0f3151e6e185c2828abc810c95": {
+        "id": "Tendies",
+        "canonicalName": "TENDIES"
+      },
+      "0x57069d845701b50f41327362c1c23789043f8dec": {
+        "id": "MineBoys / PitBoys NFT Bridge",
+        "canonicalName": "MineBoys"
+      },
+      "0xd6e5fecaa4e3505c3844074634622ba9f1739fa5": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0xc713af275c54304847863b653c83a0d0847d8fd1": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x83f33dc7294b62ab62fd613adbc68a127aeacbe7": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0xcf03f585db0d5f190cf9570f026c980b319e3177": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x0628714db354cb579a88f68bcf46f3889c07a626": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x7caee5eb5df382adc7810198fc3e9ab57adfd0d4": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x661e831f5b2292cde0b7258023f571f678ee5168": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0xdd8bfd53abc8abda92d3a03d1fb846addb77d7a2": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x46126b19f402c3455728cfab5c7c5f7f1b386719": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0xec92ca673d8249c35a5e6ba6f8cf16cdab117a10": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x1bb124289035709f1dae9f33842c3ef195688c61": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x6af2abd793494ed9554abc41a4f287570ea196c0": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x88669e5065ca9dc685877f1e4af21d18592c2373": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0xa02b34421a3e282d6e8bb858b4c6a606b5e20eea": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x4d78106c67bd94c5b4af4c651e7f6d8d9123e983": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x94bd230068639d6b4b640059383bdea81f77752d": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x22237f72edfcf61eac8af05fb045f2a0b7173cd0": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x972a89c9db59978e8b137476a60bfa824c061804": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0xd9970074af1b5b5a7ac8fa42b9a5b54a56cbe866": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x1200850ebe12fd581f3869ff93c9e790913b1cdc": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0xb0d02d4682c8c5736cf23cc673b1d90ebad05782": {
+        "id": "wrapped-robinhood-stock-tokens",
+        "canonicalName": "Wrapped Robinhood Stock Tokens"
+      },
+      "0x1aa89c4ab9884cb65b759a3cc3a1690744d687a6": {
+        "id": "topaz-dex",
+        "canonicalName": "Topaz DEX"
+      },
+      "0x741bd193b6b40f8703d2e116fd1965421f290f58": {
+        "id": "eva",
+        "canonicalName": "Eva"
+      },
+      "0x501ebf66d76a96d4fb26ccead42957653e16b8b8": {
+        "id": "eva",
+        "canonicalName": "Eva"
+      },
+      "0x8ab562b810571869f4ddf895a5ef4e7cc921a6c7": {
+        "id": "coinbarrel",
+        "canonicalName": "Coinbarrel"
+      },
+      "0x9c0e3165b44aa9b5d3569a8f31ce754fcb98f2b8": {
+        "id": "dropswap",
+        "canonicalName": "DropSwap"
+      },
+      "0x803925daceccc32343cdac0c731db07a1a384bfb": {
+        "id": "melega",
+        "canonicalName": "MELEGA"
+      },
+      "0x058e7b30200d001130232e8fbfdf900590e0baa9": {
+        "id": "element-280",
+        "canonicalName": "Element 280"
+      },
+      "0x7710a8acc606198440a5a1e440432aff992db08a": {
+        "id": "lil-mutants",
+        "canonicalName": "Lil Mutants"
+      },
+      "0x65b445518b1ad0d9c597731494f5bd2991b7ec08": {
+        "id": "ClawBank OApp",
+        "canonicalName": "ClawBank"
+      },
+      "0xecd3029c5d22c8cdadb0799d05a2bb142e13b549": {
+        "id": "RAONI OApp",
+        "canonicalName": "Raoni"
+      },
+      "0x7ac87d8fdb45200fdd51e4aca225244485c984c5": {
+        "id": "SSR OApp",
+        "canonicalName": "Strategic Super Reserve"
+      },
+      "0xe42847ee3fee1b29065f14d39ecf664a04d70475": {
+        "id": "Sapience Conditional Tokens Resolution Relay",
+        "canonicalName": "Sapience"
+      },
+      "0xe03623775f7d418abc59d35d81832dcfdf630f99": {
+        "id": "plot",
+        "canonicalName": "PLOT"
+      },
+      "0x70335756320e1d9a9e8898f1ad0cc6745f82a415": {
+        "id": "kairence",
+        "canonicalName": "Kairence"
+      },
+      "0x0000198c940d8cd70cb9acec5e3af8216ac57d2f": {
+        "id": "frenpet",
+        "canonicalName": "Fren Pet / Identity.md"
+      },
+      "0x89bbeadd5e23f498e470409cc140c4a614e11c23": {
+        "id": "the-great-squeeze-solana-origin",
+        "canonicalName": "The Great Squeeze (Solana-origin)"
+      },
+      "0x08fc21cb676ac7288f0a0b2397ca1b05d467de80": {
+        "id": "pepewojak-base-robinhood",
+        "canonicalName": "PEPEWOJAK"
+      },
+      "0x0a9f70780e52525b4a5e05c6dd462c7bb219f73e": {
+        "id": "belief-coordinator-0a9f7078",
+        "canonicalName": "BeliefCoordinator"
+      },
+      "0xe0f3c3186bf321de45e936e684994f5cc6039acb": {
+        "id": "sold-arc-robinhood",
+        "canonicalName": "$SOLD"
+      },
+      "0xa8219d665c831ab5caadb14b24de9605383f2119": {
+        "id": "surplus-intelligence-base-robinhood",
+        "canonicalName": "Surplus Intelligence"
+      },
+      "0x41ea4286ce7b56ce26ddab287c66ffb965f9561e": {
+        "id": "acat-base-robinhood",
+        "canonicalName": "ACAT"
+      },
+      "0xe4cd25213df8419b33387006c9f4c0648b788489": {
+        "id": "musebox-base-robinhood",
+        "canonicalName": "MUSEBOX"
+      },
+      "0xac9ef66dc75e5340304d5cc48e185ff5262ae3ac": {
+        "id": "fuego",
+        "canonicalName": "FUEGO"
+      },
+      "0x9795f78b7c549508506b572f5afacbadc5241e60": {
+        "id": "paxos",
+        "canonicalName": "Paxos"
+      }
+    },
+    "dvns": {
+      "0xd01ae6905d48315f7be10c7330aecf8360ef5b12": {
+        "canonicalName": "LayerZero Labs",
+        "id": "layerzero-labs",
+        "version": 2
+      },
+      "0x0ffe02df012299a370d5dd69298a5826eacafdf8": {
+        "canonicalName": "Nethermind",
+        "id": "nethermind",
+        "version": 2
+      },
+      "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89": {
+        "canonicalName": "Horizen",
+        "id": "horizen-labs",
+        "version": 2
+      },
+      "0xdde8de68deb0080572e252f855d0485e8bbde14c": {
+        "canonicalName": "BitGo",
+        "id": "bitgo",
+        "version": 2
+      },
+      "0x2832b240200c13d02250ec39bd0c20c199757891": {
+        "canonicalName": "Paxos",
+        "id": "paxos",
+        "version": 2
+      },
+      "0x8d77d35604a9f37f488e41d1d916b2a0088f82dd": {
+        "canonicalName": "Canary",
+        "id": "canary",
+        "version": 2
+      },
+      "0x6788f52439aca6bff597d3eec2dc9a44b8fee842": {
+        "canonicalName": "LZDeadDVN",
+        "id": "lz-dead-dvn",
+        "version": 2,
+        "deprecated": true
+      },
+      "0x786804435f1a9f583ca0cd7a4584ebbfcae35855": {
+        "canonicalName": "StablecoinX",
+        "id": "stablecoinx",
+        "version": 2
+      },
+      "0x72b1d44c7b0bbd597831fc1e70bbcfdb97e90f0b": {
+        "canonicalName": "Luganodes",
+        "id": "luganodes",
+        "version": 2
+      },
+      "0x8ed0a851964604bb1b6b1a703f4c8234ee684d76": {
+        "canonicalName": "P2P",
+        "id": "p2p",
+        "version": 2
+      },
+      "0xa45caa85283f2d8153f6250686f6d0a16fad92da": {
+        "canonicalName": "Superform",
+        "id": "superform",
+        "version": 2
+      },
+      "0x43b4a08ec8dbbfdfb1c8d7d453a0c57ed75a9ac1": {
+        "canonicalName": "ApeDVN",
+        "id": "apedvn",
+        "version": 2
+      },
+      "0xc685167bc4546caf2d3f5263d199d17d3f732c4c": {
+        "canonicalName": "Frax",
+        "id": "frax",
+        "version": 2
+      },
+      "0x965718b834b58a0a47a1723c1a28c2f1a7f1f7a0": {
+        "canonicalName": "Nansen",
+        "id": "nansen",
+        "version": 2
+      },
+      "0xe6bad47e1b8bf044a85d8777362e9a26b828e580": {
+        "canonicalName": "Ondo Staging",
+        "id": "ondo-staging",
+        "version": 2
+      },
+      "0x80008db0e86e421c50aab5f5b5eba904e9a54b69": {
+        "canonicalName": "Canary Subsidized",
+        "id": "canary-subsidized",
+        "version": 2
+      }
+    }
   }
 }

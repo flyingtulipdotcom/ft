@@ -187,8 +187,10 @@ export class CLIUtils {
     hre: HardhatRuntimeEnvironment,
     additionalConfig?: Record<string, any>
   ): Promise<void> {
+    // No signer when only KEYSTORE_PATH is set; fine with --safe (proposals are signed with PRIVATE_KEY_PROPOSER)
     const [signer] = await hre.ethers.getSigners();
-    console.log(`Using signer: ${signer.address}`);
+    const signerAddress = signer?.address ?? "none (no MNEMONIC/PRIVATE_KEY account configured)";
+    console.log(`Using signer: ${signerAddress}`);
 
     console.log(`Starting ${taskName}...`);
     console.log("Configuration:");
@@ -200,7 +202,7 @@ export class CLIUtils {
       }
     }
     
-    console.log(`   Deployer: ${signer.address}`);
+    console.log(`   Deployer: ${signerAddress}`);
     console.log(`   Use Safe Multisig: ${useSafe ? "Yes" : "No"}`);
     console.log("");
   }

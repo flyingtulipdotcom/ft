@@ -1,7 +1,12 @@
 import assert from 'assert'
 
 import { type DeployFunction } from 'hardhat-deploy/types'
-import { getChainConfig, TOKEN_CONTRACT_NAME } from '../utils/constants';
+import { getChainConfig, TOKEN_CONTRACT_NAME, FT_DETERMINISTIC_ADDRESS, FT_DETERMINISTIC_NONCE } from '../utils/constants';
+import {
+    assertDeterministicDeployment,
+    FT_CANONICAL_INIT_CODE_HASH,
+    getFTConstructorArgs
+} from '../utils/deterministic';
 import { getSigner } from '../utils/getSigner';
 import { FT } from '../typechain-types';
 
@@ -53,6 +58,26 @@ const deploy: DeployFunction = async (hre) => {
     console.log(`Endpoint V2: ${endpointV2Address}`);
     console.log(`Delegate: ${delegate}`);
     console.log(`Final Owner: ${finalOwner}`);
+    // Host only: provider URLs often embed an API key
+    const rpcUrl = (hre.network.config as any).url;
+    console.log(`RPC: ${rpcUrl ? new URL(rpcUrl).host : 'n/a'}`);
+
+    const isTestnet = (hre.network.config as any).isTestnet ?? false;
+    const args = getFTConstructorArgs(chainConfig, isTestnet);
+    const [name, symbol, , , , mintChainId] = args;
+    const FTFactory = await hre.ethers.getContractFactory(TOKEN_CONTRACT_NAME, signer);
+    const deploymentRequest = await FTFactory.getDeployTransaction(...args);
+    if (!deploymentRequest.data) {
+        throw new Error('Could not build FT init code');
+    }
+    const initCode = deploymentRequest.data;
+
+    if (chainConfig.deterministic) {
+        console.log(`Expected FT address: ${FT_DETERMINISTIC_ADDRESS} (CREATE, nonce ${FT_DETERMINISTIC_NONCE})`);
+        console.log(`Expected FT init code hash: ${FT_CANONICAL_INIT_CODE_HASH}`);
+        await assertDeterministicDeployment(hre.ethers.provider, deployer, args, initCode);
+        console.log('✅ Deterministic deployment pre-checks passed');
+    }
 
     // Ask for confirmation before proceeding
     console.log('\n⚠️  Please review the configuration above.');
@@ -81,28 +106,25 @@ const deploy: DeployFunction = async (hre) => {
         throw new Error('ETHERSCAN_API_KEY not set in .env file. Contract verification requires an API key.');
     }
 
-    const isTestnet = (hre.network.config as any).isTestnet ?? false;
-    const mintChainId = isTestnet ? 11155111 : 146; // Sepolia : Sonic
-
-    const name = "Flying Tulip";
-    const symbol = "FT";
+    if (chainConfig.deterministic) {
+        // Re-check right before sending: the nonce must not have moved while waiting for confirmation
+        await assertDeterministicDeployment(hre.ethers.provider, deployer, args, initCode);
+    }
 
     // Use ethers directly for deployment to support keystore
     console.log(`\nDeploying ${TOKEN_CONTRACT_NAME}...`);
 
-    const FTFactory = await hre.ethers.getContractFactory(TOKEN_CONTRACT_NAME, signer);
-    const ft = await FTFactory.deploy(
-        name,
-        symbol,
-        endpointV2Address,
-        delegate,
-        ftConfigurator,
-        mintChainId
-    ) as unknown as FT;
+    // Pin the nonce so a deterministic deploy can never land at a different address
+    const overrides = chainConfig.deterministic ? { nonce: FT_DETERMINISTIC_NONCE } : {};
+    const ft = await FTFactory.deploy(...args, overrides) as unknown as FT;
 
     console.log(`Deployment transaction: ${ft.deploymentTransaction()?.hash}`);
     await ft.waitForDeployment();
     const address = await ft.getAddress();
+
+    if (chainConfig.deterministic && address.toLowerCase() !== FT_DETERMINISTIC_ADDRESS.toLowerCase()) {
+        throw new Error(`FT deployed at ${address}, expected ${FT_DETERMINISTIC_ADDRESS}`);
+    }
 
     // Save deployment for hardhat-deploy compatibility and future reference
     const artifact = await hre.artifacts.readArtifact(TOKEN_CONTRACT_NAME);
@@ -111,7 +133,7 @@ const deploy: DeployFunction = async (hre) => {
         abi: artifact.abi,
         bytecode: artifact.bytecode,
         deployedBytecode: artifact.deployedBytecode,
-        args: [name, symbol, endpointV2Address, delegate, ftConfigurator, mintChainId],
+        args,
         transactionHash: ft.deploymentTransaction()?.hash,
     });
 
@@ -131,7 +153,7 @@ const deploy: DeployFunction = async (hre) => {
     console.log("Starting contract verification...");
     await hre.run("verify:verify", {
       address,
-      constructorArguments: [name, symbol, endpointV2Address, delegate, ftConfigurator, mintChainId]
+      constructorArguments: args
     });
     console.log("✅ Verification successful");
   } catch (error) {

@@ -13,7 +13,7 @@
 
 import hre from 'hardhat'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { getChainConfig, TOKEN_CONTRACT_NAME } from '../utils/constants'
+import { getChainConfig, TOKEN_CONTRACT_NAME, FT_DETERMINISTIC_ADDRESS } from '../utils/constants'
 import { FT } from '../typechain-types'
 
 interface VerificationResult {
@@ -48,6 +48,16 @@ export async function runDeploymentCheck(hreInstance: HardhatRuntimeEnvironment)
     console.log(`Contract Address: ${deployment.address}\n`)
 
     const results: VerificationResult[] = []
+
+    // 0. Same address as every other mainnet deployment
+    if (chainConfig.deterministic) {
+        results.push({
+            check: 'Deterministic Address',
+            expected: FT_DETERMINISTIC_ADDRESS,
+            actual: deployment.address,
+            status: deployment.address.toLowerCase() === FT_DETERMINISTIC_ADDRESS.toLowerCase() ? 'PASS' : 'FAIL'
+        })
+    }
 
     // 1. Check token metadata
     const name = await ft.name()

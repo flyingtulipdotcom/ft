@@ -1,11 +1,32 @@
 import SafeApiKit from '@safe-global/api-kit'
-import Safe from '@safe-global/protocol-kit'
+import Safe, { ContractNetworksConfig } from '@safe-global/protocol-kit'
 import {
   MetaTransactionData,
   OperationType
 } from '@safe-global/types-kit'
 import { Wallet } from "ethers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
+
+// Chains newer than the installed @safe-global/api-kit network list (it throws "Network with chainId ... not found")
+const SAFE_TX_SERVICE_URLS: Record<string, string> = {
+  '143': 'https://api.safe.global/tx-service/monad/api',
+  '4663': 'https://api.safe.global/tx-service/robinhood/api',
+};
+
+// Chains missing from the installed @safe-global/safe-deployments: Safe v1.3.0 contracts as listed
+// for the chain in safe-deployments 1.37.63 (eip155 set, matching the FT Safes' singleton)
+const SAFE_CONTRACT_NETWORKS: Record<string, ContractNetworksConfig[string]> = {
+  '4663': {
+    safeSingletonAddress: '0xfb1bffC9d739B8D520DaF37dF666da4C687191EA',
+    safeProxyFactoryAddress: '0xC22834581EbC8527d974F8a1c97E1bEA4EF910BC',
+    multiSendAddress: '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+    multiSendCallOnlyAddress: '0xA1dabEF33b3B82c7814B6D82A79e50F4AC44102B',
+    fallbackHandlerAddress: '0x017062a1dE2FE6b99BE3d9d37841FeD19F573804',
+    signMessageLibAddress: '0x98FFBBF51bb33A056B08ddf711f289936AafF717',
+    createCallAddress: '0xB19D6FFc2182150F8Eb585b79D4ABcd7C5640A9d',
+    simulateTxAccessorAddress: '0x727a77a074D1E6c4530e814F89E618a3298FC044',
+  },
+};
 
 /**
  * Enum for Safe address types
@@ -91,18 +112,22 @@ export class SafeManager {
         throw new Error('Private key not found. Make sure PRIVATE_KEY_PROPOSER env var is set');
       }
       
+      const chainId = await this.hre.getChainId();
+      const contractNetworks = SAFE_CONTRACT_NETWORKS[chainId];
+
       // Safe SDK v4
       this.safeSdk = await Safe.init({
         provider: (network.config as any).url,
         signer: privateKey,
         safeAddress,
+        ...(contractNetworks && { contractNetworks: { [chainId]: contractNetworks } }),
       });
 
       // Safe API Kit v2
-      const chainId = await this.hre.getChainId();
       this.safeService = new SafeApiKit({
         chainId: BigInt(chainId),
         apiKey: safeApiKey,
+        txServiceUrl: SAFE_TX_SERVICE_URLS[chainId],
       });
 
       this.initialized = true;

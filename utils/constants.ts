@@ -1,4 +1,4 @@
-type ChainConfig = {
+export type ChainConfig = {
   id: string;
   name: string;
   endpointV2: string;
@@ -6,8 +6,16 @@ type ChainConfig = {
   delegate: string;
   configurator: string;
   finalOwner: string;
+  // Deployed with CREATE from FT_DETERMINISTIC_DEPLOYER at FT_DETERMINISTIC_NONCE => FT_DETERMINISTIC_ADDRESS
+  deterministic?: boolean;
   ftTokenAddress?: string;
 };
+
+// Mainnet FT shares one address on every chain: plain CREATE from the same EOA at nonce 0.
+// The deployer must not send ANY other transaction on a new chain before deploying FT.
+export const FT_DETERMINISTIC_DEPLOYER = "0x44820497f8FE95A258A9522f0De2c04ab2bC3da3";
+export const FT_DETERMINISTIC_NONCE = 0;
+export const FT_DETERMINISTIC_ADDRESS = "0x5DD1A7A369e8273371d2DBf9d83356057088082c";
 
 // I-2: Support environment variable overrides for role addresses
 // This allows rotation without code changes
@@ -34,7 +42,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     confirmations: 15,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
-    finalOwner: STANDARD_FINAL_OWNER
+    finalOwner: STANDARD_FINAL_OWNER,
+    deterministic: true
   },
   {
     id: "56",
@@ -43,7 +52,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     confirmations: 20,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
-    finalOwner: STANDARD_FINAL_OWNER
+    finalOwner: STANDARD_FINAL_OWNER,
+    deterministic: true
   },
   {
     id: "43114",
@@ -52,7 +62,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     confirmations: 12,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
-    finalOwner: STANDARD_FINAL_OWNER
+    finalOwner: STANDARD_FINAL_OWNER,
+    deterministic: true
   },
   {
     id: "146",
@@ -61,7 +72,8 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     confirmations: 20,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
-    finalOwner: STANDARD_FINAL_OWNER
+    finalOwner: STANDARD_FINAL_OWNER,
+    deterministic: true
   },
   {
     id: "8453",
@@ -70,7 +82,28 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     confirmations: 10,
     delegate: STANDARD_FT_DELEGATE,
     configurator: STANDARD_FT_CONFIGURATOR,
-    finalOwner: STANDARD_FINAL_OWNER
+    finalOwner: STANDARD_FINAL_OWNER,
+    deterministic: true
+  },
+  {
+    id: "143",
+    name: "monad",
+    endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
+    confirmations: 4,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER,
+    deterministic: true
+  },
+  {
+    id: "4663",
+    name: "robinhood",
+    endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
+    confirmations: 5,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER,
+    deterministic: true
   },
   {
     id: "11155111",
