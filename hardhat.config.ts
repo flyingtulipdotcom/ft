@@ -130,6 +130,35 @@ const config: HardhatUserConfig = {
             isTestnet: false,
             accounts,
         },
+        'monad': {
+            // Explicit EIDs keep this compatible with the pinned lz-definitions package.
+            eid: 30390 as EndpointId,
+            chainId: 143,
+            url: process.env.RPC_URL_MONAD || 'https://rpc.monad.xyz',
+            isTestnet: false,
+            accounts,
+        },
+        'arc': {
+            eid: 30417 as EndpointId,
+            chainId: 5042,
+            url: process.env.RPC_URL_ARC || 'https://rpc.mainnet.arc.io',
+            isTestnet: false,
+            accounts,
+        },
+        'arbitrum': {
+            eid: EndpointId.ARBITRUM_V2_MAINNET,
+            chainId: 42161,
+            url: process.env.RPC_URL_ARBITRUM || 'https://arb1.arbitrum.io/rpc',
+            isTestnet: false,
+            accounts,
+        },
+        'robinhood': {
+            eid: 30416 as EndpointId,
+            chainId: 4663,
+            url: process.env.RPC_URL_ROBINHOOD || 'https://rpc.mainnet.chain.robinhood.com',
+            isTestnet: false,
+            accounts,
+        },
         'bsc-testnet': {
             eid: EndpointId.BSC_V2_TESTNET,
             url: process.env.RPC_URL_BSC_TESTNET || 'https://bsc-testnet.drpc.org',

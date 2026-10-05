@@ -4,6 +4,7 @@ import { type DeployFunction } from 'hardhat-deploy/types'
 import { getChainConfig, TOKEN_CONTRACT_NAME } from '../utils/constants';
 import { getSigner } from '../utils/getSigner';
 import { FT } from '../typechain-types';
+import { assertPinnedDeploymentReady, buildPinnedFTDeployment } from '../scripts/lib/ft-deployment';
 
 const deploy: DeployFunction = async (hre) => {
 
@@ -54,6 +55,25 @@ const deploy: DeployFunction = async (hre) => {
     console.log(`Delegate: ${delegate}`);
     console.log(`Final Owner: ${finalOwner}`);
 
+    const isTestnet = (hre.network.config as any).isTestnet ?? false;
+    const mintChainId = isTestnet ? 11155111 : 146;
+    const name = "Flying Tulip";
+    const symbol = "FT";
+    const pinnedConfig = {
+        chainId: Number(chainId), endpoint: endpointV2Address,
+        eid: (hre.network.config as any).eid as number | undefined,
+        delegate, configurator: ftConfigurator,
+    };
+    const pinnedPlan = isTestnet ? undefined : buildPinnedFTDeployment(pinnedConfig);
+    if (pinnedPlan) {
+        await assertPinnedDeploymentReady(hre.ethers.provider, pinnedConfig, deployer);
+        console.log(`Pinned production artifact: ${pinnedPlan.artifact}`);
+        console.log(`Expected CREATE address: ${pinnedPlan.expectedAddress} (nonce 0)`);
+        console.log(`Creation bytecode hash: ${pinnedPlan.bytecodeHash}`);
+        console.log(`Init code hash: ${pinnedPlan.initCodeHash}`);
+        console.log(`Expected runtime hash: ${pinnedPlan.runtimeExpectedHash}`);
+    }
+
     // Ask for confirmation before proceeding
     console.log('\n⚠️  Please review the configuration above.');
     const readline = require('readline');
@@ -77,41 +97,46 @@ const deploy: DeployFunction = async (hre) => {
     console.log('\n✅ Proceeding with deployment...\n');
 
     // Check for Etherscan API key
-    if (!process.env.ETHERSCAN_API_KEY) {
+    if (isTestnet && !process.env.ETHERSCAN_API_KEY) {
         throw new Error('ETHERSCAN_API_KEY not set in .env file. Contract verification requires an API key.');
     }
-
-    const isTestnet = (hre.network.config as any).isTestnet ?? false;
-    const mintChainId = isTestnet ? 11155111 : 146; // Sepolia : Sonic
-
-    const name = "Flying Tulip";
-    const symbol = "FT";
 
     // Use ethers directly for deployment to support keystore
     console.log(`\nDeploying ${TOKEN_CONTRACT_NAME}...`);
 
-    const FTFactory = await hre.ethers.getContractFactory(TOKEN_CONTRACT_NAME, signer);
-    const ft = await FTFactory.deploy(
-        name,
-        symbol,
-        endpointV2Address,
-        delegate,
-        ftConfigurator,
-        mintChainId
-    ) as unknown as FT;
+    const FTFactory = pinnedPlan
+        ? new hre.ethers.ContractFactory(pinnedPlan.abi, pinnedPlan.bytecode, signer)
+        : await hre.ethers.getContractFactory(TOKEN_CONTRACT_NAME, signer);
+    const args = pinnedPlan ? [...pinnedPlan.args] : [name, symbol, endpointV2Address, delegate, ftConfigurator, mintChainId];
+    if (pinnedPlan) {
+        const unsigned = await FTFactory.getDeployTransaction(...args);
+        if (unsigned.data !== pinnedPlan.data) throw new Error('Pinned FT init code changed before submission');
+        // Repeat after the confirmation prompt. Never consume an already-used or pending nonce.
+        await assertPinnedDeploymentReady(hre.ethers.provider, pinnedConfig, deployer);
+    }
+    const ft = await FTFactory.deploy(...args, ...(pinnedPlan ? [{ nonce: 0 }] : [])) as unknown as FT;
 
     console.log(`Deployment transaction: ${ft.deploymentTransaction()?.hash}`);
     await ft.waitForDeployment();
     const address = await ft.getAddress();
+    if (pinnedPlan) {
+        if (address !== pinnedPlan.expectedAddress) throw new Error(`Unexpected FT deployment address ${address}`);
+        const runtimeHash = hre.ethers.keccak256(await hre.ethers.provider.getCode(address));
+        if (runtimeHash !== pinnedPlan.runtimeExpectedHash) throw new Error(`Unexpected FT runtime hash ${runtimeHash}`);
+    }
 
     // Save deployment for hardhat-deploy compatibility and future reference
-    const artifact = await hre.artifacts.readArtifact(TOKEN_CONTRACT_NAME);
+    // Mainnet records must survive even if the unrelated local compiler artifacts are absent.
+    const compiledArtifact = pinnedPlan
+        ? await hre.artifacts.readArtifact(TOKEN_CONTRACT_NAME).catch(() => undefined)
+        : await hre.artifacts.readArtifact(TOKEN_CONTRACT_NAME);
+    const artifact = pinnedPlan || compiledArtifact!;
     await deployments.save(TOKEN_CONTRACT_NAME, {
         address: address,
         abi: artifact.abi,
         bytecode: artifact.bytecode,
         deployedBytecode: artifact.deployedBytecode,
-        args: [name, symbol, endpointV2Address, delegate, ftConfigurator, mintChainId],
+        args,
         transactionHash: ft.deploymentTransaction()?.hash,
     });
 
@@ -122,16 +147,18 @@ const deploy: DeployFunction = async (hre) => {
     await ft.deploymentTransaction()?.wait(5); // Wait for 5 confirmations
     console.log('Block confirmations received');
 
-    // Additional delay to allow Etherscan to index
-    console.log('Waiting for Etherscan to index the contract...');
-    await new Promise((resolve) => setTimeout(resolve, 15000)); // 15 seconds
+    const canVerifyCurrentBuild = !pinnedPlan || compiledArtifact?.bytecode === pinnedPlan.bytecode;
+    if (canVerifyCurrentBuild && process.env.ETHERSCAN_API_KEY) {
+      // Additional delay to allow Etherscan to index
+      console.log('Waiting for Etherscan to index the contract...');
+      await new Promise((resolve) => setTimeout(resolve, 15000));
 
   // I-1: Verify contract on Etherscan/block explorer
   try {
     console.log("Starting contract verification...");
     await hre.run("verify:verify", {
       address,
-      constructorArguments: [name, symbol, endpointV2Address, delegate, ftConfigurator, mintChainId]
+      constructorArguments: args
     });
     console.log("✅ Verification successful");
   } catch (error) {
@@ -139,6 +166,9 @@ const deploy: DeployFunction = async (hre) => {
     console.log("You can verify manually later using:");
     console.log(`npx hardhat verify --network ${hre.network.name} ${address} "${name}" "${symbol}" ${endpointV2Address} ${delegate} ${ftConfigurator} ${mintChainId}`);
   }
+    } else {
+      console.log('Explorer verification was not attempted. Use the original production compiler input matching the pinned bytecode and the recorded constructor arguments; this is separate from the runtime hash check.');
+    }
 
   // Run post-deployment state check
   console.log(`\n${'='.repeat(60)}`);

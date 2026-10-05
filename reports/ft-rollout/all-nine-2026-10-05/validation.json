@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-05T14:17:24.390Z",
+  "baseCommit": "10f80a0",
+  "workingTreeChangesUncommitted": true,
+  "regression": {
+    "command": "npx hardhat test --no-compile",
+    "passing": 93,
+    "failing": 0
+  },
+  "strictHelpersTypecheck": "passed",
+  "changedFileTypeDiagnostics": [],
+  "repositoryWideTypecheck": "Pre-existing toolbox/type and Safe SDK diagnostics remain; changed-file checks pass.",
+  "nativeWiringDryRun": {
+    "network": "ethereum",
+    "remotes": [
+      "arc",
+      "robinhood",
+      "arbitrum",
+      "monad"
+    ],
+    "safe": true,
+    "status": "passed",
+    "rpc": "https://ethereum-rpc.publicnode.com"
+  },
+  "sourceSha256": {
+    "scripts/rollout-ft.ts": "bd4e880dda17ac78d97a3ab8cbfd2bd8c68c94b3fe55e180ef1418dd03b0750d",
+    "scripts/check-rollout-dvns.ts": "1be8dbc6d1e1702d70e33ebf715b7a151d1bcf05811a6b1c6206091395989e18",
+    "scripts/lib/arbitrum-safe-bootstrap.ts": "44a7ead82c693c3bc2bbcc0eb9df3007d291fdfda4cdac59f9aef8011beb5b5f",
+    "scripts/lib/ft-deployment.ts": "4bd925a552779316d76be19fd8497e96105634bdcca454a6f1f0e7c4b9b6caad",
+    "scripts/lib/rollout-fork.ts": "9bfb9fddb830419d8444ad45ef0b0a39fb46baf73c65461a363a11f43d04153f",
+    "tasks/BaseManager.ts": "15d01d82a087d407c298a9a28f42450b97d0584e05dee86f917c7f4b1073adb0",
+    "tasks/wire.ts": "b1ea9567d52ebbb6e7c11dfc684e9477ba9c206298d489ea9c62a64e26fd5084",
+    "tasks/peerOptions.ts": "f67a1beb4b9c2b71d14ff5c5ba3f4ea299c492c911a6658e7977abfbfa88c120",
+    "tasks/types.ts": "b20adaf9f0818182a0236eb7b90a828ea7d0acb637608853ec7993b156b86ba6",
+    "utils/constants.ts": "3057df592fe7358b03e7d9f1ae1d21e6241aa1d123bea1e25f0234b16dae6da9",
+    "utils/lzMetadata.json": "706a755c2618ddc5db8f07a82f38ff8d918ea77e8ecb8c8758dc511f503827b8",
+    "hardhat.config.ts": "04c77c9ae346b1c2ae8e1f478448a10ea9e9d66d8e6e0eb433a3202353607e75",
+    "deploy/FT.ts": "db73fa0e0cc95253e2981802f9c5f02e4619f286d767a3a26e6a26785df4ec79",
+    "test/hardhat/LayerZeroWiring.test.ts": "67c6854decf7edad00eb084b9e8a13e10b434452f276d6d437163974b6570fc0",
+    "test/hardhat/PinnedFTDeployment.test.ts": "dcb43db36581f01a3749b48a1cc97c394dd23d8b0c157b32c4488a1aa19da2e1"
+  }
+}

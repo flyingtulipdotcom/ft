@@ -1,0 +1,4144 @@
+{
+  "generatedAt": "2026-10-05T14:02:41.069Z",
+  "source": "https://metadata.layerzero-api.com/v1/metadata/deployments",
+  "metadataSha256": "706a755c2618ddc5db8f07a82f38ff8d918ea77e8ecb8c8758dc511f503827b8",
+  "metadataSnapshot": "utils\\lzMetadata.json",
+  "mode": "read-only eth_call; no transactions broadcast",
+  "ftAddress": "0x5DD1A7A369e8273371d2DBf9d83356057088082c",
+  "policy": {
+    "required": [
+      "layerzero-labs",
+      "canary"
+    ],
+    "optionalThreshold": 2,
+    "ordinaryOptional": [
+      "deutsche-telekom",
+      "horizen-labs",
+      "nethermind"
+    ],
+    "arcOrRobinhoodOptional": [
+      "p2p",
+      "horizen-labs",
+      "nethermind"
+    ]
+  },
+  "chains": {
+    "ethereum": {
+      "chainId": 1,
+      "eid": 30101,
+      "rpc": "https://ethereum-rpc.publicnode.com",
+      "sourceConfirmations": 15,
+      "sendUln302": "0xbb2ea70c9e858123480642cf96acbcce1372dce1",
+      "blockNumber": 26126634,
+      "blockHash": "0x29bae3f3bf280286dcde030eeee9d159afde99ee76e68e85d00cbf861fdd79e7",
+      "blockTime": "2026-10-05T14:02:35.000Z",
+      "roleContractCode": {
+        "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": 171,
+        "0x22246a9183ce2ce6e2c2a9973f94aea91435017c": 171
+      }
+    },
+    "sonic": {
+      "chainId": 146,
+      "eid": 30332,
+      "rpc": "https://rpc.soniclabs.com",
+      "sourceConfirmations": 20,
+      "sendUln302": "0xc39161c743d0307eb9bcc9fef03eeb9dc4802de7",
+      "blockNumber": 80392419,
+      "blockHash": "0x7c3225760edbed6df88e00eee80aad32b8a838b1ada87ba363d3ac55b69f256e",
+      "blockTime": "2026-10-05T14:02:42.000Z",
+      "roleContractCode": {
+        "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": 171,
+        "0x22246a9183ce2ce6e2c2a9973f94aea91435017c": 171
+      }
+    },
+    "bsc": {
+      "chainId": 56,
+      "eid": 30102,
+      "rpc": "https://bsc-rpc.publicnode.com",
+      "sourceConfirmations": 20,
+      "sendUln302": "0x9f8c645f2d0b2159767bd6e0839de4be49e823de",
+      "blockNumber": 125880706,
+      "blockHash": "0x23595dcde15e074821815ef13e9226a44ac75ac4ad53f6bca94b4f9c587f38fd",
+      "blockTime": "2026-10-05T14:02:42.000Z",
+      "roleContractCode": {
+        "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": 171,
+        "0x22246a9183ce2ce6e2c2a9973f94aea91435017c": 171
+      }
+    },
+    "avalanche": {
+      "chainId": 43114,
+      "eid": 30106,
+      "rpc": "https://api.avax.network/ext/bc/C/rpc",
+      "sourceConfirmations": 12,
+      "sendUln302": "0x197d1333dea5fe0d6600e9b396c7f1b1cfcc558a",
+      "blockNumber": 96809705,
+      "blockHash": "0x5dc752b57a92a6240cc25c139f9e883cf054df9db230a17833e3ccc560b6e5c8",
+      "blockTime": "2026-10-05T14:02:41.000Z",
+      "roleContractCode": {
+        "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": 171,
+        "0x22246a9183ce2ce6e2c2a9973f94aea91435017c": 171
+      }
+    },
+    "base": {
+      "chainId": 8453,
+      "eid": 30184,
+      "rpc": "https://base-rpc.publicnode.com",
+      "sourceConfirmations": 10,
+      "sendUln302": "0xb5320b0b3a13cc860893e2bd79fcd7e13484dda2",
+      "blockNumber": 52209807,
+      "blockHash": "0xcbdaff8a4ac86ef0e93395f8adaafa6eebeafe78853bc1d9eff4a3c3ae385008",
+      "blockTime": "2026-10-05T14:02:41.000Z",
+      "roleContractCode": {
+        "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": 171,
+        "0x22246a9183ce2ce6e2c2a9973f94aea91435017c": 171
+      }
+    },
+    "monad": {
+      "chainId": 143,
+      "eid": 30390,
+      "rpc": "https://rpc.monad.xyz",
+      "sourceConfirmations": 4,
+      "sendUln302": "0xc39161c743d0307eb9bcc9fef03eeb9dc4802de7",
+      "blockNumber": 110770961,
+      "blockHash": "0x71605d9e38d193ad148b53122ad9b37a18c7c007f43ef151ee4a45dd849aebf3",
+      "blockTime": "2026-10-05T14:02:42.000Z",
+      "roleContractCode": {
+        "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": 171,
+        "0x22246a9183ce2ce6e2c2a9973f94aea91435017c": 171
+      }
+    },
+    "robinhood": {
+      "chainId": 4663,
+      "eid": 30416,
+      "rpc": "https://rpc.mainnet.chain.robinhood.com",
+      "sourceConfirmations": 5,
+      "sendUln302": "0xc39161c743d0307eb9bcc9fef03eeb9dc4802de7",
+      "blockNumber": 80840623,
+      "blockHash": "0x9f1d22cbce19976eb1ee218cd63f343685911f9f4b6c764a7ec5341f03248388",
+      "blockTime": "2026-10-05T14:02:45.000Z",
+      "roleContractCode": {
+        "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": 171,
+        "0x22246a9183ce2ce6e2c2a9973f94aea91435017c": 171
+      }
+    },
+    "arc": {
+      "chainId": 5042,
+      "eid": 30417,
+      "rpc": "https://rpc.mainnet.arc.io",
+      "sourceConfirmations": 5,
+      "sendUln302": "0xc39161c743d0307eb9bcc9fef03eeb9dc4802de7",
+      "blockNumber": 24401490,
+      "blockHash": "0x0f16d9947dd6521728200d9e4a8894c50cffc76aac4e85faf5c66de420890aa7",
+      "blockTime": "2026-10-05T14:02:42.000Z",
+      "roleContractCode": {
+        "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": 171,
+        "0x22246a9183ce2ce6e2c2a9973f94aea91435017c": 171
+      }
+    },
+    "arbitrum": {
+      "chainId": 42161,
+      "eid": 30110,
+      "rpc": "https://arb1.arbitrum.io/rpc",
+      "sourceConfirmations": 20,
+      "sendUln302": "0x975bcd720be66659e3eb3c0e4f1866a3020e493a",
+      "blockNumber": 511943488,
+      "blockHash": "0x83d43c92681f1c8211f39aab9fd984f3bff5f03fc3031a48aabde03f33b2c79e",
+      "blockTime": "2026-10-05T14:02:42.000Z",
+      "roleContractCode": {
+        "0x1118e1c057211306a40A4d7006C040dbfE1370Cb": 0,
+        "0x22246a9183ce2ce6e2c2a9973f94aea91435017c": 0
+      }
+    }
+  },
+  "routes": [
+    {
+      "source": "arbitrum",
+      "destination": "arc",
+      "sourceEid": 30110,
+      "destinationEid": 30417,
+      "blockNumber": 511943488,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x2f55c492897526677c5b68fb199ea31e2c126416",
+          "role": "required",
+          "ok": true,
+          "fee": "756241996969"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xf2e380c90e6c09721297526dbc74f870e114dfcb",
+          "role": "required",
+          "ok": true,
+          "fee": "778949835856"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x19670df5e16bea2ba9b9e68b48c054c5baea06b8",
+          "role": "optional",
+          "ok": true,
+          "fee": "756241996969"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "747158861413"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0xb3ce0a5d132cd9bf965aba435e650c55edce0062",
+          "role": "optional",
+          "ok": true,
+          "fee": "747158861413"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "arbitrum",
+      "destination": "avalanche",
+      "sourceEid": 30110,
+      "destinationEid": 30106,
+      "blockNumber": 511943488,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x2f55c492897526677c5b68fb199ea31e2c126416",
+          "role": "required",
+          "ok": true,
+          "fee": "2064647746237"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xf2e380c90e6c09721297526dbc74f870e114dfcb",
+          "role": "required",
+          "ok": true,
+          "fee": "2126643362151"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x19670df5e16bea2ba9b9e68b48c054c5baea06b8",
+          "role": "optional",
+          "ok": true,
+          "fee": "2064647746237"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "2039849499872"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xeae839784e5f6c79bbaf34b6023a2f62e134ab39",
+          "role": "optional",
+          "ok": true,
+          "fee": "2126643362151"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "arbitrum",
+      "destination": "base",
+      "sourceEid": 30110,
+      "destinationEid": 30184,
+      "blockNumber": 511943488,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x2f55c492897526677c5b68fb199ea31e2c126416",
+          "role": "required",
+          "ok": true,
+          "fee": "613843200000"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xf2e380c90e6c09721297526dbc74f870e114dfcb",
+          "role": "required",
+          "ok": true,
+          "fee": "632275200000"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x19670df5e16bea2ba9b9e68b48c054c5baea06b8",
+          "role": "optional",
+          "ok": true,
+          "fee": "613843200000"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "606470400000"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xeae839784e5f6c79bbaf34b6023a2f62e134ab39",
+          "role": "optional",
+          "ok": true,
+          "fee": "632275200000"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "arbitrum",
+      "destination": "bsc",
+      "sourceEid": 30110,
+      "destinationEid": 30102,
+      "blockNumber": 511943488,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x2f55c492897526677c5b68fb199ea31e2c126416",
+          "role": "required",
+          "ok": true,
+          "fee": "1448201475688"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xf2e380c90e6c09721297526dbc74f870e114dfcb",
+          "role": "required",
+          "ok": true,
+          "fee": "1491686928651"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x19670df5e16bea2ba9b9e68b48c054c5baea06b8",
+          "role": "optional",
+          "ok": true,
+          "fee": "1448201475688"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "1430807294504"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xeae839784e5f6c79bbaf34b6023a2f62e134ab39",
+          "role": "optional",
+          "ok": true,
+          "fee": "1491686928651"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "arbitrum",
+      "destination": "ethereum",
+      "sourceEid": 30110,
+      "destinationEid": 30101,
+      "blockNumber": 511943488,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x2f55c492897526677c5b68fb199ea31e2c126416",
+          "role": "required",
+          "ok": true,
+          "fee": "52744340962815"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xf2e380c90e6c09721297526dbc74f870e114dfcb",
+          "role": "required",
+          "ok": true,
+          "fee": "53961635109471"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x19670df5e16bea2ba9b9e68b48c054c5baea06b8",
+          "role": "optional",
+          "ok": true,
+          "fee": "52744340962815"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "52257423304153"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xeae839784e5f6c79bbaf34b6023a2f62e134ab39",
+          "role": "optional",
+          "ok": true,
+          "fee": "53961635109471"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "arbitrum",
+      "destination": "monad",
+      "sourceEid": 30110,
+      "destinationEid": 30390,
+      "blockNumber": 511943488,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x2f55c492897526677c5b68fb199ea31e2c126416",
+          "role": "required",
+          "ok": true,
+          "fee": "133745365068"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xf2e380c90e6c09721297526dbc74f870e114dfcb",
+          "role": "required",
+          "ok": true,
+          "fee": "137761365520"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x19670df5e16bea2ba9b9e68b48c054c5baea06b8",
+          "role": "optional",
+          "ok": true,
+          "fee": "133745365068"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "132138964887"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xeae839784e5f6c79bbaf34b6023a2f62e134ab39",
+          "role": "optional",
+          "ok": true,
+          "fee": "137761365520"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "arbitrum",
+      "destination": "robinhood",
+      "sourceEid": 30110,
+      "destinationEid": 30416,
+      "blockNumber": 511943488,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x2f55c492897526677c5b68fb199ea31e2c126416",
+          "role": "required",
+          "ok": true,
+          "fee": "2077245388800"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xf2e380c90e6c09721297526dbc74f870e114dfcb",
+          "role": "required",
+          "ok": true,
+          "fee": "2139619276800"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x19670df5e16bea2ba9b9e68b48c054c5baea06b8",
+          "role": "optional",
+          "ok": true,
+          "fee": "2077245388800"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "2052295833600"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0xb3ce0a5d132cd9bf965aba435e650c55edce0062",
+          "role": "optional",
+          "ok": true,
+          "fee": "2052295833600"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "arbitrum",
+      "destination": "sonic",
+      "sourceEid": 30110,
+      "destinationEid": 30332,
+      "blockNumber": 511943488,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x2f55c492897526677c5b68fb199ea31e2c126416",
+          "role": "required",
+          "ok": true,
+          "fee": "83364295358"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xf2e380c90e6c09721297526dbc74f870e114dfcb",
+          "role": "required",
+          "ok": true,
+          "fee": "85867492742"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x19670df5e16bea2ba9b9e68b48c054c5baea06b8",
+          "role": "optional",
+          "ok": true,
+          "fee": "83364295358"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "82363016404"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xeae839784e5f6c79bbaf34b6023a2f62e134ab39",
+          "role": "optional",
+          "ok": true,
+          "fee": "85867492742"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "arc",
+      "destination": "arbitrum",
+      "sourceEid": 30417,
+      "destinationEid": 30110,
+      "blockNumber": 24401490,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xa2447e5b58d357c49bf74b50b14421e6a100e525",
+          "role": "required",
+          "ok": true,
+          "fee": "12595563493196290"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "required",
+          "ok": true,
+          "fee": "12461812694529530"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x69df29c29afcc8d1a0ee563a27827427f89ef698",
+          "role": "optional",
+          "ok": true,
+          "fee": "12461812694529530"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x9e0e95ede70f680f74480b510ff9f45c70e3da80",
+          "role": "optional",
+          "ok": true,
+          "fee": "12461812694529530"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xd36246c322ee102a2203bca9cafb84c179d306f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "12528688093862911"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "arc",
+      "destination": "avalanche",
+      "sourceEid": 30417,
+      "destinationEid": 30106,
+      "blockNumber": 24401490,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xa2447e5b58d357c49bf74b50b14421e6a100e525",
+          "role": "required",
+          "ok": true,
+          "fee": "7614454584916886"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "required",
+          "ok": true,
+          "fee": "7440921212377161"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x69df29c29afcc8d1a0ee563a27827427f89ef698",
+          "role": "optional",
+          "ok": true,
+          "fee": "7440921212377161"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x9e0e95ede70f680f74480b510ff9f45c70e3da80",
+          "role": "optional",
+          "ok": true,
+          "fee": "7440921212377161"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xd36246c322ee102a2203bca9cafb84c179d306f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "7527687898647024"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "arc",
+      "destination": "base",
+      "sourceEid": 30417,
+      "destinationEid": 30184,
+      "blockNumber": 24401490,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xa2447e5b58d357c49bf74b50b14421e6a100e525",
+          "role": "required",
+          "ok": true,
+          "fee": "1718355578361186"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "required",
+          "ok": true,
+          "fee": "1679194265438506"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x69df29c29afcc8d1a0ee563a27827427f89ef698",
+          "role": "optional",
+          "ok": true,
+          "fee": "1679194265438506"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x9e0e95ede70f680f74480b510ff9f45c70e3da80",
+          "role": "optional",
+          "ok": true,
+          "fee": "1679194265438506"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xd36246c322ee102a2203bca9cafb84c179d306f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "1698774921899846"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "arc",
+      "destination": "bsc",
+      "sourceEid": 30417,
+      "destinationEid": 30102,
+      "blockNumber": 24401490,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xa2447e5b58d357c49bf74b50b14421e6a100e525",
+          "role": "required",
+          "ok": true,
+          "fee": "4262060856837850"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "required",
+          "ok": true,
+          "fee": "4164928516470140"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x69df29c29afcc8d1a0ee563a27827427f89ef698",
+          "role": "optional",
+          "ok": true,
+          "fee": "4164928516470140"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x9e0e95ede70f680f74480b510ff9f45c70e3da80",
+          "role": "optional",
+          "ok": true,
+          "fee": "4164928516470140"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xd36246c322ee102a2203bca9cafb84c179d306f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "4213494686653995"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "arc",
+      "destination": "ethereum",
+      "sourceEid": 30417,
+      "destinationEid": 30101,
+      "blockNumber": 24401490,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xa2447e5b58d357c49bf74b50b14421e6a100e525",
+          "role": "required",
+          "ok": true,
+          "fee": "146999526184737150"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "required",
+          "ok": true,
+          "fee": "144393681015549676"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x69df29c29afcc8d1a0ee563a27827427f89ef698",
+          "role": "optional",
+          "ok": true,
+          "fee": "144393681015549676"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x9e0e95ede70f680f74480b510ff9f45c70e3da80",
+          "role": "optional",
+          "ok": true,
+          "fee": "144393681015549676"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xd36246c322ee102a2203bca9cafb84c179d306f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "145696603600143412"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "arc",
+      "destination": "monad",
+      "sourceEid": 30417,
+      "destinationEid": 30390,
+      "blockNumber": 24401490,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xa2447e5b58d357c49bf74b50b14421e6a100e525",
+          "role": "required",
+          "ok": true,
+          "fee": "342925552692729"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "required",
+          "ok": true,
+          "fee": "335110281483850"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x69df29c29afcc8d1a0ee563a27827427f89ef698",
+          "role": "optional",
+          "ok": true,
+          "fee": "335110281483850"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x9e0e95ede70f680f74480b510ff9f45c70e3da80",
+          "role": "optional",
+          "ok": true,
+          "fee": "335110281483850"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xd36246c322ee102a2203bca9cafb84c179d306f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "339017917088290"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "arc",
+      "destination": "robinhood",
+      "sourceEid": 30417,
+      "destinationEid": 30416,
+      "blockNumber": 24401490,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xa2447e5b58d357c49bf74b50b14421e6a100e525",
+          "role": "required",
+          "ok": true,
+          "fee": "9297060884330503"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "required",
+          "ok": true,
+          "fee": "9085180924712538"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x69df29c29afcc8d1a0ee563a27827427f89ef698",
+          "role": "optional",
+          "ok": true,
+          "fee": "9085180924712538"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x9e0e95ede70f680f74480b510ff9f45c70e3da80",
+          "role": "optional",
+          "ok": true,
+          "fee": "9085180924712538"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xd36246c322ee102a2203bca9cafb84c179d306f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "9191120904521521"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "arc",
+      "destination": "sonic",
+      "sourceEid": 30417,
+      "destinationEid": 30332,
+      "blockNumber": 24401490,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xa2447e5b58d357c49bf74b50b14421e6a100e525",
+          "role": "required",
+          "ok": true,
+          "fee": "183155515785472"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "required",
+          "ok": true,
+          "fee": "178981402722081"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x69df29c29afcc8d1a0ee563a27827427f89ef698",
+          "role": "optional",
+          "ok": true,
+          "fee": "178981402722081"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x9e0e95ede70f680f74480b510ff9f45c70e3da80",
+          "role": "optional",
+          "ok": true,
+          "fee": "178981402722081"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xd36246c322ee102a2203bca9cafb84c179d306f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "181068459253777"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "avalanche",
+      "destination": "arbitrum",
+      "sourceEid": 30106,
+      "destinationEid": 30110,
+      "blockNumber": 96809705,
+      "confirmations": 12,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x962f502a63f5fbeb44dc9ab932122648e8352959",
+          "role": "required",
+          "ok": true,
+          "fee": "1161460299961748"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xcc49e6fca014c77e1eb604351cc1e08c84511760",
+          "role": "required",
+          "ok": true,
+          "fee": "1184720201892944"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x07c05eab7716acb6f83ebf6268f8eecda8892ba1",
+          "role": "optional",
+          "ok": true,
+          "fee": "1161460299961748"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "1152156339189270"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xbe57e9e7d9eb16b92c6383792abe28d64a18c0f1",
+          "role": "optional",
+          "ok": true,
+          "fee": "1184720201892944"
+        }
+      ],
+      "defaultSendConfirmations": "12",
+      "ok": true
+    },
+    {
+      "source": "avalanche",
+      "destination": "arc",
+      "sourceEid": 30106,
+      "destinationEid": 30417,
+      "blockNumber": 96809705,
+      "confirmations": 12,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x962f502a63f5fbeb44dc9ab932122648e8352959",
+          "role": "required",
+          "ok": true,
+          "fee": "226281855594294"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xcc49e6fca014c77e1eb604351cc1e08c84511760",
+          "role": "required",
+          "ok": true,
+          "fee": "233076468880413"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x07c05eab7716acb6f83ebf6268f8eecda8892ba1",
+          "role": "optional",
+          "ok": true,
+          "fee": "226281855594294"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "223564010279846"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0xe94ae34dfcc87a61836938641444080b98402c75",
+          "role": "optional",
+          "ok": true,
+          "fee": "223564010279846"
+        }
+      ],
+      "defaultSendConfirmations": "12",
+      "ok": true
+    },
+    {
+      "source": "avalanche",
+      "destination": "base",
+      "sourceEid": 30106,
+      "destinationEid": 30184,
+      "blockNumber": 96809705,
+      "confirmations": 12,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x962f502a63f5fbeb44dc9ab932122648e8352959",
+          "role": "required",
+          "ok": true,
+          "fee": "153964433255690"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xcc49e6fca014c77e1eb604351cc1e08c84511760",
+          "role": "required",
+          "ok": true,
+          "fee": "158587555958311"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x07c05eab7716acb6f83ebf6268f8eecda8892ba1",
+          "role": "optional",
+          "ok": true,
+          "fee": "153964433255690"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "152115184174642"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xbe57e9e7d9eb16b92c6383792abe28d64a18c0f1",
+          "role": "optional",
+          "ok": true,
+          "fee": "158587555958311"
+        }
+      ],
+      "defaultSendConfirmations": "12",
+      "ok": true
+    },
+    {
+      "source": "avalanche",
+      "destination": "bsc",
+      "sourceEid": 30106,
+      "destinationEid": 30102,
+      "blockNumber": 96809705,
+      "confirmations": 12,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x962f502a63f5fbeb44dc9ab932122648e8352959",
+          "role": "required",
+          "ok": true,
+          "fee": "341136211944457"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xcc49e6fca014c77e1eb604351cc1e08c84511760",
+          "role": "required",
+          "ok": true,
+          "fee": "351379581356319"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x07c05eab7716acb6f83ebf6268f8eecda8892ba1",
+          "role": "optional",
+          "ok": true,
+          "fee": "341136211944457"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "337038864179712"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xbe57e9e7d9eb16b92c6383792abe28d64a18c0f1",
+          "role": "optional",
+          "ok": true,
+          "fee": "351379581356319"
+        }
+      ],
+      "defaultSendConfirmations": "12",
+      "ok": true
+    },
+    {
+      "source": "avalanche",
+      "destination": "ethereum",
+      "sourceEid": 30106,
+      "destinationEid": 30101,
+      "blockNumber": 96809705,
+      "confirmations": 12,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x962f502a63f5fbeb44dc9ab932122648e8352959",
+          "role": "required",
+          "ok": true,
+          "fee": "13073616775582051"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xcc49e6fca014c77e1eb604351cc1e08c84511760",
+          "role": "required",
+          "ok": true,
+          "fee": "13375344636543653"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x07c05eab7716acb6f83ebf6268f8eecda8892ba1",
+          "role": "optional",
+          "ok": true,
+          "fee": "13073616775582051"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "12952925631197410"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xbe57e9e7d9eb16b92c6383792abe28d64a18c0f1",
+          "role": "optional",
+          "ok": true,
+          "fee": "13375344636543653"
+        }
+      ],
+      "defaultSendConfirmations": "12",
+      "ok": true
+    },
+    {
+      "source": "avalanche",
+      "destination": "monad",
+      "sourceEid": 30106,
+      "destinationEid": 30390,
+      "blockNumber": 96809705,
+      "confirmations": 12,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x962f502a63f5fbeb44dc9ab932122648e8352959",
+          "role": "required",
+          "ok": true,
+          "fee": "29979382266525"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xcc49e6fca014c77e1eb604351cc1e08c84511760",
+          "role": "required",
+          "ok": true,
+          "fee": "30879579538299"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x07c05eab7716acb6f83ebf6268f8eecda8892ba1",
+          "role": "optional",
+          "ok": true,
+          "fee": "29979382266525"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "29619303357817"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xbe57e9e7d9eb16b92c6383792abe28d64a18c0f1",
+          "role": "optional",
+          "ok": true,
+          "fee": "30879579538299"
+        }
+      ],
+      "defaultSendConfirmations": "12",
+      "ok": true
+    },
+    {
+      "source": "avalanche",
+      "destination": "robinhood",
+      "sourceEid": 30106,
+      "destinationEid": 30416,
+      "blockNumber": 96809705,
+      "confirmations": 12,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x962f502a63f5fbeb44dc9ab932122648e8352959",
+          "role": "required",
+          "ok": true,
+          "fee": "514657200492856"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xcc49e6fca014c77e1eb604351cc1e08c84511760",
+          "role": "required",
+          "ok": true,
+          "fee": "530110921442252"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x07c05eab7716acb6f83ebf6268f8eecda8892ba1",
+          "role": "optional",
+          "ok": true,
+          "fee": "514657200492856"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "508475712113097"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0xe94ae34dfcc87a61836938641444080b98402c75",
+          "role": "optional",
+          "ok": true,
+          "fee": "508475712113097"
+        }
+      ],
+      "defaultSendConfirmations": "12",
+      "ok": true
+    },
+    {
+      "source": "avalanche",
+      "destination": "sonic",
+      "sourceEid": 30106,
+      "destinationEid": 30332,
+      "blockNumber": 96809705,
+      "confirmations": 12,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x962f502a63f5fbeb44dc9ab932122648e8352959",
+          "role": "required",
+          "ok": true,
+          "fee": "20108047065350"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xcc49e6fca014c77e1eb604351cc1e08c84511760",
+          "role": "required",
+          "ok": true,
+          "fee": "20711835660726"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x07c05eab7716acb6f83ebf6268f8eecda8892ba1",
+          "role": "optional",
+          "ok": true,
+          "fee": "20108047065350"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "19866531627200"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xbe57e9e7d9eb16b92c6383792abe28d64a18c0f1",
+          "role": "optional",
+          "ok": true,
+          "fee": "20711835660726"
+        }
+      ],
+      "defaultSendConfirmations": "12",
+      "ok": true
+    },
+    {
+      "source": "base",
+      "destination": "arbitrum",
+      "sourceEid": 30184,
+      "destinationEid": 30110,
+      "blockNumber": 52209807,
+      "confirmations": 10,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x554833698ae0fb22ecc90b01222903fd62ca4b47",
+          "role": "required",
+          "ok": true,
+          "fee": "4779648000000"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x9e059a54699a285714207b43b055483e78faac25",
+          "role": "required",
+          "ok": true,
+          "fee": "4685808000000"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "4685808000000"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xc2a0c36f5939a14966705c7cec813163faeea1f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "4779648000000"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xcd37ca043f8479064e10635020c65ffc005d36f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "4648272000000"
+        }
+      ],
+      "defaultSendConfirmations": "10",
+      "ok": true
+    },
+    {
+      "source": "base",
+      "destination": "arc",
+      "sourceEid": 30184,
+      "destinationEid": 30417,
+      "blockNumber": 52209807,
+      "confirmations": 10,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x554833698ae0fb22ecc90b01222903fd62ca4b47",
+          "role": "required",
+          "ok": true,
+          "fee": "969443725731"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x9e059a54699a285714207b43b055483e78faac25",
+          "role": "required",
+          "ok": true,
+          "fee": "941182635066"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x5b6735c66d97479ccd18294fc96b3084ecb2fa3f",
+          "role": "optional",
+          "ok": true,
+          "fee": "969443725731"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "941182635066"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xcd37ca043f8479064e10635020c65ffc005d36f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "929878198800"
+        }
+      ],
+      "defaultSendConfirmations": "10",
+      "ok": true
+    },
+    {
+      "source": "base",
+      "destination": "avalanche",
+      "sourceEid": 30184,
+      "destinationEid": 30106,
+      "blockNumber": 52209807,
+      "confirmations": 10,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x554833698ae0fb22ecc90b01222903fd62ca4b47",
+          "role": "required",
+          "ok": true,
+          "fee": "2801766326012"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x9e059a54699a285714207b43b055483e78faac25",
+          "role": "required",
+          "ok": true,
+          "fee": "2720089617957"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "2720089617957"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xc2a0c36f5939a14966705c7cec813163faeea1f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "2801766326012"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xcd37ca043f8479064e10635020c65ffc005d36f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "2687418934735"
+        }
+      ],
+      "defaultSendConfirmations": "10",
+      "ok": true
+    },
+    {
+      "source": "base",
+      "destination": "bsc",
+      "sourceEid": 30184,
+      "destinationEid": 30102,
+      "blockNumber": 52209807,
+      "confirmations": 10,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x554833698ae0fb22ecc90b01222903fd62ca4b47",
+          "role": "required",
+          "ok": true,
+          "fee": "1573112046390"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x9e059a54699a285714207b43b055483e78faac25",
+          "role": "required",
+          "ok": true,
+          "fee": "1527252899552"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "1527252899552"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xc2a0c36f5939a14966705c7cec813163faeea1f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "1573112046390"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xcd37ca043f8479064e10635020c65ffc005d36f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "1508909240816"
+        }
+      ],
+      "defaultSendConfirmations": "10",
+      "ok": true
+    },
+    {
+      "source": "base",
+      "destination": "ethereum",
+      "sourceEid": 30184,
+      "destinationEid": 30101,
+      "blockNumber": 52209807,
+      "confirmations": 10,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x554833698ae0fb22ecc90b01222903fd62ca4b47",
+          "role": "required",
+          "ok": true,
+          "fee": "72985208790984"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x9e059a54699a285714207b43b055483e78faac25",
+          "role": "required",
+          "ok": true,
+          "fee": "71338771145544"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "71338771145544"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xc2a0c36f5939a14966705c7cec813163faeea1f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "72985208790984"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xcd37ca043f8479064e10635020c65ffc005d36f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "70680196087368"
+        }
+      ],
+      "defaultSendConfirmations": "10",
+      "ok": true
+    },
+    {
+      "source": "base",
+      "destination": "monad",
+      "sourceEid": 30184,
+      "destinationEid": 30390,
+      "blockNumber": 52209807,
+      "confirmations": 10,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x554833698ae0fb22ecc90b01222903fd62ca4b47",
+          "role": "required",
+          "ok": true,
+          "fee": "126909978715"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x9e059a54699a285714207b43b055483e78faac25",
+          "role": "required",
+          "ok": true,
+          "fee": "123210316404"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "123210316404"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xc2a0c36f5939a14966705c7cec813163faeea1f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "126909978715"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xcd37ca043f8479064e10635020c65ffc005d36f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "121730451478"
+        }
+      ],
+      "defaultSendConfirmations": "10",
+      "ok": true
+    },
+    {
+      "source": "base",
+      "destination": "robinhood",
+      "sourceEid": 30184,
+      "destinationEid": 30416,
+      "blockNumber": 52209807,
+      "confirmations": 10,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x554833698ae0fb22ecc90b01222903fd62ca4b47",
+          "role": "required",
+          "ok": true,
+          "fee": "2378619302400"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x9e059a54699a285714207b43b055483e78faac25",
+          "role": "required",
+          "ok": true,
+          "fee": "2309278118400"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x5b6735c66d97479ccd18294fc96b3084ecb2fa3f",
+          "role": "optional",
+          "ok": true,
+          "fee": "2378619302400"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "2309278118400"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xcd37ca043f8479064e10635020c65ffc005d36f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "2281541644800"
+        }
+      ],
+      "defaultSendConfirmations": "10",
+      "ok": true
+    },
+    {
+      "source": "base",
+      "destination": "sonic",
+      "sourceEid": 30184,
+      "destinationEid": 30332,
+      "blockNumber": 52209807,
+      "confirmations": 10,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x554833698ae0fb22ecc90b01222903fd62ca4b47",
+          "role": "required",
+          "ok": true,
+          "fee": "85867492742"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x9e059a54699a285714207b43b055483e78faac25",
+          "role": "required",
+          "ok": true,
+          "fee": "83364295358"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xa7b5189bca84cd304d8553977c7c614329750d99",
+          "role": "optional",
+          "ok": true,
+          "fee": "83364295358"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xc2a0c36f5939a14966705c7cec813163faeea1f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "85867492742"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xcd37ca043f8479064e10635020c65ffc005d36f6",
+          "role": "optional",
+          "ok": true,
+          "fee": "82363016404"
+        }
+      ],
+      "defaultSendConfirmations": "10",
+      "ok": true
+    },
+    {
+      "source": "bsc",
+      "destination": "arbitrum",
+      "sourceEid": 30102,
+      "destinationEid": 30110,
+      "blockNumber": 125880706,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xfa9ba83c102283958b997adc8b44ed3a3cdb5dda",
+          "role": "required",
+          "ok": true,
+          "fee": "16449471434936"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xfd6865c841c2d64565562fcc7e05e619a30615f0",
+          "role": "required",
+          "ok": true,
+          "fee": "16126514932814"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x247624e2143504730aec22912ed41f092498bef2",
+          "role": "optional",
+          "ok": true,
+          "fee": "16126514932814"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x31f748a368a893bdb5abb67ec95f232507601a73",
+          "role": "optional",
+          "ok": true,
+          "fee": "15997332331965"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xf0a5c5306adbfd4e3dfd5d4b148b451c411d3878",
+          "role": "optional",
+          "ok": true,
+          "fee": "16449471434936"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "bsc",
+      "destination": "arc",
+      "sourceEid": 30102,
+      "destinationEid": 30417,
+      "blockNumber": 125880706,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xfa9ba83c102283958b997adc8b44ed3a3cdb5dda",
+          "role": "required",
+          "ok": true,
+          "fee": "2811971156991"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xfd6865c841c2d64565562fcc7e05e619a30615f0",
+          "role": "required",
+          "ok": true,
+          "fee": "2729996959101"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x247624e2143504730aec22912ed41f092498bef2",
+          "role": "optional",
+          "ok": true,
+          "fee": "2729996959101"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x31f748a368a893bdb5abb67ec95f232507601a73",
+          "role": "optional",
+          "ok": true,
+          "fee": "2697207279945"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x439264fb87581a70bb6d7befd16b636521b0ad2d",
+          "role": "optional",
+          "ok": true,
+          "fee": "2697207279945"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "bsc",
+      "destination": "avalanche",
+      "sourceEid": 30102,
+      "destinationEid": 30106,
+      "blockNumber": 125880706,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xfa9ba83c102283958b997adc8b44ed3a3cdb5dda",
+          "role": "required",
+          "ok": true,
+          "fee": "7321769563767"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xfd6865c841c2d64565562fcc7e05e619a30615f0",
+          "role": "required",
+          "ok": true,
+          "fee": "7108326340627"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x247624e2143504730aec22912ed41f092498bef2",
+          "role": "optional",
+          "ok": true,
+          "fee": "7108326340627"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x31f748a368a893bdb5abb67ec95f232507601a73",
+          "role": "optional",
+          "ok": true,
+          "fee": "7022949051372"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xf0a5c5306adbfd4e3dfd5d4b148b451c411d3878",
+          "role": "optional",
+          "ok": true,
+          "fee": "7321769563767"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "bsc",
+      "destination": "base",
+      "sourceEid": 30102,
+      "destinationEid": 30184,
+      "blockNumber": 125880706,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xfa9ba83c102283958b997adc8b44ed3a3cdb5dda",
+          "role": "required",
+          "ok": true,
+          "fee": "2202460447440"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xfd6865c841c2d64565562fcc7e05e619a30615f0",
+          "role": "required",
+          "ok": true,
+          "fee": "2138254622244"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x247624e2143504730aec22912ed41f092498bef2",
+          "role": "optional",
+          "ok": true,
+          "fee": "2138254622244"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x31f748a368a893bdb5abb67ec95f232507601a73",
+          "role": "optional",
+          "ok": true,
+          "fee": "2112572292165"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xf0a5c5306adbfd4e3dfd5d4b148b451c411d3878",
+          "role": "optional",
+          "ok": true,
+          "fee": "2202460447440"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "bsc",
+      "destination": "ethereum",
+      "sourceEid": 30102,
+      "destinationEid": 30101,
+      "blockNumber": 125880706,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xfa9ba83c102283958b997adc8b44ed3a3cdb5dda",
+          "role": "required",
+          "ok": true,
+          "fee": "185712499187332"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xfd6865c841c2d64565562fcc7e05e619a30615f0",
+          "role": "required",
+          "ok": true,
+          "fee": "181523101705900"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x247624e2143504730aec22912ed41f092498bef2",
+          "role": "optional",
+          "ok": true,
+          "fee": "181523101705900"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x31f748a368a893bdb5abb67ec95f232507601a73",
+          "role": "optional",
+          "ok": true,
+          "fee": "179847342713327"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xf0a5c5306adbfd4e3dfd5d4b148b451c411d3878",
+          "role": "optional",
+          "ok": true,
+          "fee": "185712499187332"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "bsc",
+      "destination": "monad",
+      "sourceEid": 30102,
+      "destinationEid": 30390,
+      "blockNumber": 125880706,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xfa9ba83c102283958b997adc8b44ed3a3cdb5dda",
+          "role": "required",
+          "ok": true,
+          "fee": "429671998651"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xfd6865c841c2d64565562fcc7e05e619a30615f0",
+          "role": "required",
+          "ok": true,
+          "fee": "417146259417"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x247624e2143504730aec22912ed41f092498bef2",
+          "role": "optional",
+          "ok": true,
+          "fee": "417146259417"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x31f748a368a893bdb5abb67ec95f232507601a73",
+          "role": "optional",
+          "ok": true,
+          "fee": "412135963723"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xf0a5c5306adbfd4e3dfd5d4b148b451c411d3878",
+          "role": "optional",
+          "ok": true,
+          "fee": "429671998651"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "bsc",
+      "destination": "robinhood",
+      "sourceEid": 30102,
+      "destinationEid": 30416,
+      "blockNumber": 125880706,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xfa9ba83c102283958b997adc8b44ed3a3cdb5dda",
+          "role": "required",
+          "ok": true,
+          "fee": "7366444029933"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xfd6865c841c2d64565562fcc7e05e619a30615f0",
+          "role": "required",
+          "ok": true,
+          "fee": "7151698462876"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x247624e2143504730aec22912ed41f092498bef2",
+          "role": "optional",
+          "ok": true,
+          "fee": "7151698462876"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x31f748a368a893bdb5abb67ec95f232507601a73",
+          "role": "optional",
+          "ok": true,
+          "fee": "7065800236054"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x439264fb87581a70bb6d7befd16b636521b0ad2d",
+          "role": "optional",
+          "ok": true,
+          "fee": "7065800236054"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "bsc",
+      "destination": "sonic",
+      "sourceEid": 30102,
+      "destinationEid": 30332,
+      "blockNumber": 125880706,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xfa9ba83c102283958b997adc8b44ed3a3cdb5dda",
+          "role": "required",
+          "ok": true,
+          "fee": "288152126732"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xfd6865c841c2d64565562fcc7e05e619a30615f0",
+          "role": "required",
+          "ok": true,
+          "fee": "279751955414"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x247624e2143504730aec22912ed41f092498bef2",
+          "role": "optional",
+          "ok": true,
+          "fee": "279751955414"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x31f748a368a893bdb5abb67ec95f232507601a73",
+          "role": "optional",
+          "ok": true,
+          "fee": "276391886887"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xf0a5c5306adbfd4e3dfd5d4b148b451c411d3878",
+          "role": "optional",
+          "ok": true,
+          "fee": "288152126732"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "ethereum",
+      "destination": "arbitrum",
+      "sourceEid": 30101,
+      "destinationEid": 30110,
+      "blockNumber": 26126634,
+      "confirmations": 15,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x589dedbd617e0cbcb916a9223f4d1300c294236b",
+          "role": "required",
+          "ok": true,
+          "fee": "4685808000000"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd",
+          "role": "required",
+          "ok": true,
+          "fee": "4779648000000"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x373a6e5c0c4e89e24819f00aa37ea370917aaff4",
+          "role": "optional",
+          "ok": true,
+          "fee": "4779648000000"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x380275805876ff19055ea900cdb2b46a94ecf20d",
+          "role": "optional",
+          "ok": true,
+          "fee": "4685808000000"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "4648272000000"
+        }
+      ],
+      "defaultSendConfirmations": "15",
+      "ok": true
+    },
+    {
+      "source": "ethereum",
+      "destination": "arc",
+      "sourceEid": 30101,
+      "destinationEid": 30417,
+      "blockNumber": 26126634,
+      "confirmations": 15,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x589dedbd617e0cbcb916a9223f4d1300c294236b",
+          "role": "required",
+          "ok": true,
+          "fee": "941182635066"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd",
+          "role": "required",
+          "ok": true,
+          "fee": "969443725731"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x06559ee34d85a88317bf0bfe307444116c631b67",
+          "role": "optional",
+          "ok": true,
+          "fee": "929878198800"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x380275805876ff19055ea900cdb2b46a94ecf20d",
+          "role": "optional",
+          "ok": true,
+          "fee": "941182635066"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "929878198800"
+        }
+      ],
+      "defaultSendConfirmations": "15",
+      "ok": true
+    },
+    {
+      "source": "ethereum",
+      "destination": "avalanche",
+      "sourceEid": 30101,
+      "destinationEid": 30106,
+      "blockNumber": 26126634,
+      "confirmations": 15,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x589dedbd617e0cbcb916a9223f4d1300c294236b",
+          "role": "required",
+          "ok": true,
+          "fee": "2720089617957"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd",
+          "role": "required",
+          "ok": true,
+          "fee": "2801766326012"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x373a6e5c0c4e89e24819f00aa37ea370917aaff4",
+          "role": "optional",
+          "ok": true,
+          "fee": "2801766326012"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x380275805876ff19055ea900cdb2b46a94ecf20d",
+          "role": "optional",
+          "ok": true,
+          "fee": "2720089617957"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "2687418934735"
+        }
+      ],
+      "defaultSendConfirmations": "15",
+      "ok": true
+    },
+    {
+      "source": "ethereum",
+      "destination": "base",
+      "sourceEid": 30101,
+      "destinationEid": 30184,
+      "blockNumber": 26126634,
+      "confirmations": 15,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x589dedbd617e0cbcb916a9223f4d1300c294236b",
+          "role": "required",
+          "ok": true,
+          "fee": "924020317411"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd",
+          "role": "required",
+          "ok": true,
+          "fee": "951766071523"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x373a6e5c0c4e89e24819f00aa37ea370917aaff4",
+          "role": "optional",
+          "ok": true,
+          "fee": "951766071523"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x380275805876ff19055ea900cdb2b46a94ecf20d",
+          "role": "optional",
+          "ok": true,
+          "fee": "924020317411"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "912922015766"
+        }
+      ],
+      "defaultSendConfirmations": "15",
+      "ok": true
+    },
+    {
+      "source": "ethereum",
+      "destination": "bsc",
+      "sourceEid": 30101,
+      "destinationEid": 30102,
+      "blockNumber": 26126634,
+      "confirmations": 15,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x589dedbd617e0cbcb916a9223f4d1300c294236b",
+          "role": "required",
+          "ok": true,
+          "fee": "1527252899552"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd",
+          "role": "required",
+          "ok": true,
+          "fee": "1573112046390"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x373a6e5c0c4e89e24819f00aa37ea370917aaff4",
+          "role": "optional",
+          "ok": true,
+          "fee": "1573112046390"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x380275805876ff19055ea900cdb2b46a94ecf20d",
+          "role": "optional",
+          "ok": true,
+          "fee": "1527252899552"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "1508909240816"
+        }
+      ],
+      "defaultSendConfirmations": "15",
+      "ok": true
+    },
+    {
+      "source": "ethereum",
+      "destination": "monad",
+      "sourceEid": 30101,
+      "destinationEid": 30390,
+      "blockNumber": 26126634,
+      "confirmations": 15,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x589dedbd617e0cbcb916a9223f4d1300c294236b",
+          "role": "required",
+          "ok": true,
+          "fee": "123210316404"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd",
+          "role": "required",
+          "ok": true,
+          "fee": "126909978715"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x373a6e5c0c4e89e24819f00aa37ea370917aaff4",
+          "role": "optional",
+          "ok": true,
+          "fee": "126909978715"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x380275805876ff19055ea900cdb2b46a94ecf20d",
+          "role": "optional",
+          "ok": true,
+          "fee": "123210316404"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "121730451478"
+        }
+      ],
+      "defaultSendConfirmations": "15",
+      "ok": true
+    },
+    {
+      "source": "ethereum",
+      "destination": "robinhood",
+      "sourceEid": 30101,
+      "destinationEid": 30416,
+      "blockNumber": 26126634,
+      "confirmations": 15,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x589dedbd617e0cbcb916a9223f4d1300c294236b",
+          "role": "required",
+          "ok": true,
+          "fee": "2309278118400"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd",
+          "role": "required",
+          "ok": true,
+          "fee": "2378619302400"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x06559ee34d85a88317bf0bfe307444116c631b67",
+          "role": "optional",
+          "ok": true,
+          "fee": "2281541644800"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x380275805876ff19055ea900cdb2b46a94ecf20d",
+          "role": "optional",
+          "ok": true,
+          "fee": "2309278118400"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "2281541644800"
+        }
+      ],
+      "defaultSendConfirmations": "15",
+      "ok": true
+    },
+    {
+      "source": "ethereum",
+      "destination": "sonic",
+      "sourceEid": 30101,
+      "destinationEid": 30332,
+      "blockNumber": 26126634,
+      "confirmations": 15,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x589dedbd617e0cbcb916a9223f4d1300c294236b",
+          "role": "required",
+          "ok": true,
+          "fee": "83364295358"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xa4fe5a5b9a846458a70cd0748228aed3bf65c2cd",
+          "role": "required",
+          "ok": true,
+          "fee": "85867492742"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x373a6e5c0c4e89e24819f00aa37ea370917aaff4",
+          "role": "optional",
+          "ok": true,
+          "fee": "85867492742"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x380275805876ff19055ea900cdb2b46a94ecf20d",
+          "role": "optional",
+          "ok": true,
+          "fee": "83364295358"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5",
+          "role": "optional",
+          "ok": true,
+          "fee": "82363016404"
+        }
+      ],
+      "defaultSendConfirmations": "15",
+      "ok": true
+    },
+    {
+      "source": "monad",
+      "destination": "arbitrum",
+      "sourceEid": 30390,
+      "destinationEid": 30110,
+      "blockNumber": 110770961,
+      "confirmations": 4,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "412255715930030827"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x493626c5d852b9b187a9eb709d0b0978a3877238",
+          "role": "required",
+          "ok": true,
+          "fee": "409043376406950613"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x2c7185f5b0976397d9eb5c19d639d4005e6708f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "409043376406950613"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "optional",
+          "ok": true,
+          "fee": "409043376406950613"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+          "role": "optional",
+          "ok": true,
+          "fee": "412255715930030827"
+        }
+      ],
+      "defaultSendConfirmations": "4",
+      "ok": true
+    },
+    {
+      "source": "monad",
+      "destination": "arc",
+      "sourceEid": 30390,
+      "destinationEid": 30417,
+      "blockNumber": 110770961,
+      "confirmations": 4,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "85311223737804877"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x493626c5d852b9b187a9eb709d0b0978a3877238",
+          "role": "required",
+          "ok": true,
+          "fee": "84327897610975609"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x05ef739dde35407a421ef1b3011283f92c2b30dc",
+          "role": "optional",
+          "ok": true,
+          "fee": "84327897610975609"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "optional",
+          "ok": true,
+          "fee": "84327897610975609"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+          "role": "optional",
+          "ok": true,
+          "fee": "85311223737804877"
+        }
+      ],
+      "defaultSendConfirmations": "4",
+      "ok": true
+    },
+    {
+      "source": "monad",
+      "destination": "avalanche",
+      "sourceEid": 30390,
+      "destinationEid": 30106,
+      "blockNumber": 110770961,
+      "confirmations": 4,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "184777555729622684"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x493626c5d852b9b187a9eb709d0b0978a3877238",
+          "role": "required",
+          "ok": true,
+          "fee": "182647746892757155"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x2c7185f5b0976397d9eb5c19d639d4005e6708f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "182647746892757155"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "optional",
+          "ok": true,
+          "fee": "182647746892757155"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+          "role": "optional",
+          "ok": true,
+          "fee": "184777555729622684"
+        }
+      ],
+      "defaultSendConfirmations": "4",
+      "ok": true
+    },
+    {
+      "source": "monad",
+      "destination": "base",
+      "sourceEid": 30390,
+      "destinationEid": 30184,
+      "blockNumber": 110770961,
+      "confirmations": 4,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "54390999333370068"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x493626c5d852b9b187a9eb709d0b0978a3877238",
+          "role": "required",
+          "ok": true,
+          "fee": "53764070210031808"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x2c7185f5b0976397d9eb5c19d639d4005e6708f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "53764070210031808"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "optional",
+          "ok": true,
+          "fee": "53764070210031808"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+          "role": "optional",
+          "ok": true,
+          "fee": "54390999333370068"
+        }
+      ],
+      "defaultSendConfirmations": "4",
+      "ok": true
+    },
+    {
+      "source": "monad",
+      "destination": "bsc",
+      "sourceEid": 30390,
+      "destinationEid": 30102,
+      "blockNumber": 110770961,
+      "confirmations": 4,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "125309980958726270"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x493626c5d852b9b187a9eb709d0b0978a3877238",
+          "role": "required",
+          "ok": true,
+          "fee": "123865615577121861"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x2c7185f5b0976397d9eb5c19d639d4005e6708f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "123865615577121861"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "optional",
+          "ok": true,
+          "fee": "123865615577121861"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+          "role": "optional",
+          "ok": true,
+          "fee": "125309980958726270"
+        }
+      ],
+      "defaultSendConfirmations": "4",
+      "ok": true
+    },
+    {
+      "source": "monad",
+      "destination": "ethereum",
+      "sourceEid": 30390,
+      "destinationEid": 30101,
+      "blockNumber": 110770961,
+      "confirmations": 4,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "4659719683279929510"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x493626c5d852b9b187a9eb709d0b0978a3877238",
+          "role": "required",
+          "ok": true,
+          "fee": "4618049157933411277"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x2c7185f5b0976397d9eb5c19d639d4005e6708f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "4618049157933411277"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "optional",
+          "ok": true,
+          "fee": "4618049157933411277"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+          "role": "optional",
+          "ok": true,
+          "fee": "4659719683279929510"
+        }
+      ],
+      "defaultSendConfirmations": "4",
+      "ok": true
+    },
+    {
+      "source": "monad",
+      "destination": "robinhood",
+      "sourceEid": 30390,
+      "destinationEid": 30416,
+      "blockNumber": 110770961,
+      "confirmations": 4,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "185904993378388956"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x493626c5d852b9b187a9eb709d0b0978a3877238",
+          "role": "required",
+          "ok": true,
+          "fee": "183762189312433639"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x05ef739dde35407a421ef1b3011283f92c2b30dc",
+          "role": "optional",
+          "ok": true,
+          "fee": "183762189312433639"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "optional",
+          "ok": true,
+          "fee": "183762189312433639"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+          "role": "optional",
+          "ok": true,
+          "fee": "185904993378388956"
+        }
+      ],
+      "defaultSendConfirmations": "4",
+      "ok": true
+    },
+    {
+      "source": "monad",
+      "destination": "sonic",
+      "sourceEid": 30390,
+      "destinationEid": 30332,
+      "blockNumber": 110770961,
+      "confirmations": 4,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "7315899333529932"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x493626c5d852b9b187a9eb709d0b0978a3877238",
+          "role": "required",
+          "ok": true,
+          "fee": "7231573794161013"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0x2c7185f5b0976397d9eb5c19d639d4005e6708f0",
+          "role": "optional",
+          "ok": true,
+          "fee": "7231573794161013"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0xacde1f22eeab249d3ca6ba8805c8fee9f52a16e7",
+          "role": "optional",
+          "ok": true,
+          "fee": "7231573794161013"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0xdcdd4628f858b45260c31d6ad076bd2c3d3c2f73",
+          "role": "optional",
+          "ok": true,
+          "fee": "7315899333529932"
+        }
+      ],
+      "defaultSendConfirmations": "4",
+      "ok": true
+    },
+    {
+      "source": "robinhood",
+      "destination": "arbitrum",
+      "sourceEid": 30416,
+      "destinationEid": 30110,
+      "blockNumber": 80840623,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x8d77d35604a9f37f488e41d1d916b2a0088f82dd",
+          "role": "required",
+          "ok": true,
+          "fee": "4579584000000"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xd01ae6905d48315f7be10c7330aecf8360ef5b12",
+          "role": "required",
+          "ok": true,
+          "fee": "4604160000000"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x0ffe02df012299a370d5dd69298a5826eacafdf8",
+          "role": "optional",
+          "ok": true,
+          "fee": "4579584000000"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89",
+          "role": "optional",
+          "ok": true,
+          "fee": "4604160000000"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x8ed0a851964604bb1b6b1a703f4c8234ee684d76",
+          "role": "optional",
+          "ok": true,
+          "fee": "4579584000000"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "robinhood",
+      "destination": "arc",
+      "sourceEid": 30416,
+      "destinationEid": 30417,
+      "blockNumber": 80840623,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x8d77d35604a9f37f488e41d1d916b2a0088f82dd",
+          "role": "required",
+          "ok": true,
+          "fee": "804215709013"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xd01ae6905d48315f7be10c7330aecf8360ef5b12",
+          "role": "required",
+          "ok": true,
+          "fee": "813593463477"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x0ffe02df012299a370d5dd69298a5826eacafdf8",
+          "role": "optional",
+          "ok": true,
+          "fee": "804215709013"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89",
+          "role": "optional",
+          "ok": true,
+          "fee": "813593463477"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x8ed0a851964604bb1b6b1a703f4c8234ee684d76",
+          "role": "optional",
+          "ok": true,
+          "fee": "804215709013"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "robinhood",
+      "destination": "avalanche",
+      "sourceEid": 30416,
+      "destinationEid": 30106,
+      "blockNumber": 80840623,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x8d77d35604a9f37f488e41d1d916b2a0088f82dd",
+          "role": "required",
+          "ok": true,
+          "fee": "2126643362151"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xd01ae6905d48315f7be10c7330aecf8360ef5b12",
+          "role": "required",
+          "ok": true,
+          "fee": "2151441608517"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x0ffe02df012299a370d5dd69298a5826eacafdf8",
+          "role": "optional",
+          "ok": true,
+          "fee": "2126643362151"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89",
+          "role": "optional",
+          "ok": true,
+          "fee": "2151441608517"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x8ed0a851964604bb1b6b1a703f4c8234ee684d76",
+          "role": "optional",
+          "ok": true,
+          "fee": "2126643362151"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "robinhood",
+      "destination": "base",
+      "sourceEid": 30416,
+      "destinationEid": 30184,
+      "blockNumber": 80840623,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x8d77d35604a9f37f488e41d1d916b2a0088f82dd",
+          "role": "required",
+          "ok": true,
+          "fee": "632275200000"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xd01ae6905d48315f7be10c7330aecf8360ef5b12",
+          "role": "required",
+          "ok": true,
+          "fee": "639648000000"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x0ffe02df012299a370d5dd69298a5826eacafdf8",
+          "role": "optional",
+          "ok": true,
+          "fee": "632275200000"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89",
+          "role": "optional",
+          "ok": true,
+          "fee": "639648000000"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x8ed0a851964604bb1b6b1a703f4c8234ee684d76",
+          "role": "optional",
+          "ok": true,
+          "fee": "632275200000"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "robinhood",
+      "destination": "bsc",
+      "sourceEid": 30416,
+      "destinationEid": 30102,
+      "blockNumber": 80840623,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x8d77d35604a9f37f488e41d1d916b2a0088f82dd",
+          "role": "required",
+          "ok": true,
+          "fee": "1575509538651"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xd01ae6905d48315f7be10c7330aecf8360ef5b12",
+          "role": "required",
+          "ok": true,
+          "fee": "1593881153932"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x0ffe02df012299a370d5dd69298a5826eacafdf8",
+          "role": "optional",
+          "ok": true,
+          "fee": "1575509538651"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89",
+          "role": "optional",
+          "ok": true,
+          "fee": "1593881153932"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x8ed0a851964604bb1b6b1a703f4c8234ee684d76",
+          "role": "optional",
+          "ok": true,
+          "fee": "1575509538651"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "robinhood",
+      "destination": "ethereum",
+      "sourceEid": 30416,
+      "destinationEid": 30101,
+      "blockNumber": 80840623,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x8d77d35604a9f37f488e41d1d916b2a0088f82dd",
+          "role": "required",
+          "ok": true,
+          "fee": "53961635109471"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xd01ae6905d48315f7be10c7330aecf8360ef5b12",
+          "role": "required",
+          "ok": true,
+          "fee": "54448552768134"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x0ffe02df012299a370d5dd69298a5826eacafdf8",
+          "role": "optional",
+          "ok": true,
+          "fee": "53961635109471"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89",
+          "role": "optional",
+          "ok": true,
+          "fee": "54448552768134"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x8ed0a851964604bb1b6b1a703f4c8234ee684d76",
+          "role": "optional",
+          "ok": true,
+          "fee": "53961635109471"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "robinhood",
+      "destination": "monad",
+      "sourceEid": 30416,
+      "destinationEid": 30390,
+      "blockNumber": 80840623,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x8d77d35604a9f37f488e41d1d916b2a0088f82dd",
+          "role": "required",
+          "ok": true,
+          "fee": "137772508123"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xd01ae6905d48315f7be10c7330aecf8360ef5b12",
+          "role": "required",
+          "ok": true,
+          "fee": "139379038236"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x0ffe02df012299a370d5dd69298a5826eacafdf8",
+          "role": "optional",
+          "ok": true,
+          "fee": "137772508123"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89",
+          "role": "optional",
+          "ok": true,
+          "fee": "139379038236"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x8ed0a851964604bb1b6b1a703f4c8234ee684d76",
+          "role": "optional",
+          "ok": true,
+          "fee": "137772508123"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "robinhood",
+      "destination": "sonic",
+      "sourceEid": 30416,
+      "destinationEid": 30332,
+      "blockNumber": 80840623,
+      "confirmations": 5,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0x8d77d35604a9f37f488e41d1d916b2a0088f82dd",
+          "role": "required",
+          "ok": true,
+          "fee": "93507234086"
+        },
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0xd01ae6905d48315f7be10c7330aecf8360ef5b12",
+          "role": "required",
+          "ok": true,
+          "fee": "94597598116"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x0ffe02df012299a370d5dd69298a5826eacafdf8",
+          "role": "optional",
+          "ok": true,
+          "fee": "93507234086"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x1258a278519c7f4bd997a9c3bfd4aa802a028d89",
+          "role": "optional",
+          "ok": true,
+          "fee": "94597598116"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x8ed0a851964604bb1b6b1a703f4c8234ee684d76",
+          "role": "optional",
+          "ok": true,
+          "fee": "93507234086"
+        }
+      ],
+      "defaultSendConfirmations": "5",
+      "ok": true
+    },
+    {
+      "source": "sonic",
+      "destination": "arbitrum",
+      "sourceEid": 30332,
+      "destinationEid": 30110,
+      "blockNumber": 80392419,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "313231577662898660"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xb2c7832aa8dda878de6f949485f927e9e532e92c",
+          "role": "required",
+          "ok": true,
+          "fee": "310790844550118546"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x05aaefdf9db6e0f7d27fa3b6ee099edb33da029e",
+          "role": "optional",
+          "ok": true,
+          "fee": "310790844550118546"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x54dd79f5ce72b51fcbbcb170dd01e32034323565",
+          "role": "optional",
+          "ok": true,
+          "fee": "313231577662898660"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xde79818c75649773fc462e9d3134b23b81741481",
+          "role": "optional",
+          "ok": true,
+          "fee": "310790844550118546"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "sonic",
+      "destination": "arc",
+      "sourceEid": 30332,
+      "destinationEid": 30417,
+      "blockNumber": 80392419,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "51225778281006864"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xb2c7832aa8dda878de6f949485f927e9e532e92c",
+          "role": "required",
+          "ok": true,
+          "fee": "50635332570068649"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x05aaefdf9db6e0f7d27fa3b6ee099edb33da029e",
+          "role": "optional",
+          "ok": true,
+          "fee": "50635332570068649"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x45a7305c65aad28384f20a80f87a5183772e4f70",
+          "role": "optional",
+          "ok": true,
+          "fee": "50635332570068649"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x54dd79f5ce72b51fcbbcb170dd01e32034323565",
+          "role": "optional",
+          "ok": true,
+          "fee": "51225778281006864"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "sonic",
+      "destination": "avalanche",
+      "sourceEid": 30332,
+      "destinationEid": 30106,
+      "blockNumber": 80392419,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "139463898712038856"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xb2c7832aa8dda878de6f949485f927e9e532e92c",
+          "role": "required",
+          "ok": true,
+          "fee": "137856390469342686"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x05aaefdf9db6e0f7d27fa3b6ee099edb33da029e",
+          "role": "optional",
+          "ok": true,
+          "fee": "137856390469342686"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x54dd79f5ce72b51fcbbcb170dd01e32034323565",
+          "role": "optional",
+          "ok": true,
+          "fee": "139463898712038856"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xde79818c75649773fc462e9d3134b23b81741481",
+          "role": "optional",
+          "ok": true,
+          "fee": "137856390469342686"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "sonic",
+      "destination": "base",
+      "sourceEid": 30332,
+      "destinationEid": 30184,
+      "blockNumber": 80392419,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "42211864760232250"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xb2c7832aa8dda878de6f949485f927e9e532e92c",
+          "role": "required",
+          "ok": true,
+          "fee": "41725316476638399"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x05aaefdf9db6e0f7d27fa3b6ee099edb33da029e",
+          "role": "optional",
+          "ok": true,
+          "fee": "41725316476638399"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x54dd79f5ce72b51fcbbcb170dd01e32034323565",
+          "role": "optional",
+          "ok": true,
+          "fee": "42211864760232250"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xde79818c75649773fc462e9d3134b23b81741481",
+          "role": "optional",
+          "ok": true,
+          "fee": "41725316476638399"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "sonic",
+      "destination": "bsc",
+      "sourceEid": 30332,
+      "destinationEid": 30102,
+      "blockNumber": 80392419,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "107215001925295507"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xb2c7832aa8dda878de6f949485f927e9e532e92c",
+          "role": "required",
+          "ok": true,
+          "fee": "105979205415035460"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x05aaefdf9db6e0f7d27fa3b6ee099edb33da029e",
+          "role": "optional",
+          "ok": true,
+          "fee": "105979205415035460"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x54dd79f5ce72b51fcbbcb170dd01e32034323565",
+          "role": "optional",
+          "ok": true,
+          "fee": "107215001925295507"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xde79818c75649773fc462e9d3134b23b81741481",
+          "role": "optional",
+          "ok": true,
+          "fee": "105979205415035460"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "sonic",
+      "destination": "ethereum",
+      "sourceEid": 30332,
+      "destinationEid": 30101,
+      "blockNumber": 80392419,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "3540451451516944530"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xb2c7832aa8dda878de6f949485f927e9e532e92c",
+          "role": "required",
+          "ok": true,
+          "fee": "3508790218229042651"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x05aaefdf9db6e0f7d27fa3b6ee099edb33da029e",
+          "role": "optional",
+          "ok": true,
+          "fee": "3508790218229042651"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x54dd79f5ce72b51fcbbcb170dd01e32034323565",
+          "role": "optional",
+          "ok": true,
+          "fee": "3540451451516944530"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xde79818c75649773fc462e9d3134b23b81741481",
+          "role": "optional",
+          "ok": true,
+          "fee": "3508790218229042651"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "sonic",
+      "destination": "monad",
+      "sourceEid": 30332,
+      "destinationEid": 30390,
+      "blockNumber": 80392419,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "8994589356214758"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xb2c7832aa8dda878de6f949485f927e9e532e92c",
+          "role": "required",
+          "ok": true,
+          "fee": "8890914665751409"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x05aaefdf9db6e0f7d27fa3b6ee099edb33da029e",
+          "role": "optional",
+          "ok": true,
+          "fee": "8890914665751409"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x54dd79f5ce72b51fcbbcb170dd01e32034323565",
+          "role": "optional",
+          "ok": true,
+          "fee": "8994589356214758"
+        },
+        {
+          "id": "deutsche-telekom",
+          "name": "Deutsche Telekom",
+          "address": "0xde79818c75649773fc462e9d3134b23b81741481",
+          "role": "optional",
+          "ok": true,
+          "fee": "8890914665751409"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    },
+    {
+      "source": "sonic",
+      "destination": "robinhood",
+      "sourceEid": 30332,
+      "destinationEid": 30416,
+      "blockNumber": 80392419,
+      "confirmations": 20,
+      "requiredCount": 2,
+      "optionalCount": 3,
+      "optionalThreshold": 2,
+      "providers": [
+        {
+          "id": "layerzero-labs",
+          "name": "LayerZero Labs",
+          "address": "0x282b3386571f7f794450d5789911a9804fa346b4",
+          "role": "required",
+          "ok": true,
+          "fee": "140314850817292140"
+        },
+        {
+          "id": "canary",
+          "name": "Canary",
+          "address": "0xb2c7832aa8dda878de6f949485f927e9e532e92c",
+          "role": "required",
+          "ok": true,
+          "fee": "138697534211743884"
+        },
+        {
+          "id": "nethermind",
+          "name": "Nethermind",
+          "address": "0x05aaefdf9db6e0f7d27fa3b6ee099edb33da029e",
+          "role": "optional",
+          "ok": true,
+          "fee": "138697534211743884"
+        },
+        {
+          "id": "p2p",
+          "name": "P2P",
+          "address": "0x45a7305c65aad28384f20a80f87a5183772e4f70",
+          "role": "optional",
+          "ok": true,
+          "fee": "138697534211743884"
+        },
+        {
+          "id": "horizen-labs",
+          "name": "Horizen",
+          "address": "0x54dd79f5ce72b51fcbbcb170dd01e32034323565",
+          "role": "optional",
+          "ok": true,
+          "fee": "140314850817292140"
+        }
+      ],
+      "defaultSendConfirmations": "20",
+      "ok": true
+    }
+  ],
+  "blockers": [
+    {
+      "chain": "arbitrum",
+      "address": "0x1118e1c057211306a40A4d7006C040dbfE1370Cb",
+      "reason": "Configured governance Safe has no deployed code at the pinned block"
+    },
+    {
+      "chain": "arbitrum",
+      "address": "0x22246a9183ce2ce6e2c2a9973f94aea91435017c",
+      "reason": "Configured governance Safe has no deployed code at the pinned block"
+    }
+  ],
+  "limitations": [
+    "Successful worker fee quotes demonstrate configured on-chain support at the pinned source block, not off-chain delivery or future availability.",
+    "Provider identities and deployments are resolved from the recorded local official-metadata snapshot; this command does not silently update policy metadata."
+  ],
+  "summary": {
+    "expectedRoutes": 72,
+    "checkedRoutes": 72,
+    "passingRoutes": 72,
+    "expectedProviderQuotes": 360,
+    "checkedProviderQuotes": 360,
+    "passingProviderQuotes": 360,
+    "failedQuotes": [],
+    "confirmationMismatches": [],
+    "confirmationReadErrors": [],
+    "chainReadErrors": []
+  },
+  "completedAt": "2026-10-05T14:04:04.553Z"
+}

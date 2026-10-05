@@ -4,8 +4,8 @@ import { Options } from "@layerzerolabs/lz-v2-utilities";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { LayerZeroMultiChainWire } from "../../tasks/wire";
 import { SafeManager } from "../../tasks/SafeManager";
-import { CLIUtils } from "../../tasks/BaseManager";
-import type { ChainMetadata } from "../../tasks/types";
+import { CLIUtils, resolveDvnPolicy } from "../../tasks/BaseManager";
+import type { ChainConfig, ChainMetadata } from "../../tasks/types";
 import metadataSnapshot from "../../utils/lzMetadata.json";
 
 const FT_ADDRESS = "0x5DD1A7A369e8273371d2DBf9d83356057088082c";
@@ -60,6 +60,36 @@ function activeProvider(data: ChainMetadata, name: string): string {
   return entry[0];
 }
 
+function endpointFor(config: ChainConfig, sendIsDefault = true, receiveIsDefault = true) {
+  return {
+    getAddress: async () => config.endpointV2Address,
+    interface: endpointInterface,
+    defaultSendLibrary: async () => config.sendLibAddress,
+    defaultReceiveLibrary: async () => config.receiveLibAddress,
+    getSendLibrary: async () => config.sendLibAddress,
+    isDefaultSendLibrary: async () => sendIsDefault,
+    getReceiveLibrary: async () => [config.receiveLibAddress, receiveIsDefault],
+  };
+}
+
+const routeSeeds: Record<string, number> = { ethereum: 100, arc: 200, robinhood: 300, arbitrum: 400, monad: 500 };
+
+function routeMetadata(): Record<string, ChainMetadata> {
+  const result: Record<string, ChainMetadata> = {};
+  for (const [name, seed] of Object.entries(routeSeeds)) {
+    const chain = metadata().ethereum;
+    chain.chainDetails.chainKey = name;
+    chain.dvns = {};
+    const names = ["LayerZero Labs", "Canary", "Deutsche Telekom", "Horizen", "Nethermind", "P2P"];
+    names.forEach((provider, index) => {
+      if (provider === "Deutsche Telekom" && (name === "arc" || name === "robinhood")) return;
+      chain.dvns[ethers.toBeHex(seed + index + 1, 20)] = { version: 2, canonicalName: provider, id: provider };
+    });
+    result[name] = chain;
+  }
+  return result;
+}
+
 describe("LayerZero wiring transaction policy", function () {
   for (const source of ["ethereum", "sonic", "bsc"] as const) {
     const destination = source === "ethereum" ? "sonic" : "ethereum";
@@ -73,7 +103,7 @@ describe("LayerZero wiring transaction policy", function () {
       const local = wire.getChainConfig(source);
       const remote = wire.getChainConfig(destination);
       const transactions = await (wire as any).prepareEndpointConfig(
-        { getAddress: async () => local.endpointV2Address, interface: endpointInterface },
+        endpointFor(local),
         { getAddress: async () => FT_ADDRESS }, local, remote
       );
 
@@ -138,6 +168,126 @@ describe("LayerZero wiring transaction policy", function () {
       ]]));
     }
   });
+
+  for (const [source, destination] of [
+    ["ethereum", "robinhood"], ["robinhood", "ethereum"],
+    ["ethereum", "arc"], ["arc", "ethereum"],
+    ["arc", "robinhood"], ["robinhood", "arc"],
+    ["ethereum", "arbitrum"], ["arbitrum", "ethereum"],
+    ["monad", "arbitrum"],
+  ]) {
+    it(`selects both-end route policy and local addresses for ${source} to ${destination}`, function () {
+      const wire = manager();
+      const input = routeMetadata();
+      wire.buildChainConfigs(input, true, [source, destination]);
+      const local = wire.getChainConfig(source);
+      const remote = wire.getChainConfig(destination);
+      local.confirmations = 4;
+      remote.confirmations = 5;
+      const usesP2P = [source, destination].some((name) => name === "arc" || name === "robinhood");
+      const seed = routeSeeds[source];
+      const expectedOptional = (usesP2P ? [4, 5, 6] : [3, 4, 5]).map((offset) => ethers.toBeHex(seed + offset, 20));
+      const expectedRequired = [1, 2].map((offset) => ethers.toBeHex(seed + offset, 20));
+      const shared = resolveDvnPolicy(input, source, destination);
+      expect(shared.requiredDvnAddresses).to.deep.equal(expectedRequired);
+      expect(shared.optionalDvnAddresses).to.deep.equal(expectedOptional);
+      expect(shared.optionalProviders).to.deep.equal([
+        usesP2P ? "P2P" : "Deutsche Telekom", "Horizen", "Nethermind",
+      ]);
+      for (const [entry, confirmations] of [
+        [wire.buildSendConfig(local, remote)[1], 4],
+        [wire.buildReceiveConfig(local, remote)[0], 5],
+      ] as const) {
+        expect(entry.config).to.equal(coder.encode([ULN_TYPE], [[
+          confirmations, 2, 3, 2, expectedRequired, expectedOptional,
+        ]]));
+      }
+    });
+  }
+
+  it("keeps ordinary-route policy when P2P is unavailable and rejects affected Arc/Robinhood routes", function () {
+    const input = routeMetadata();
+    delete input.ethereum.dvns[activeProvider(input.ethereum, "P2P")];
+    expect(() => manager().buildChainConfigs(input, true, ["ethereum", "arbitrum"])).not.to.throw();
+    for (const remote of ["arc", "robinhood"]) {
+      expect(() => manager().buildChainConfigs(input, true, ["ethereum", remote])).to.throw(/P2P/);
+    }
+  });
+
+  it("requires a unique active P2P address on substituted routes", function () {
+    const input = routeMetadata();
+    const p2p = input.ethereum.dvns[activeProvider(input.ethereum, "P2P")];
+    input.ethereum.dvns[ethers.toBeHex(999, 20)] = { ...p2p };
+    expect(() => manager().buildChainConfigs(input, true, ["ethereum", "robinhood"])).to.throw(/P2P/);
+  });
+
+  it("supports loading stored mainnet and testnet metadata together without creating cross-stage routes", function () {
+    const wire = manager();
+    wire.buildChainConfigs(metadata(), true);
+    expect(() => wire.getRouteDvnPolicy(wire.getChainConfig("ethereum"), wire.getChainConfig("sepolia")))
+      .to.throw(/DVN policy not loaded/);
+  });
+
+  for (const [sendDefault, receiveDefault, expectedCalls] of [
+    [false, false, ["setConfig", "setConfig"]],
+    [false, true, ["setConfig", "setReceiveLibrary", "setConfig"]],
+    [true, false, ["setSendLibrary", "setConfig", "setConfig"]],
+  ] as const) {
+    it(`skips matching explicit library pins (send default=${sendDefault}, receive default=${receiveDefault})`, async function () {
+      const wire = manager();
+      wire.buildChainConfigs(metadata(), true, ["ethereum", "sonic"]);
+      const local = wire.getChainConfig("ethereum");
+      const remote = wire.getChainConfig("sonic");
+      const transactions = await wire.prepareEndpointConfig(
+        endpointFor(local, sendDefault, receiveDefault) as any,
+        { getAddress: async () => FT_ADDRESS } as any, local, remote
+      );
+      const calls = transactions.map((tx) => endpointInterface.parseTransaction({ data: tx.data })!.name);
+      expect(calls).to.deep.equal(expectedCalls);
+    });
+  }
+
+  it("updates differing explicit library pins and retains default-library validation", async function () {
+    const wire = manager();
+    wire.buildChainConfigs(metadata(), true, ["ethereum", "sonic"]);
+    const local = wire.getChainConfig("ethereum");
+    const remote = wire.getChainConfig("sonic");
+    const endpoint = endpointFor(local, false, false);
+    endpoint.getSendLibrary = async () => ethers.ZeroAddress;
+    endpoint.getReceiveLibrary = async () => [ethers.ZeroAddress, false];
+    const ft = { getAddress: async () => FT_ADDRESS } as any;
+    const transactions = await wire.prepareEndpointConfig(endpoint as any, ft, local, remote);
+    expect(transactions.map((tx) => endpointInterface.parseTransaction({ data: tx.data })!.name))
+      .to.deep.equal(["setSendLibrary", "setConfig", "setReceiveLibrary", "setConfig"]);
+    endpoint.defaultReceiveLibrary = async () => ethers.ZeroAddress;
+    const error = await wire.prepareEndpointConfig(endpoint as any, ft, local, remote)
+      .then(() => undefined, (failure: unknown) => failure);
+    expect((error as Error).message).to.equal("Receive library mismatch for sonic");
+  });
+
+  for (const deployed of [false, true]) {
+    it(`uses a configured FT address without a saved deployment only if code exists (${deployed})`, async function () {
+      const lookups: string[] = [];
+      const hre = {
+        network: { name: "ethereum" },
+        deployments: { get: async () => { throw new Error("No deployment found"); } },
+        artifacts: { readArtifact: async () => ({ abi: ftInterface.fragments }) },
+        ethers: {
+          ...ethers,
+          provider: { getCode: async (address: string) => { lookups.push(address); return deployed ? "0x01" : "0x"; } },
+        },
+      } as unknown as HardhatRuntimeEnvironment;
+      const wire = new LayerZeroMultiChainWire(hre);
+      wire.buildChainConfigs(metadata(), false, ["ethereum"]);
+      const result = await (wire as any).getFTContract().then(
+        (contract: { getAddress(): Promise<string> }) => contract.getAddress(),
+        (error: Error) => error
+      );
+      expect(lookups).to.deep.equal([FT_ADDRESS]);
+      if (deployed) expect(result).to.equal(FT_ADDRESS);
+      else expect((result as Error).message).to.match(/FT is not deployed/);
+    });
+  }
 
   for (const provider of ["LayerZero Labs", "Canary", "Nethermind", "Horizen", "Deutsche Telekom"]) {
     it(`rejects selected-chain metadata missing ${provider} before preparing transactions`, function () {
@@ -211,6 +361,9 @@ describe("LayerZero wiring transaction policy", function () {
         getAddress: async () => source.endpointV2.address,
         defaultSendLibrary: async () => source.sendUln302.address,
         defaultReceiveLibrary: async () => source.receiveUln302.address,
+        getSendLibrary: async () => source.sendUln302.address,
+        isDefaultSendLibrary: async () => true,
+        getReceiveLibrary: async () => [source.receiveUln302.address, true],
       };
       const ft = { interface: ftInterface, getAddress: async () => FT_ADDRESS };
       const hre = {

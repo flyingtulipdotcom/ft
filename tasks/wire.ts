@@ -8,7 +8,7 @@ import {
 } from '@safe-global/types-kit'
 import { SafeManager, SafeAddressType } from "./SafeManager";
 import { LayerZeroPeerOptionsManager } from "./peerOptions";
-import { ChainConfig, TaskArgs, NUM_BLOCKS_TO_WAIT } from "./types";
+import { ChainConfig, DvnPolicy, TaskArgs, NUM_BLOCKS_TO_WAIT } from "./types";
 import { LayerZeroBaseManager, CLIUtils } from "./BaseManager";
 
 class LayerZeroMultiChainWire extends LayerZeroBaseManager {
@@ -27,27 +27,33 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
    * Use the local chain's verifier addresses for both send and receive.
    * Confirmations always describe the chain where the message originated.
    */
-  private buildUlnConfig(localConfig: ChainConfig, confirmations: number | undefined) {
-    if (localConfig.dvnAddresses.length === 0) {
-      throw new Error(`DVN policy not loaded for ${localConfig.chainKey}; build chain configs with includeDVNs=true`);
+  getRouteDvnPolicy(localConfig: ChainConfig, remoteConfig: ChainConfig): DvnPolicy {
+    const policy = localConfig.dvnPolicies?.[remoteConfig.chainKey];
+    if (!policy || policy.requiredDvnAddresses.length === 0) {
+      throw new Error(`DVN policy not loaded for ${localConfig.chainKey} <=> ${remoteConfig.chainKey}; build selected chain configs with includeDVNs=true`);
     }
+    return policy;
+  }
+
+  private buildUlnConfig(localConfig: ChainConfig, remoteConfig: ChainConfig, confirmations: number | undefined) {
+    const policy = this.getRouteDvnPolicy(localConfig, remoteConfig);
     if (confirmations === undefined || !Number.isSafeInteger(confirmations) || confirmations <= 0) {
       throw new Error(`Missing or invalid confirmation count for wiring ${localConfig.chainKey}`);
     }
     return {
       confirmations,
-      requiredDVNCount: localConfig.dvnAddresses.length,
-      optionalDVNCount: localConfig.optionalDvnAddresses.length || NIL_DVN_COUNT,
-      optionalDVNThreshold: localConfig.optionalDvnThreshold,
-      requiredDVNs: localConfig.dvnAddresses,
-      optionalDVNs: localConfig.optionalDvnAddresses
+      requiredDVNCount: policy.requiredDvnAddresses.length,
+      optionalDVNCount: policy.optionalDvnAddresses.length || NIL_DVN_COUNT,
+      optionalDVNThreshold: policy.optionalDvnThreshold,
+      requiredDVNs: policy.requiredDvnAddresses,
+      optionalDVNs: policy.optionalDvnAddresses
     };
   }
 
   /**
    * Build send config for a destination chain
    */
-  private buildSendConfig(sourceConfig: ChainConfig, destConfig: ChainConfig): any[] {
+  buildSendConfig(sourceConfig: ChainConfig, destConfig: ChainConfig): any[] {
     return [
       {
         eid: destConfig.eid,
@@ -69,7 +75,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
           [
             "tuple(uint64 confirmations, uint8 requiredDVNCount, uint8 optionalDVNCount, uint8 optionalDVNThreshold, address[] requiredDVNs, address[] optionalDVNs)"
           ],
-          [this.buildUlnConfig(sourceConfig, sourceConfig.confirmations)]
+          [this.buildUlnConfig(sourceConfig, destConfig, sourceConfig.confirmations)]
         )
       }
     ];
@@ -78,7 +84,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
   /**
    * Build receive config for a destination chain
    */
-  private buildReceiveConfig(sourceConfig: ChainConfig, destConfig: ChainConfig): any[] {
+  buildReceiveConfig(sourceConfig: ChainConfig, destConfig: ChainConfig): any[] {
     return [
       {
         eid: destConfig.eid,
@@ -87,7 +93,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
           [
             "tuple(uint64 confirmations, uint8 requiredDVNCount, uint8 optionalDVNCount, uint8 optionalDVNThreshold, address[] requiredDVNs, address[] optionalDVNs)"
           ],
-          [this.buildUlnConfig(sourceConfig, destConfig.confirmations)]
+          [this.buildUlnConfig(sourceConfig, destConfig, destConfig.confirmations)]
         )
       }
     ];
@@ -97,7 +103,7 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
    * Prepare endpoint configuration transactions for a single destination
    * Returns the transactions to be batched together
    */
-  private async prepareEndpointConfig(
+  async prepareEndpointConfig(
     endpointContract: ILayerZeroEndpointV2,
     ft: FT,
     sourceConfig: ChainConfig,
@@ -111,19 +117,37 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
     const sendConfig = this.buildSendConfig(sourceConfig, destConfig);
     const receiveConfig = this.buildReceiveConfig(sourceConfig, destConfig);
 
-    // 1. Set send library
-    const setSendLibData = endpointContract.interface.encodeFunctionData("setSendLibrary", [
-      ftAddress,
-      destConfig.eid,
-      sourceConfig.sendLibAddress
+    const [defaultSendLibrary, defaultReceiveLibrary, sendLibrary, sendIsDefault, receiveLibrary] = await Promise.all([
+      endpointContract.defaultSendLibrary(destConfig.eid),
+      endpointContract.defaultReceiveLibrary(destConfig.eid),
+      endpointContract.getSendLibrary(ftAddress, destConfig.eid),
+      endpointContract.isDefaultSendLibrary(ftAddress, destConfig.eid),
+      endpointContract.getReceiveLibrary(ftAddress, destConfig.eid),
     ]);
+    const sameAddress = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
+    if (!sameAddress(defaultSendLibrary, sourceConfig.sendLibAddress)) {
+      throw new Error(`Send library mismatch for ${destConfig.chainKey}`);
+    }
+    if (!sameAddress(defaultReceiveLibrary, sourceConfig.receiveLibAddress)) {
+      throw new Error(`Receive library mismatch for ${destConfig.chainKey}`);
+    }
 
-    transactions.push({
-      to: endpointAddress,
-      value: "0",
-      data: setSendLibData,
-      operation: OperationType.Call,
-    });
+    // Matching inherited defaults still need an explicit pin. Repeating an
+    // existing pin would revert with LZ_SameValue.
+    if (sendIsDefault || !sameAddress(sendLibrary, sourceConfig.sendLibAddress)) {
+      const setSendLibData = endpointContract.interface.encodeFunctionData("setSendLibrary", [
+        ftAddress,
+        destConfig.eid,
+        sourceConfig.sendLibAddress
+      ]);
+
+      transactions.push({
+        to: endpointAddress,
+        value: "0",
+        data: setSendLibData,
+        operation: OperationType.Call,
+      });
+    }
 
     // 2. Set send config
     const setSendConfigData = endpointContract.interface.encodeFunctionData("setConfig", [
@@ -139,20 +163,22 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
       operation: OperationType.Call,
     });
 
-    // 3. Set receive library
-    const setReceiveLibData = endpointContract.interface.encodeFunctionData("setReceiveLibrary", [
-      ftAddress,
-      destConfig.eid,
-      sourceConfig.receiveLibAddress,
-      0
-    ]);
+    // 3. Pin the receive library only if not already explicitly pinned.
+    if (receiveLibrary[1] || !sameAddress(receiveLibrary[0], sourceConfig.receiveLibAddress)) {
+      const setReceiveLibData = endpointContract.interface.encodeFunctionData("setReceiveLibrary", [
+        ftAddress,
+        destConfig.eid,
+        sourceConfig.receiveLibAddress,
+        0
+      ]);
 
-    transactions.push({
-      to: endpointAddress,
-      value: "0",
-      data: setReceiveLibData,
-      operation: OperationType.Call,
-    });
+      transactions.push({
+        to: endpointAddress,
+        value: "0",
+        data: setReceiveLibData,
+        operation: OperationType.Call,
+      });
+    }
 
     // 4. Set receive config
     const setReceiveConfigData = endpointContract.interface.encodeFunctionData("setConfig", [
@@ -211,18 +237,13 @@ class LayerZeroMultiChainWire extends LayerZeroBaseManager {
         console.log(
           `Preparing ${sourceChain} (EID: ${sourceConfig.eid}) <=> ${targetChain} (EID: ${destConfig.eid})`
         );
+        const policy = this.getRouteDvnPolicy(sourceConfig, destConfig);
         console.log(
           `ULN: send confirmations=${sourceConfig.confirmations}, receive confirmations=${destConfig.confirmations}; ` +
-          `required=${sourceConfig.dvnAddresses.length}, optional=${sourceConfig.optionalDvnThreshold} of ${sourceConfig.optionalDvnAddresses.length}`
+          `required=${policy.requiredDvnAddresses.length}, optional=${policy.optionalDvnThreshold} of ${policy.optionalDvnAddresses.length}`
         );
-
-        // Validate libraries before preparing transactions (per destination EID)
-        if ((await endpointContract.defaultSendLibrary(destConfig.eid)) !== sourceConfig.sendLibAddress) {
-          throw new Error(`Send library mismatch for ${targetChain}`);
-        }
-        if ((await endpointContract.defaultReceiveLibrary(destConfig.eid)) !== sourceConfig.receiveLibAddress) {
-          throw new Error(`Receive library mismatch for ${targetChain}`);
-        }
+        console.log(`Required DVNs: ${policy.requiredProviders.join(", ")} (${policy.requiredDvnAddresses.join(", ")})`);
+        console.log(`Optional DVNs: ${policy.optionalProviders.join(", ") || "None"} (${policy.optionalDvnAddresses.join(", ") || "None"})`);
 
         const transactions = await this.prepareEndpointConfig(endpointContract, ft, sourceConfig, destConfig);
         allTransactions.push(...transactions);
@@ -298,7 +319,7 @@ task("ft:wire", "Wire multiple chains together using LayerZero")
       await CLIUtils.printTaskHeader("LayerZero Multi-Chain Wiring", chains, useSafe, hre, {
         "Max Message Size": "10000 (fixed)",
         "Required DVNs": "Mainnet: LayerZero Labs + Canary; testnet: LayerZero Labs",
-        "Optional DVNs": "Mainnet: 2 of 3 (Deutsche Telekom, Horizen, Nethermind); testnet: None"
+        "Optional DVNs": "Mainnet: 2 of 3 (Horizen, Nethermind, Deutsche Telekom; P2P replaces Deutsche Telekom on Arc/Robinhood routes); testnet: None"
       }, dryRun);
 
       const wireManager = new LayerZeroMultiChainWire(hre, useSafe);

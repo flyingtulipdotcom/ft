@@ -35,6 +35,14 @@ export interface ChainMetadata {
   >;
 }
 
+export interface DvnPolicy {
+  requiredDvnAddresses: string[];
+  optionalDvnAddresses: string[];
+  optionalDvnThreshold: number;
+  requiredProviders: string[];
+  optionalProviders: string[];
+}
+
 export interface ChainConfig {
   chainKey: string;
   eid: number;
@@ -46,6 +54,8 @@ export interface ChainConfig {
   dvnAddresses: string[];
   optionalDvnAddresses: string[];
   optionalDvnThreshold: number;
+  // Policies contain local verifier addresses, selected by both ends of a route.
+  dvnPolicies?: Record<string, DvnPolicy>;
   ftTokenAddress?: string;
   confirmations?: number;
 }

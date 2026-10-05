@@ -1,0 +1,76 @@
+FT NINE-NETWORK ROLLOUT - UNSIGNED TRANSACTIONS
+
+SIMULATION: all 9 forks passed; 28/28 Safe batches; 72/72 directed pairs; 360/360 provider quotes; 20 existing directed routes unchanged. 93 regression tests passed.
+NO LIVE TRANSACTIONS WERE SENT. Fork owner approvals use impersonation, not production signatures. Off-chain DVN delivery was not simulated.
+
+POLICY: required LayerZero Labs + Canary. Optional threshold 2 of 3: P2P/Horizen/Nethermind whenever either end is Arc or Robinhood; Deutsche Telekom/Horizen/Nethermind otherwise.
+
+DEPLOYMENT: ordinary CREATE from 0x44820497f8FE95A258A9522f0De2c04ab2bC3da3 at nonce 0 gives FT 0x5DD1A7A369e8273371d2DBf9d83356057088082c. The nonce must be unused in both latest and pending state. Same address alone does not prove matching bytecode; all four new deployments were independently verified against pinned production bytes. Monad/Robinhood/Arc match Sonic init/runtime; Arbitrum matches Ethereum init/runtime. mintChainId remains 146; new-chain supply starts zero and paused.
+
+LIVE PREREQUISITES: fund the original FT deployer on Arc and Arbitrum (both had zero native balance); have a funded executor for governance transactions. Arbitrum governance Safes do not yet exist live; their exact bootstrap and membership rotations are included and were simulated. Recheck state, nonce, funding and signing authority before execution.
+
+EXECUTION ORDER
+1. Resolve all blockers and review Safe owners/thresholds; confirm both governance Safes exist on every chain.
+2. On Arbitrum, execute the canonical SafeProxyFactory calls in 00a-safe-deployments.unsigned.json from a funded EOA OTHER THAN the FT deployer, then the 00b-governance-*.safe.json batches to align both Safes to the captured Ethereum 3-of-5 membership.
+3. Deploy missing FT contracts using each 00-deployment-unsigned.json, original deployer and nonce 0. Recheck pending nonce and empty target address immediately before signing.
+4. Execute 01-delegate-endpoints.safe.json on every chain; then transfer new FT ownership with each 02-delegate-ownership.safe.json.
+5. After all deployments and both ends' endpoint configurations are verified, execute 03-owner-peers.safe.json on the four new chains first, then the five existing chains.
+6. Review and execute 04-optional-activation.safe.json only when ready to enable transfers; those files were simulated separately.
+
+ARBITRUM SAFE BOOTSTRAP
+The 00a-safe-deployments.unsigned.json factory calls are ordinary EOA transactions, not Safe-import JSON. Use a funded EOA OTHER THAN the FT deployer. They recreate the original owner Safe (3/4) and delegate Safe (2/3) at their canonical addresses. Then use the two 00b-governance-*.safe.json files with those original signing thresholds to add missing owners and match Ethereum 3/5 on both. FT deployment must keep original deployer nonce zero.
+
+SAFE FILES (import into Safe Transaction Builder on the indicated chain/address)
+
+ethereum | chainId 1 | fork block 26126662
+  ethereum/01-delegate-endpoints.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 16 calls | passed
+  ethereum/03-owner-peers.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 8 calls | passed
+
+sonic | chainId 146 | fork block 80392897
+  sonic/01-delegate-endpoints.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 16 calls | passed
+  sonic/03-owner-peers.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 8 calls | passed
+
+bsc | chainId 56 | fork block 125881518
+  bsc/01-delegate-endpoints.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 16 calls | passed
+  bsc/03-owner-peers.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 8 calls | passed
+
+avalanche | chainId 43114 | fork block 96810046
+  avalanche/01-delegate-endpoints.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 16 calls | passed
+  avalanche/03-owner-peers.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 8 calls | passed
+
+base | chainId 8453 | fork block 52210001
+  base/01-delegate-endpoints.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 16 calls | passed
+  base/03-owner-peers.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 8 calls | passed
+
+monad | chainId 143 | fork block 110772281
+  monad/01-delegate-endpoints.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 32 calls | passed
+  monad/02-delegate-ownership.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 1 calls | passed
+  monad/03-owner-peers.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 16 calls | passed
+  monad/04-optional-activation.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 1 calls | passed
+
+robinhood | chainId 4663 | fork block 80844640
+  robinhood/01-delegate-endpoints.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 32 calls | passed
+  robinhood/02-delegate-ownership.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 1 calls | passed
+  robinhood/03-owner-peers.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 16 calls | passed
+  robinhood/04-optional-activation.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 1 calls | passed
+
+arc | chainId 5042 | fork block 24402227
+  arc/01-delegate-endpoints.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 32 calls | passed
+  arc/02-delegate-ownership.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 1 calls | passed
+  arc/03-owner-peers.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 16 calls | passed
+  arc/04-optional-activation.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 1 calls | passed
+
+arbitrum | chainId 42161 | fork block 511945834
+  arbitrum/00b-governance-1.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 1 calls | passed
+  arbitrum/00b-governance-2.safe.json | Safe 0x22246a9183cE2CE6e2c2a9973F94aEA91435017C | 2 calls | passed
+  arbitrum/01-delegate-endpoints.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 32 calls | passed
+  arbitrum/02-delegate-ownership.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 1 calls | passed
+  arbitrum/03-owner-peers.safe.json | Safe 0x1118e1c057211306a40A4d7006C040dbfE1370Cb | 16 calls | passed
+  arbitrum/04-optional-activation.safe.json | Safe 0x22246a9183ce2ce6e2c2a9973f94aea91435017c | 1 calls | passed
+
+EVIDENCE
+manifest.json: all prerequisites, batch hashes, fork blocks and route comparisons.
+Each chain/report.json: live-before and fork-after raw/effective ULN, both DVN arrays and thresholds, confirmations, executor, libraries, receive grace state, peers/options, deployment hashes, Safe receipts and memberships.
+provider-support.json: all 360 pinned worker quotes.
+validation.json: test results and source-file hashes.
+The JSONs contain calls, not signatures or a fixed live Safe nonce. Optional activation batches are separate and were simulated separately.

@@ -16,6 +16,9 @@ const STANDARD_FT_CONFIGURATOR = process.env.FT_CONFIGURATOR || "0x22246a9183ce2
 // MSIG address for all chains
 const STANDARD_FINAL_OWNER = process.env.FINAL_OWNER || "0x1118e1c057211306a40A4d7006C040dbfE1370Cb";
 
+// Planned CREATE address for the new networks; this is not proof of deployment.
+const PLANNED_FT_ADDRESS = "0x5DD1A7A369e8273371d2DBf9d83356057088082c";
+
 function safeRequire(path: string): string | undefined {
   try {
     return require(path).address;
@@ -73,6 +76,46 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
     finalOwner: STANDARD_FINAL_OWNER
   },
   {
+    id: "5042",
+    name: "arc",
+    endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
+    confirmations: 5,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER,
+    ftTokenAddress: PLANNED_FT_ADDRESS
+  },
+  {
+    id: "42161",
+    name: "arbitrum",
+    endpointV2: "0x1a44076050125825900e736c501f859c50fE728c",
+    confirmations: 20,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER,
+    ftTokenAddress: PLANNED_FT_ADDRESS
+  },
+  {
+    id: "143",
+    name: "monad",
+    endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
+    confirmations: 4,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER,
+    ftTokenAddress: PLANNED_FT_ADDRESS
+  },
+  {
+    id: "4663",
+    name: "robinhood",
+    endpointV2: "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B",
+    confirmations: 5,
+    delegate: STANDARD_FT_DELEGATE,
+    configurator: STANDARD_FT_CONFIGURATOR,
+    finalOwner: STANDARD_FINAL_OWNER,
+    ftTokenAddress: PLANNED_FT_ADDRESS
+  },
+  {
     id: "11155111",
     name: "sepolia",
     endpointV2: "0x6EDCE65403992e310A62460808c4b910D972f10f",
@@ -112,7 +155,7 @@ const CHAINS: Omit<ChainConfig, "ftAddress">[] = [
 
 function buildChainConfig(c: (typeof CHAINS)[number]): ChainConfig {
   const path = `../deployments/${c.name.toLowerCase().replace(/\s+/g, "-")}/FT.json`;
-  const ftTokenAddress = safeRequire(path);
+  const ftTokenAddress = safeRequire(path) ?? c.ftTokenAddress;
   return {
     ...c,
     ftTokenAddress

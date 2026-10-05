@@ -61,6 +61,10 @@ Supported mainnet chains:
 | Avalanche        | avalanche     |
 | BSC              | bsc           |
 | Ethereum         | ethereum      |
+| Monad            | monad         |
+| Robinhood        | robinhood     |
+| Arc              | arc           |
+| Arbitrum         | arbitrum      |
 
 Supported testnet chains:  
 | Network          | Name          |
@@ -79,9 +83,11 @@ Wire up all the chains you want cross-chain communication for mainnets. Remove -
 npx hardhat ft:wire --chains ethereum,sonic,avalanche,bsc,base --network sonic --safe
 ```
 
-Mainnet wiring uses the same verification policy as the existing FT deployments:
-**LayerZero Labs and Canary are required, plus any two of Deutsche Telekom,
-Horizen, and Nethermind**. The five providers use their local addresses on each
+Mainnet wiring requires **LayerZero Labs and Canary, plus any two of three
+optional providers**. Routes involving **Arc or Robinhood** use **P2P, Horizen,
+and Nethermind**; all other routes retain **Deutsche Telekom, Horizen, and
+Nethermind**. This selection applies at both ends and in both directions.
+The five providers use their local addresses on each
 chain. Both send and receive configurations encode `requiredDVNCount=2`,
 `optionalDVNCount=3`, and `optionalDVNThreshold=2`; send confirmations refer to
 the local source, and receive confirmations refer to the remote source.
@@ -97,9 +103,10 @@ builders as normal wiring. It does not initialize a Safe, request a signer,
 sign, propose, or send transactions. It is a calldata preview, not a fork
 execution or cross-chain delivery test. The summary includes both DVN groups
 and the optional threshold. Run the task separately on each source chain.
-When expanding the mesh, target only the new remotes on existing chains.
-The task always emits library setters, which can revert with `LZ_SameValue`
-when a route already explicitly selects those libraries.
+Existing matching explicit library pins are skipped to avoid `LZ_SameValue`.
+Matching inherited defaults are explicitly pinned. The native task still emits
+config and peer/options calls; the fork rollout below also removes unchanged
+explicit config, peer and options writes.
 
 Every selected chain must have exactly one active V2 messaging deployment for
 each required provider in `utils/lzMetadata.json`. Missing, deprecated,
@@ -113,6 +120,85 @@ with optional DVNs explicitly disabled.
 External fork dry-run scripts must use these updated wiring builders and check
 both DVN arrays and the threshold. A report that prints only a DVN count of `2`
 does not demonstrate the complete mainnet policy.
+
+### Rehearse the nine-network rollout and export Safe JSON
+
+Requires Anvil on `PATH` (or `ANVIL_BINARY`) and working public RPCs. These
+commands request no signing key and submit no transactions to public RPCs:
+
+```bash
+npx hardhat run --no-compile scripts/check-rollout-dvns.ts
+npx hardhat run --no-compile scripts/rollout-ft.ts
+```
+
+The checker verifies all five selected DVNs on all 72 directed routes using
+read-only worker fee quotes. The rollout validates that evidence against the
+current metadata and policy, forks each chain at a recorded block, and uses
+the same transaction builders as `ft:wire`. RPC overrides are
+`RPC_URL_ETHEREUM`, `RPC_URL_SONIC`, `RPC_URL_BSC`, `RPC_URL_AVALANCHE`,
+`RPC_URL_BASE`, `RPC_URL_MONAD`, `RPC_URL_ROBINHOOD`, `RPC_URL_ARC`, and
+`RPC_URL_ARBITRUM`. `FT_ROLLOUT_OUTPUT` selects the report directory;
+`FT_ROLLOUT_CHAINS` can restrict the otherwise nine-network mesh.
+To retry a transient RPC failure, set `FT_ROLLOUT_OUTPUT` to that run's directory
+and `FT_ROLLOUT_RESUME=1`. Successful source results are retained only after
+checking exported-file hashes, role configuration and every route against the
+current builders. `FT_ROLLOUT_RETRY_SOURCES=sonic,arbitrum`, for example, forces
+those sources to run again. Retained results keep their original fork blocks.
+
+Each chain directory contains a before/after report and unsigned Safe
+Transaction Builder JSON, grouped by signing authority:
+
+1. `01-delegate-endpoints.safe.json`: libraries, DVNs, confirmations, executor.
+2. `02-delegate-ownership.safe.json`: on new chains, transfer the constructor's
+   ownership from the delegate Safe to the owner Safe.
+3. `03-owner-peers.safe.json`: peers and 80,000-gas enforced receive options.
+4. `04-optional-activation.safe.json`: separately reviewed unpause on new chains.
+
+Complete deployment and endpoint configuration on **every** network before
+executing the owner peer batches on the four new chains first, then the five
+existing chains. The manifest lists prerequisites and
+simulation results. Missing governance Safes block execution; a successful
+fork funded locally does not mean the production deployer is funded.
+
+Arbitrum additionally includes `00a-safe-deployments.unsigned.json`: two
+ordinary factory calls that replay the original canonical Safe CREATE2 setup.
+Send those from a funded EOA **other than the FT deployer**, preserving the
+FT deployer's nonce zero. Then import both `00b-governance-*.safe.json` files
+into their respective newly created Safes. These add the missing owners and
+set both Safes to Ethereum's captured current **3-of-5** membership, before
+the FT endpoint/ownership/peer batches. The original setup must be deployed
+first because changing its initializer changes the CREATE2 Safe address.
+The bootstrap plan records original setup data, salts, provenance, infrastructure
+code hashes, the Ethereum membership snapshot and simulated execution results.
+
+Safe simulation calls the existing Safe implementation's `execTransaction`
+through a verified MultiSendCallOnly deployment, using threshold approvals
+from impersonated owners on localhost. It verifies `ExecutionSuccess`, nonce
+advancement and final raw/effective LayerZero state. It exercises installed
+guards but does not prove access to real signing keys. Independent forks and
+worker quotes do not reproduce off-chain attestations or cross-chain delivery.
+Re-run against fresh state before signing; Safe JSON contains calls, not
+signatures or a fixed live Safe nonce.
+
+### Preserve the production CREATE deployment
+
+Mainnet `deploy/FT.ts` now uses the production creation bytecode pinned in
+`deployments/sonic/FT.json`, with creation hash
+`0x4831f2deca983f6bd018ca3ba43d98317ad8855cfbdfbe98a74366c542ffb3d3`.
+It requires deployer `0x44820497f8FE95A258A9522f0De2c04ab2bC3da3`, confirmed
+and pending nonce **0**, and an empty target address. Ordinary CREATE then
+produces `0x5DD1A7A369e8273371d2DBf9d83356057088082c` on each chain.
+The latest/pending nonce guards run again immediately before submission.
+
+Same deployer and nonce determine the address independently of bytecode.
+Exact bytecode is checked separately: Monad, Arc and Robinhood use Sonic's
+endpoint and match its init code and runtime; Arbitrum uses Ethereum's endpoint
+and matches its init code and runtime. The two endpoint groups have different
+embedded endpoint addresses. Every mainnet deployment keeps `mintChainId=146`,
+so the four new networks start with zero supply and paused transfers.
+The current local compiler output differs from the pinned artifact; recompiling
+is not sufficient for exact reproduction. Explorer verification needs the
+original matching production compiler input.
 
 Wire up all the chains you want cross-chain communication for testnets
 ```bash
@@ -145,6 +231,10 @@ npx hardhat lz:ft:set-delegate --account 0x22246a9183ce2ce6e2c2a9973f94aea914350
 | Avalanche      | 30106       |
 | BSC            | 30102       |
 | Ethereum       | 30101       |
+| Monad          | 30390       |
+| Robinhood      | 30416       |
+| Arc            | 30417       |
+| Arbitrum       | 30110       |
 | Base Sepolia   | 40245       |
 | Fuji           | 40106       |
 | BSC Testnet    | 40102       |
