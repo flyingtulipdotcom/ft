@@ -14,6 +14,31 @@ Quick reference checklist for deploying FT token to production.
 - [ ] Run `pnpm compile`
 - [ ] Run `pnpm test`
 
+## Monad and Robinhood: Required Dry Runs
+
+These commands decrypt and validate the configured keystore, but never use the
+real key to sign. Transactions are executed only by account impersonation on a
+pinned localhost Anvil fork.
+
+```bash
+npx hardhat ft:dry-run-deploy --network monad --keystore
+npx hardhat ft:dry-run-deploy --network robinhood --keystore
+```
+
+- [ ] Monad reports live deployer nonce `0` and pending nonce `0` before and after
+- [ ] Robinhood reports live deployer nonce `0` and pending nonce `0` before and after
+- [ ] Both runs report no code at `0x5DD1A7A369e8273371d2DBf9d83356057088082c`
+- [ ] Both runs validate keystore address `0x44820497f8FE95A258A9522f0De2c04ab2bC3da3`
+- [ ] Both local deployments produce the expected address and runtime hash
+
+Only after both dry runs pass, use the one-shot, network-bound live opt-in.
+Never put `FT_DEPLOYMENT_MODE=live:*` in `.env`.
+
+```bash
+FT_DEPLOYMENT_MODE=live:monad npx hardhat deploy --tags FT --network monad
+FT_DEPLOYMENT_MODE=live:robinhood npx hardhat deploy --tags FT --network robinhood
+```
+
 ## Deploy Sonic (Mint Chain)
 
 ```bash
