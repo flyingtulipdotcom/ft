@@ -211,6 +211,40 @@ The current local compiler output differs from the pinned artifact; recompiling
 is not sufficient for exact reproduction. Explorer verification needs the
 original matching production compiler input.
 
+### Safe Monad and Robinhood deployment rehearsal
+
+Use the dedicated task for a deployment dry run. It reads the public RPC only
+to pin an Anvil fork and check live state; all state changes occur on localhost.
+With `--keystore`, the task decrypts the keystore and verifies that its address
+is the pinned FT deployer, but the real key does **not** sign the rehearsal
+transaction. Anvil impersonation performs the local transaction instead.
+
+```bash
+npx hardhat ft:dry-run-deploy --network monad --keystore
+npx hardhat ft:dry-run-deploy --network robinhood --keystore
+```
+
+The task refuses to start unless the live RPC has both confirmed and pending
+deployer nonce `0` and no code at the expected FT address. It rechecks those
+conditions after the rehearsal, writes deployment records only to a disposable
+temporary directory, and removes them on completion. The deployment script
+also independently rejects dry-run mode unless its provider is a pinned
+localhost Anvil fork.
+
+Live mainnet deployment is locked by default, requires `KEYSTORE_PATH`, and
+uses a one-command network-specific opt-in. Do not persist this opt-in in
+`.env`; set it only for the intended command after both dry runs pass:
+
+```bash
+FT_DEPLOYMENT_MODE=live:monad npx hardhat deploy --tags FT --network monad
+FT_DEPLOYMENT_MODE=live:robinhood npx hardhat deploy --tags FT --network robinhood
+```
+
+Immediately before submission, the live path again requires the configured
+keystore address to equal `0x44820497f8FE95A258A9522f0De2c04ab2bC3da3`, both
+nonces to be `0`, and the target address to contain no code. The transaction is
+sent with explicit nonce `0`.
+
 Wire up all the chains you want cross-chain communication for testnets
 ```bash
 npx hardhat ft:wire --chains sepolia,fuji,bsc-testnet,base-sepolia --network base-sepolia

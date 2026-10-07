@@ -11,15 +11,12 @@ export async function getSigner(hre: HardhatRuntimeEnvironment): Promise<Wallet>
 
     // Priority 1: Keystore (recommended)
     if (KEYSTORE_PATH) {
-        try {
-            const privateKey = await loadKeystorePrivateKey(KEYSTORE_PATH)
-            const wallet = new Wallet(privateKey, hre.ethers.provider)
-            console.log(`Using keystore signer: ${wallet.address}`)
-            return wallet
-        } catch (error) {
-            console.error('Failed to load keystore:', error instanceof Error ? error.message : error)
-            console.warn('Falling back to default signer...')
-        }
+        // Fail closed. Falling back after a keystore error can silently select a
+        // mnemonic/private-key account different from the reviewed deployer.
+        const privateKey = await loadKeystorePrivateKey(KEYSTORE_PATH)
+        const wallet = new Wallet(privateKey, hre.ethers.provider)
+        console.log(`Using keystore signer: ${wallet.address}`)
+        return wallet
     }
 
     // Priority 2 & 3: Mnemonic or Private Key (via Hardhat config)

@@ -49,6 +49,11 @@ if (KEYSTORE_PATH) {
     // But for hardhat-deploy compatibility, we can use a custom provider
     // Leave accounts undefined and handle in deploy script
     console.log('Using keystore authentication. Password will be requested when needed.')
+    // Live deploys sign with the keystore wallet (raw transactions). An empty list makes Hardhat
+    // answer hardhat-deploy's startup eth_accounts call locally; some RPCs reject it
+    // (Alchemy on Monad: "Unsupported method: eth_accounts"). Dry runs keep the default, since
+    // they send through Anvil impersonation.
+    if (process.env.FT_DEPLOYMENT_MODE?.startsWith('live:')) accounts = []
 } else if (MNEMONIC) {
     accounts = { mnemonic: MNEMONIC }
 } else if (PRIVATE_KEY) {
@@ -67,6 +72,11 @@ const SAFE_API_KEY = process.env.SAFE_API_KEY || '';
 const config: HardhatUserConfig = {
     paths: {
         cache: 'cache/hardhat',
+        // Fork rehearsals write hardhat-deploy records to a disposable temp
+        // directory, never to the repository's real deployments directory.
+        ...(process.env.FT_DEPLOYMENTS_PATH
+            ? { deployments: process.env.FT_DEPLOYMENTS_PATH }
+            : {}),
     },
     solidity: {
         compilers: [
@@ -193,6 +203,30 @@ const config: HardhatUserConfig = {
             urls: {
                 apiURL: "https://api.etherscan.io/v2/api",
                 browserURL: "https://sonicscan.org"
+            }
+        },
+        {
+            network: "monad",
+            chainId: 143,
+            urls: {
+                apiURL: "https://api.etherscan.io/v2/api",
+                browserURL: "https://monadscan.com"
+            }
+        },
+        {
+            network: "robinhood",
+            chainId: 4663,
+            urls: {
+                apiURL: "https://api.etherscan.io/v2/api",
+                browserURL: "https://robin.etherscan.io"
+            }
+        },
+        {
+            network: "arc",
+            chainId: 5042,
+            urls: {
+                apiURL: "https://api.etherscan.io/v2/api",
+                browserURL: "https://arc.etherscan.io"
             }
         },
         ],
