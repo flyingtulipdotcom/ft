@@ -1,0 +1,11 @@
+--- a/rimraf.js
++++ b/rimraf.js
+@@ -110,7 +110,7 @@
+     if (!er)
+       return afterGlob(null, [p])
+ 
+-    glob(p, options.glob, afterGlob)
++    glob.glob(p, options.glob).then(files => afterGlob(null, files), afterGlob)
+   })
+ 
+ }

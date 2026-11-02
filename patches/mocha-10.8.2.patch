@@ -1,0 +1,11 @@
+--- a/lib/cli/collect-files.js
++++ b/lib/cli/collect-files.js
+@@ -4,7 +4,7 @@
+ const path = require('path');
+ const ansi = require('ansi-colors');
+ const debug = require('debug')('mocha:cli:run:helpers');
+-const minimatch = require('minimatch');
++const { minimatch } = require('minimatch');
+ const {NO_FILES_MATCH_PATTERN} = require('../errors').constants;
+ const lookupFiles = require('./lookup-files');
+ const {castArray} = require('../utils');
