@@ -1,0 +1,28 @@
+--- a/lib/util/file-matcher.js
++++ b/lib/util/file-matcher.js
+@@ -30,13 +30,12 @@
+     opts = { cwd: root, nodir: true, ignore: excludes };
+     seq += 1;
+     opts['x' + seq + new Date().getTime()] = true; //cache buster for minimatch cache bug
+-    glob(includes.join(' '), opts, function (err, files) {
+-        if (err) { return callback(err); }
+-        if (relative) { return callback(err, files); }
++    glob.glob(includes, opts).then(function (files) {
++        if (relative) { return callback(null, files); }
+ 
+         if (!realpath) {
+             files = files.map(function (file) { return path.resolve(root, file); });
+-            return callback(err, files);
++            return callback(null, files);
+         }
+ 
+         var realPathCache = module.constructor._realpathCache || {};
+@@ -44,7 +43,7 @@
+         async.map(files, function (file, done) {
+             fs.realpath(path.resolve(root, file), realPathCache, done);
+         }, callback);
+-    });
++    }, callback);
+ }
+ 
+ function matcherFor(options, callback) {
