@@ -79,6 +79,6 @@
     "hardhat-deploy": "^1.0.4"
   },
   "engines": {
-    "node": ">=20.19.4"
+    "node": ">=22.23.4"
   }
 }
